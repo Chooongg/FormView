@@ -2,10 +2,10 @@ package com.chooongg.form.provider
 
 import android.view.View
 import android.view.ViewGroup
-import com.chooongg.android.ktx.LogKtx.isEnable
 import com.chooongg.android.ktx.doOnClick
 import com.chooongg.form.holder.FormViewHolder
 import com.chooongg.form.item.BaseForm
+import com.chooongg.form.part.AbstractPart
 import com.chooongg.form.style.AbstractStyle
 import kotlinx.coroutines.CoroutineScope
 
@@ -46,9 +46,12 @@ abstract class AbstractFormProvider {
         item: BaseForm<*>,
         adapterEnabled: Boolean
     ) {
-        if (isRespondToClickEvents && isEnable(adapterEnabled)) {
+        if (item.isRespondToClickEvents && item.isEnable(adapterEnabled)) {
             holder.itemView.doOnClick {
-                adapter.onItemClickListener?.invoke(it, this)
+                (holder.bindingAdapter as? AbstractPart<*>)?.formAdapter.onItemClickListener?.invoke(
+                    it,
+                    this
+                )
             }
         } else holder.itemView.setOnClickListener(null)
     }

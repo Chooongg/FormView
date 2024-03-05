@@ -1,6 +1,7 @@
 package com.chooongg.form.app
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -9,7 +10,7 @@ import com.chooongg.form.app.ui.about.AboutFragment
 import com.chooongg.form.app.ui.home.HomeFragment
 import com.google.android.material.navigation.NavigationBarView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
 
     private val fragments = arrayListOf(
         HomeFragment(), AboutFragment()
@@ -23,15 +24,22 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = Adapter(this, fragments)
         with(binding.navigationView as NavigationBarView) {
-            setOnItemSelectedListener {
-                when (it.itemId) {
-                    R.id.nav_home -> binding.viewPager.setCurrentItem(0, false)
-                    R.id.nav_about -> binding.viewPager.setCurrentItem(1, false)
-                    else -> return@setOnItemSelectedListener false
-                }
-                true
-            }
+            onFragmentSelected(selectedItemId)
+            setOnItemSelectedListener(this@MainActivity)
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return onFragmentSelected(item.itemId)
+    }
+
+    private fun onFragmentSelected(itemId: Int): Boolean {
+        when (itemId) {
+            R.id.nav_home -> binding.viewPager.setCurrentItem(0, false)
+            R.id.nav_about -> binding.viewPager.setCurrentItem(1, false)
+            else -> return false
+        }
+        return true
     }
 
     class Adapter(activity: AppCompatActivity, private val fragments: List<Fragment>) :

@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation("com.chooongg.android:ktx:0.0.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.9.0-alpha03")

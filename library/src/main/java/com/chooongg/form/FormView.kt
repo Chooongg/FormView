@@ -3,8 +3,7 @@ package com.chooongg.form
 import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
-import com.chooongg.form.style.AbstractStyle
-import com.chooongg.form.typeset.AbstractTypeset
+import com.chooongg.form.layoutManager.FormLayoutManager
 
 class FormView @JvmOverloads constructor(
     context: Context,
@@ -15,6 +14,8 @@ class FormView @JvmOverloads constructor(
 
 
     init {
+        layoutManager = FormLayoutManager(context)
+
     }
 
 }

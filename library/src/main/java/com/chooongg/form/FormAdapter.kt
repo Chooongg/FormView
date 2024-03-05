@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.form.item.BaseForm
 import com.chooongg.form.part.AbstractPart
+import com.chooongg.form.provider.AbstractFormProvider
 import com.chooongg.form.style.AbstractStyle
 import com.chooongg.form.typeset.AbstractTypeset
 
-internal class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
@@ -104,7 +105,7 @@ internal class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val stylePool = ArrayList<AbstractStyle>()
     private val typesetPool = ArrayList<AbstractTypeset>()
-    private val itemPool = ArrayList<BaseForm<*>>()
+    private val providerPool = ArrayList<AbstractFormProvider>()
     private val itemTypePool = ArrayList<Triple<Int, Int, Int>>()
 
     internal fun getItemViewType4Pool(
@@ -124,13 +125,14 @@ internal class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 typesetPool.lastIndex
             } else it
         }
-        val itemIndex = itemPool.indexOfFirst { it::class == item::class }.let {
+        val providerClass = item.getProvider(this)
+        val providerIndex = providerPool.indexOfFirst { it::class == providerClass }.let {
             if (it < 0) {
-                itemPool.add(item.copyEmptyItem())
-                itemPool.lastIndex
+                providerPool.add(providerClass.java.getDeclaredConstructor().newInstance())
+                providerPool.lastIndex
             } else it
         }
-        val typeInfo = Triple(styleIndex, typesetIndex, itemIndex)
+        val typeInfo = Triple(styleIndex, typesetIndex, providerIndex)
         return itemTypePool.indexOf(typeInfo).let {
             if (it < 0) {
                 itemTypePool.add(typeInfo)
@@ -147,8 +149,8 @@ internal class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return typesetPool[itemTypePool[viewType].second]
     }
 
-    internal fun getItem4ItemViewType(viewType: Int): BaseForm<*> {
-        return itemPool[itemTypePool[viewType].third]
+    internal fun getItem4ItemViewType(viewType: Int): AbstractFormProvider {
+        return providerPool[itemTypePool[viewType].third]
     }
 
     //</editor-fold>

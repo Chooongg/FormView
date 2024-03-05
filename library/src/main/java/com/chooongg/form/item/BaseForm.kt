@@ -2,6 +2,7 @@ package com.chooongg.form.item
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.GravityInt
+import com.chooongg.form.FormAdapter
 import com.chooongg.form.FormColorStateListBlock
 import com.chooongg.form.FormDataVerificationException
 import com.chooongg.form.FormLinkageBlock
@@ -13,9 +14,11 @@ import com.chooongg.form.enum.FormOutputMode
 import com.chooongg.form.enum.FormValidateMode
 import com.chooongg.form.linkage.FormLinkage
 import com.chooongg.form.part.AbstractPart
+import com.chooongg.form.provider.AbstractFormProvider
 import com.chooongg.form.typeset.AbstractTypeset
 import com.google.android.material.button.MaterialButton
 import org.json.JSONObject
+import kotlin.reflect.KClass
 
 abstract class BaseForm<CONTENT>(
     /**
@@ -29,6 +32,11 @@ abstract class BaseForm<CONTENT>(
 ) : AbstractForm() {
 
     //<editor-fold desc="基础 Basic">
+
+    /**
+     * 获取提供程序
+     */
+    abstract fun getProvider(adapter: FormAdapter): KClass<out AbstractFormProvider>
 
     /**
      * 初始化

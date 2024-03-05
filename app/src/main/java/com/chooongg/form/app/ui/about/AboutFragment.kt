@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.chooongg.android.ktx.attrColor
 import com.chooongg.form.app.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment() {
@@ -26,5 +27,11 @@ class AboutFragment : Fragment() {
         binding.webView.background = null
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.loadUrl("https://github.com/Chooongg/FormAdapter2")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.window?.statusBarColor =
+            requireContext().attrColor(com.google.android.material.R.attr.colorSurface)
     }
 }
