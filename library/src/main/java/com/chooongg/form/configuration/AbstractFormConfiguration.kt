@@ -22,10 +22,10 @@ abstract class AbstractFormConfiguration {
      */
     abstract val _groupTitleProvider: AbstractGroupTitleProvider?
 
-    /**
-     * 详情标题视图提供器
-     */
-    abstract val _detailTitleProvider: AbstractDetailProvider?
+//    /**
+//     * 详情标题视图提供器
+//     */
+//    abstract val _detailTitleProvider: AbstractDetailProvider?
 
     /**
      * EMS 值
@@ -49,8 +49,8 @@ abstract class AbstractFormConfiguration {
     val groupTitleProvider: AbstractGroupTitleProvider
         get() = _groupTitleProvider ?: FormManager.globalConfig.groupTitleProvider
 
-    val detailTitleProvider: AbstractDetailProvider
-        get() = _detailTitleProvider ?: FormManager.globalConfig.detailTitleProvider
+//    val detailTitleProvider: AbstractDetailProvider
+//        get() = _detailTitleProvider ?: FormManager.globalConfig.detailTitleProvider
 
     val emsSize: FormEmsSize
         get() = _emsSize ?: FormManager.globalConfig.emsSize

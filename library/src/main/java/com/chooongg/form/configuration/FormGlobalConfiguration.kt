@@ -6,6 +6,7 @@ import com.chooongg.form.enum.FormEmsSize
 import com.chooongg.form.formatter.name.AbstractNameFormatter
 import com.chooongg.form.formatter.name.NormalNameFormatter
 import com.chooongg.form.typeset.AbstractTypeset
+import com.chooongg.form.typeset.HorizontalTypeset
 
 /**
  * 全局配置
@@ -24,11 +25,11 @@ open class FormGlobalConfiguration {
     open var groupTitleProvider: AbstractGroupTitleProvider = NormalGroupTitleProvider()
         protected set
 
-    /**
-     * 详情标题视图提供器
-     */
-    open var detailTitleProvider: AbstractDetailProvider = NormalDetailProvider()
-        protected set
+//    /**
+//     * 详情标题视图提供器
+//     */
+//    open var detailTitleProvider: AbstractDetailProvider = NormalDetailProvider()
+//        protected set
 
     /**
      * EMS 值

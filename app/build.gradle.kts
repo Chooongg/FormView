@@ -48,6 +48,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.0-alpha03")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.0-alpha03")
     implementation("com.google.android.material:material:1.12.0-alpha03")
+    implementation(project(":library"))
     debugImplementation("com.facebook.soloader:soloader:0.10.5")
     debugImplementation("com.facebook.flipper:flipper:0.244.0")
 }

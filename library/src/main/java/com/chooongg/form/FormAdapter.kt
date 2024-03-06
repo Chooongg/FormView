@@ -41,6 +41,20 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    var onItemClickListener: FormOnItemClickListener? = null
+        private set
+
+    var onMenuClickListener: FormOnMenuClickListener? = null
+        private set
+
+    fun setOnItemClickListener(listener: FormOnItemClickListener?) {
+        onItemClickListener = listener
+    }
+
+    fun setOnMenuClickListener(listener: FormOnMenuClickListener?) {
+        onMenuClickListener = listener
+    }
+
     init {
         concatAdapter.registerAdapterDataObserver(dataObserver)
     }
