@@ -5,8 +5,11 @@ import com.chooongg.form.enum.FormContentGravity
 import com.chooongg.form.enum.FormEmsSize
 import com.chooongg.form.formatter.name.AbstractNameFormatter
 import com.chooongg.form.formatter.name.NormalNameFormatter
+import com.chooongg.form.provider.AbstractFormProviderGroupTitle
+import com.chooongg.form.provider.InternalFormGroupTitleProvider
 import com.chooongg.form.typeset.AbstractTypeset
 import com.chooongg.form.typeset.HorizontalTypeset
+import kotlin.reflect.KClass
 
 /**
  * 全局配置
@@ -22,7 +25,8 @@ open class FormGlobalConfiguration {
     /**
      * 组标题视图提供器
      */
-    open var groupTitleProvider: AbstractGroupTitleProvider = NormalGroupTitleProvider()
+    open var groupTitleProvider: KClass<out AbstractFormProviderGroupTitle> =
+        InternalFormGroupTitleProvider::class
         protected set
 
 //    /**

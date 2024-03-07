@@ -36,7 +36,7 @@ abstract class BaseForm<CONTENT>(
     /**
      * 获取提供程序
      */
-    abstract fun getProvider(adapter: FormAdapter): KClass<out AbstractFormProvider>
+    abstract fun getProvider(part: AbstractPart<*>): KClass<out AbstractFormProvider>
 
     /**
      * 初始化

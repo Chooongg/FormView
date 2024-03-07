@@ -1,5 +1,6 @@
 package com.chooongg.form
 
+import android.provider.SyncStateContract.Helpers.update
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,19 @@ import com.chooongg.form.provider.AbstractFormProvider
 import com.chooongg.form.style.AbstractStyle
 import com.chooongg.form.typeset.AbstractTypeset
 
-class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FormAdapter internal constructor(isEnabled: Boolean = false) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    /**
+     * 是否启用
+     */
+    var isEnabled: Boolean = isEnabled
+        set(value) {
+            if (field != value) {
+                field = value
+                update()
+            }
+        }
 
     private val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
@@ -59,6 +72,46 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
         concatAdapter.registerAdapterDataObserver(dataObserver)
     }
 
+    operator fun get(field: String): Pair<AbstractPart<*>, BaseForm<*>>? {
+        partAdapters.forEach {
+            val item = it[field]
+            if (item != null) return Pair(it, item)
+        }
+        return null
+    }
+
+    operator fun contains(field: String): Boolean {
+        partAdapters.forEach {
+            if (field in it) return true
+        }
+        return false
+    }
+
+    operator fun contains(item: BaseForm<*>): Boolean {
+        partAdapters.forEach {
+            if (item in it) return true
+        }
+        return false
+    }
+
+    fun findPart(field: String): AbstractPart<*>? {
+        partAdapters.forEach {
+            if (field in it) return it
+        }
+        return null
+    }
+
+    fun findPart(item: BaseForm<*>): AbstractPart<*>? {
+        partAdapters.forEach {
+            if (item in it) return it
+        }
+        return null
+    }
+
+    fun update() {
+        partAdapters.forEach { it.update() }
+    }
+
     //<editor-fold desc="覆写 Overwrite">
 
     val partAdapters get() = concatAdapter.adapters.filterIsInstance<AbstractPart<*>>()
@@ -72,14 +125,11 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
     fun getWrappedAdapterAndPosition(globalPosition: Int) =
         concatAdapter.getWrappedAdapterAndPosition(globalPosition)
 
-    override fun getItemCount() =
-        concatAdapter.itemCount
+    override fun getItemCount() = concatAdapter.itemCount
 
-    override fun getItemId(position: Int) =
-        concatAdapter.getItemId(position)
+    override fun getItemId(position: Int) = concatAdapter.getItemId(position)
 
-    override fun getItemViewType(position: Int) =
-        concatAdapter.getItemViewType(position)
+    override fun getItemViewType(position: Int) = concatAdapter.getItemViewType(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         concatAdapter.onCreateViewHolder(parent, viewType)
@@ -88,11 +138,8 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
         concatAdapter.onBindViewHolder(holder, position)
 
     override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) =
-        concatAdapter.onBindViewHolder(holder, position, payloads)
+        holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>
+    ) = concatAdapter.onBindViewHolder(holder, position, payloads)
 
     override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder) =
         concatAdapter.onFailedToRecycleView(holder)
@@ -123,8 +170,7 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
     private val itemTypePool = ArrayList<Triple<Int, Int, Int>>()
 
     internal fun getItemViewType4Pool(
-        style: AbstractStyle,
-        item: BaseForm<*>
+        part: AbstractPart<*>, style: AbstractStyle, item: BaseForm<*>
     ): Int {
         val styleIndex = stylePool.indexOf(style).let {
             if (it < 0) {
@@ -139,7 +185,7 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
                 typesetPool.lastIndex
             } else it
         }
-        val providerClass = item.getProvider(this)
+        val providerClass = item.getProvider(part)
         val providerIndex = providerPool.indexOfFirst { it::class == providerClass }.let {
             if (it < 0) {
                 providerPool.add(providerClass.java.getDeclaredConstructor().newInstance())
@@ -163,7 +209,7 @@ class FormAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.Vie
         return typesetPool[itemTypePool[viewType].second]
     }
 
-    internal fun getItem4ItemViewType(viewType: Int): AbstractFormProvider {
+    internal fun getProvider4ItemViewType(viewType: Int): AbstractFormProvider {
         return providerPool[itemTypePool[viewType].third]
     }
 

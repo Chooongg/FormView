@@ -5,7 +5,9 @@ import com.chooongg.form.FormManager
 import com.chooongg.form.enum.FormContentGravity
 import com.chooongg.form.enum.FormEmsSize
 import com.chooongg.form.formatter.name.AbstractNameFormatter
+import com.chooongg.form.provider.AbstractFormProviderGroupTitle
 import com.chooongg.form.typeset.AbstractTypeset
+import kotlin.reflect.KClass
 
 abstract class AbstractFormConfiguration {
 
@@ -20,7 +22,7 @@ abstract class AbstractFormConfiguration {
     /**
      * 组标题视图提供器
      */
-    abstract val _groupTitleProvider: AbstractGroupTitleProvider?
+    abstract val _groupTitleProvider: KClass<out AbstractFormProviderGroupTitle>?
 
 //    /**
 //     * 详情标题视图提供器
@@ -46,7 +48,7 @@ abstract class AbstractFormConfiguration {
     val nameFormatter: AbstractNameFormatter
         get() = _nameFormatter ?: FormManager.globalConfig.nameFormatter
 
-    val groupTitleProvider: AbstractGroupTitleProvider
+    val groupTitleProvider: KClass<out AbstractFormProviderGroupTitle>
         get() = _groupTitleProvider ?: FormManager.globalConfig.groupTitleProvider
 
 //    val detailTitleProvider: AbstractDetailProvider
