@@ -52,9 +52,6 @@ abstract class AbstractPart<DATA : IFormPart>(
                     notifyItemChanged(index)
                 } else {
                     notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
-                    if (item.lastBoundary != item.boundary) {
-                        notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY)
-                    }
                 }
             }
         }
@@ -169,14 +166,14 @@ abstract class AbstractPart<DATA : IFormPart>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        this.recyclerView = recyclerView
-        update()
+//        this.recyclerView = recyclerView
+//        update()
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         adapterScope.cancel()
         adapterScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         asyncDiffer.submitList(emptyList())
-        this.recyclerView = null
+//        this.recyclerView = null
     }
 }
