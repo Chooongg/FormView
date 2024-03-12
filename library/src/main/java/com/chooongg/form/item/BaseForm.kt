@@ -47,23 +47,23 @@ abstract class BaseForm<CONTENT>(
      * 图标
      */
     @DrawableRes
-    open var icon: Int? = null
+    override var icon: Int? = null
 
     /**
      * 图标着色
      */
-    open var iconTint: FormColorStateListBlock? = null
+    override var iconTint: FormColorStateListBlock? = null
 
     /**
      * 图标重力
      */
     @MaterialButton.IconGravity
-    open var iconGravity: Int = MaterialButton.ICON_GRAVITY_TEXT_START
+    override var iconGravity: Int = MaterialButton.ICON_GRAVITY_TEXT_START
 
     /**
      * 图标大小
      */
-    open var iconSize: Int? = null
+    override var iconSize: Int? = null
 
     /**
      * 提示: Int(StringRes), String, CharSequence

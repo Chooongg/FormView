@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation("com.chooongg.android:ktx:0.0.2")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0-alpha05")
     implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
     implementation("androidx.activity:activity-ktx:1.9.0-alpha03")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01")
@@ -49,6 +49,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.0-alpha03")
     implementation("com.google.android.material:material:1.12.0-alpha03")
     implementation(project(":library"))
-    debugImplementation("com.facebook.soloader:soloader:0.10.5")
-    debugImplementation("com.facebook.flipper:flipper:0.244.0")
+    debugImplementation("com.facebook.soloader:soloader:0.11.0")
+    debugImplementation("com.facebook.flipper:flipper:0.249.0")
 }

@@ -26,7 +26,7 @@ abstract class AbstractPart<DATA : IFormPart>(
     var adapterScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         internal set
 
-    private val asyncDiffer = AsyncListDiffer(object : ListUpdateCallback {
+    protected val asyncDiffer = AsyncListDiffer(object : ListUpdateCallback {
         override fun onChanged(position: Int, count: Int, payload: Any?) = Unit
 
         override fun onRemoved(position: Int, count: Int) = notifyItemRangeRemoved(position, count)
