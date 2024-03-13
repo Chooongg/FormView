@@ -1,9 +1,13 @@
 package com.chooongg.form
 
-import android.provider.SyncStateContract.Helpers.update
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
+import com.chooongg.form.data.FormData
 import com.chooongg.form.item.BaseForm
 import com.chooongg.form.part.AbstractPart
 import com.chooongg.form.provider.AbstractFormProvider
@@ -11,7 +15,7 @@ import com.chooongg.form.style.AbstractStyle
 import com.chooongg.form.typeset.AbstractTypeset
 
 class FormAdapter internal constructor(isEnabled: Boolean = false) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), ListUpdateCallback {
 
     /**
      * 是否启用
@@ -72,6 +76,23 @@ class FormAdapter internal constructor(isEnabled: Boolean = false) :
         concatAdapter.registerAdapterDataObserver(dataObserver)
     }
 
+    private var data: FormData = FormData()
+
+    private val asyncDiff = AsyncListDiffer(
+        this, AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<AbstractPart<*>>() {
+            override fun areItemsTheSame(oldItem: AbstractPart<*>, newItem: AbstractPart<*>) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: AbstractPart<*>, newItem: AbstractPart<*>) =
+                oldItem == newItem
+        }).build()
+    )
+
+    fun setData(data: FormData) {
+        asyncDiff.submitList(data.getParts())
+        update()
+    }
+
     operator fun get(field: String): Pair<AbstractPart<*>, BaseForm<*>>? {
         partAdapters.forEach {
             val item = it[field]
@@ -120,6 +141,22 @@ class FormAdapter internal constructor(isEnabled: Boolean = false) :
         val pair = concatAdapter.getWrappedAdapterAndPosition(position)
         val part = pair.first as? AbstractPart<*> ?: return null
         return part[pair.second]
+    }
+
+    override fun onInserted(position: Int, count: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRemoved(position: Int, count: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onMoved(fromPosition: Int, toPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onChanged(position: Int, count: Int, payload: Any?) {
+        TODO("Not yet implemented")
     }
 
     fun getWrappedAdapterAndPosition(globalPosition: Int) =

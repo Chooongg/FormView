@@ -6,5 +6,5 @@ class FormData {
 
     private val parts = ArrayList<AbstractPart<*>>()
 
-
+    fun getParts(): List<AbstractPart<*>> = parts
 }
