@@ -1,13 +1,12 @@
 package com.chooongg.form.part
 
-import com.chooongg.form.FormAdapter
 import com.chooongg.form.data.FormPartData
 import com.chooongg.form.item.BaseForm
 import com.chooongg.form.style.AbstractStyle
 
 class FormPart(
-    adapter: FormAdapter, style: AbstractStyle, data: FormPartData
-) : AbstractPart<FormPartData>(adapter, style, data) {
+    style: AbstractStyle, data: FormPartData
+) : AbstractPart<FormPartData>(style, data) {
 
     override fun executeUpdate(commitCallback: Runnable) {
         val items = ArrayList<BaseForm<*>>()

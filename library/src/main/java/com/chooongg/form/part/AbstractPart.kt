@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.form.FormAdapter
 import com.chooongg.form.FormManager
+import com.chooongg.form.data.AbstractFormId
 import com.chooongg.form.data.IFormPart
 import com.chooongg.form.holder.FormViewHolder
 import com.chooongg.form.item.BaseForm
@@ -19,9 +20,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
-abstract class AbstractPart<DATA : IFormPart>(
-    val adapter: FormAdapter, val style: AbstractStyle, var data: DATA
-) : RecyclerView.Adapter<FormViewHolder>() {
+abstract class AbstractPart<DATA>(
+    val style: AbstractStyle, var data: DATA
+) : RecyclerView.Adapter<FormViewHolder>() where DATA : IFormPart, DATA : AbstractFormId {
+
+    private var _adapter: FormAdapter? = null
+
+    val adapter: FormAdapter get() = _adapter!!
 
     var adapterScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         internal set
@@ -166,14 +171,13 @@ abstract class AbstractPart<DATA : IFormPart>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-//        this.recyclerView = recyclerView
-//        update()
+        _adapter = recyclerView.adapter as FormAdapter
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         adapterScope.cancel()
         adapterScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         asyncDiffer.submitList(emptyList())
-//        this.recyclerView = null
+        _adapter = null
     }
 }

@@ -12,6 +12,7 @@ import com.chooongg.form.extractor.NormalIconExtractor
 import com.chooongg.form.extractor.NormalTextExtractor
 import com.chooongg.form.item.BaseForm
 import com.chooongg.form.style.AbstractStyle
+import com.chooongg.form.style.NoneStyle
 import java.lang.reflect.ParameterizedType
 
 object FormManager {
@@ -48,7 +49,7 @@ object FormManager {
     /**
      * 默认样式
      */
-//    var defaultStyle: AbstractStyle = CardOutlineStyle()
+    var defaultStyle: AbstractStyle = NoneStyle()
 
     /**
      * 设置文本提取器

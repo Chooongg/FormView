@@ -10,20 +10,25 @@ class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    private val formAdapter = FormAdapter()
-
     init {
         super.setLayoutManager(FormLayoutManager(context))
         super.addItemDecoration(FormItemDecoration())
-        super.setAdapter(formAdapter)
     }
 
     fun setData(data: FormData) {
-        formAdapter.setData(data)
+        super.setAdapter(FormAdapter(data))
+    }
+
+    fun setData(block:FormData.() -> Unit){
+        setData(FormData().apply(block))
+    }
+
+    override fun swapAdapter(adapter: Adapter<*>?, removeAndRecycleExistingViews: Boolean) {
+        throw IllegalArgumentException("this method external calls not supported")
     }
 
     override fun setLayoutManager(layout: LayoutManager?) {
-        throw IllegalArgumentException("FormView only supports FormLayoutManager")
+        throw IllegalArgumentException("this method external calls not supported")
     }
 
     override fun getLayoutManager(): FormLayoutManager {
@@ -31,11 +36,11 @@ class FormView @JvmOverloads constructor(
     }
 
     override fun setAdapter(adapter: Adapter<*>?) {
-        throw IllegalArgumentException("FormView only supports FormAdapter")
+        throw IllegalArgumentException("this method external calls not supported")
     }
 
-    override fun getAdapter(): FormAdapter {
-        return formAdapter
+    override fun getAdapter(): FormAdapter? {
+        return super.getAdapter() as? FormAdapter
     }
 
     override fun addItemDecoration(decor: ItemDecoration, index: Int) {

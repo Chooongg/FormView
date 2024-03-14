@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.chooongg.form.addText
 import com.chooongg.form.app.databinding.FragmentHomeBinding
 import com.google.android.material.shape.MaterialShapeDrawable
 
@@ -13,9 +14,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -26,13 +25,20 @@ class HomeFragment : Fragment() {
         binding.appBarLayout.addLiftOnScrollListener { _, backgroundColor ->
             activity?.window?.statusBarColor = backgroundColor
         }
+        binding.formView.setData {
+            addPart {
+                addText("asdfasdfasdf", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         val color =
             (binding.appBarLayout.background as? MaterialShapeDrawable)?.fillColor?.defaultColor
-        if (color != null){
+        if (color != null) {
             activity?.window?.statusBarColor = color
         }
     }

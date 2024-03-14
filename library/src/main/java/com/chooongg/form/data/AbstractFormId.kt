@@ -2,7 +2,7 @@ package com.chooongg.form.data
 
 import java.util.UUID
 
-abstract class AbstractId {
+abstract class AbstractFormId {
     /**
      * 唯一标识
      */

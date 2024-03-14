@@ -1,11 +1,7 @@
 package com.chooongg.form
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.form.data.FormData
 import com.chooongg.form.item.BaseForm
@@ -13,24 +9,9 @@ import com.chooongg.form.part.AbstractPart
 import com.chooongg.form.provider.AbstractFormProvider
 import com.chooongg.form.style.AbstractStyle
 import com.chooongg.form.typeset.AbstractTypeset
+import kotlin.math.abs
 
-class FormAdapter internal constructor(isEnabled: Boolean = false) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), ListUpdateCallback {
-
-    /**
-     * 是否启用
-     */
-    var isEnabled: Boolean = isEnabled
-        set(value) {
-            if (field != value) {
-                field = value
-                update()
-            }
-        }
-
-    private val concatAdapter = ConcatAdapter(
-        ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
-    )
+class FormAdapter(private val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val dataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
@@ -54,9 +35,11 @@ class FormAdapter internal constructor(isEnabled: Boolean = false) :
         }
 
         override fun onStateRestorationPolicyChanged() {
-            stateRestorationPolicy = concatAdapter.stateRestorationPolicy
+            stateRestorationPolicy = data.concatAdapter.stateRestorationPolicy
         }
     }
+
+    val isEnabled get() = data.isEnabled
 
     var onItemClickListener: FormOnItemClickListener? = null
         private set
@@ -72,131 +55,58 @@ class FormAdapter internal constructor(isEnabled: Boolean = false) :
         onMenuClickListener = listener
     }
 
-    init {
-        concatAdapter.registerAdapterDataObserver(dataObserver)
-    }
-
-    private var data: FormData = FormData()
-
-    private val asyncDiff = AsyncListDiffer(
-        this, AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<AbstractPart<*>>() {
-            override fun areItemsTheSame(oldItem: AbstractPart<*>, newItem: AbstractPart<*>) =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: AbstractPart<*>, newItem: AbstractPart<*>) =
-                oldItem == newItem
-        }).build()
-    )
-
-    fun setData(data: FormData) {
-        asyncDiff.submitList(data.getParts())
-        update()
-    }
-
-    operator fun get(field: String): Pair<AbstractPart<*>, BaseForm<*>>? {
-        partAdapters.forEach {
-            val item = it[field]
-            if (item != null) return Pair(it, item)
-        }
-        return null
-    }
-
-    operator fun contains(field: String): Boolean {
-        partAdapters.forEach {
-            if (field in it) return true
-        }
-        return false
-    }
-
-    operator fun contains(item: BaseForm<*>): Boolean {
-        partAdapters.forEach {
-            if (item in it) return true
-        }
-        return false
-    }
-
-    fun findPart(field: String): AbstractPart<*>? {
-        partAdapters.forEach {
-            if (field in it) return it
-        }
-        return null
-    }
-
-    fun findPart(item: BaseForm<*>): AbstractPart<*>? {
-        partAdapters.forEach {
-            if (item in it) return it
-        }
-        return null
-    }
-
     fun update() {
         partAdapters.forEach { it.update() }
     }
 
     //<editor-fold desc="覆写 Overwrite">
 
-    val partAdapters get() = concatAdapter.adapters.filterIsInstance<AbstractPart<*>>()
+    val partAdapters get() = data.concatAdapter.adapters.filterIsInstance<AbstractPart<*>>()
 
     fun getFormItem(position: Int): BaseForm<*>? {
-        val pair = concatAdapter.getWrappedAdapterAndPosition(position)
+        val pair = data.concatAdapter.getWrappedAdapterAndPosition(position)
         val part = pair.first as? AbstractPart<*> ?: return null
         return part[pair.second]
     }
 
-    override fun onInserted(position: Int, count: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = data.concatAdapter.itemCount
 
-    override fun onRemoved(position: Int, count: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun getItemId(position: Int) = data.concatAdapter.getItemId(position)
 
-    override fun onMoved(fromPosition: Int, toPosition: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onChanged(position: Int, count: Int, payload: Any?) {
-        TODO("Not yet implemented")
-    }
-
-    fun getWrappedAdapterAndPosition(globalPosition: Int) =
-        concatAdapter.getWrappedAdapterAndPosition(globalPosition)
-
-    override fun getItemCount() = concatAdapter.itemCount
-
-    override fun getItemId(position: Int) = concatAdapter.getItemId(position)
-
-    override fun getItemViewType(position: Int) = concatAdapter.getItemViewType(position)
+    override fun getItemViewType(position: Int) = data.concatAdapter.getItemViewType(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        concatAdapter.onCreateViewHolder(parent, viewType)
+        data.concatAdapter.onCreateViewHolder(parent, viewType)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        concatAdapter.onBindViewHolder(holder, position)
+        data.concatAdapter.onBindViewHolder(holder, position)
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>
-    ) = concatAdapter.onBindViewHolder(holder, position, payloads)
+    ) = data.concatAdapter.onBindViewHolder(holder, position, payloads)
 
     override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder) =
-        concatAdapter.onFailedToRecycleView(holder)
+        data.concatAdapter.onFailedToRecycleView(holder)
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) =
-        concatAdapter.onViewAttachedToWindow(holder)
+        data.concatAdapter.onViewAttachedToWindow(holder)
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) =
-        concatAdapter.onViewDetachedFromWindow(holder)
+        data.concatAdapter.onViewDetachedFromWindow(holder)
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) =
-        concatAdapter.onViewRecycled(holder)
+        data.concatAdapter.onViewRecycled(holder)
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        concatAdapter.onAttachedToRecyclerView(recyclerView)
+        data.concatAdapter.registerAdapterDataObserver(dataObserver)
+        data.concatAdapter.onAttachedToRecyclerView(recyclerView)
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        concatAdapter.onDetachedFromRecyclerView(recyclerView)
+        data.concatAdapter.onDetachedFromRecyclerView(recyclerView)
+        data.concatAdapter.unregisterAdapterDataObserver(dataObserver)
     }
+
     //</editor-fold>
 
     //<editor-fold desc="类型池 TypePool">
@@ -231,23 +141,24 @@ class FormAdapter internal constructor(isEnabled: Boolean = false) :
         }
         val typeInfo = Triple(styleIndex, typesetIndex, providerIndex)
         return itemTypePool.indexOf(typeInfo).let {
-            if (it < 0) {
+            val index = if (it < 0) {
                 itemTypePool.add(typeInfo)
                 itemTypePool.lastIndex
             } else it
+            -index - 1
         }
     }
 
     internal fun getStyle4ItemViewType(viewType: Int): AbstractStyle {
-        return stylePool[itemTypePool[viewType].first]
+        return stylePool[itemTypePool[abs(viewType) - 1].first]
     }
 
     internal fun getTypeset4ItemViewType(viewType: Int): AbstractTypeset {
-        return typesetPool[itemTypePool[viewType].second]
+        return typesetPool[itemTypePool[abs(viewType) - 1].second]
     }
 
     internal fun getProvider4ItemViewType(viewType: Int): AbstractFormProvider {
-        return providerPool[itemTypePool[viewType].third]
+        return providerPool[itemTypePool[abs(viewType) - 1].third]
     }
 
     //</editor-fold>

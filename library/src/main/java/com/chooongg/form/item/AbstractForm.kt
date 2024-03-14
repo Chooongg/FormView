@@ -3,13 +3,13 @@ package com.chooongg.form.item
 import androidx.annotation.MenuRes
 import com.chooongg.form.FormOnMenuCreatedListener
 import com.chooongg.form.FormOnMenuItemClickListener
-import com.chooongg.form.data.AbstractId
+import com.chooongg.form.data.AbstractFormId
 import com.chooongg.form.data.IFormIcon
 import com.chooongg.form.data.IFormMenu
 import com.chooongg.form.enum.FormEnableMode
 import com.chooongg.form.enum.FormVisibilityMode
 
-abstract class AbstractForm : AbstractId(),IFormIcon, IFormMenu {
+abstract class AbstractForm : AbstractFormId(),IFormIcon, IFormMenu {
 
     //<editor-fold desc="基础 Basic">
 

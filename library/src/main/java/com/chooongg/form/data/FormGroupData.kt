@@ -9,7 +9,7 @@ import com.chooongg.form.item.BaseForm
 import com.chooongg.form.item.InternalFormGroupTitle
 import com.google.android.material.button.MaterialButton
 
-open class FormGroupData : AbstractId(), IFormGroupData, IFormIcon, IFormMenu {
+open class FormGroupData : AbstractFormId(), IFormGroupData, IFormIcon, IFormMenu {
 
     private val _items = mutableListOf<BaseForm<*>>()
 
