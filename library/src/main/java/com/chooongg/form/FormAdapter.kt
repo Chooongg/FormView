@@ -107,6 +107,9 @@ class FormAdapter(private val data: FormData) : RecyclerView.Adapter<RecyclerVie
         data.concatAdapter.unregisterAdapterDataObserver(dataObserver)
     }
 
+    fun getWrappedAdapterAndPosition(globalPosition: Int) =
+        data.concatAdapter.getWrappedAdapterAndPosition(globalPosition)
+
     //</editor-fold>
 
     //<editor-fold desc="类型池 TypePool">
@@ -159,6 +162,14 @@ class FormAdapter(private val data: FormData) : RecyclerView.Adapter<RecyclerVie
 
     internal fun getProvider4ItemViewType(viewType: Int): AbstractFormProvider {
         return providerPool[itemTypePool[abs(viewType) - 1].third]
+    }
+
+    override fun findRelativeAdapterPositionIn(
+        adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
+        viewHolder: RecyclerView.ViewHolder,
+        localPosition: Int
+    ): Int {
+        return data.concatAdapter.findRelativeAdapterPositionIn(adapter, viewHolder, localPosition)
     }
 
     //</editor-fold>

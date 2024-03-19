@@ -27,11 +27,45 @@ class HomeFragment : Fragment() {
         }
         binding.formView.setData {
             addPart {
-                addText("asdfasdfasdf", "asdfasdfasdf") {
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+            }
+            addPart {
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
+                    content = "asdfasdfasdf"
+                }
+                addText("Text", "asdfasdfasdf") {
                     content = "asdfasdfasdf"
                 }
             }
         }
+
+//        3    0 1 2
+//
+//        5    0 1 2 3 4
+//             3   *
+//        8    0 1 2 3 4 5 6 7
+//
+//
+//        5
+//
+//        2  2
     }
 
     override fun onResume() {

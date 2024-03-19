@@ -21,20 +21,20 @@ abstract class AbstractFormLayoutManager(context: Context) : FlexboxLayoutManage
         } else super.smoothScrollToPosition(recyclerView, state, position)
     }
 
-//    override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
-//        return LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-//            flexGrow = 1f
-//        }
-//    }
-//
-//    override fun generateLayoutParams(
-//        c: Context?,
-//        attrs: AttributeSet?
-//    ): RecyclerView.LayoutParams {
-//        return LayoutParams(c, attrs).apply {
-//            flexGrow = 1f
-//        }
-//    }
+    override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
+        return LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+            flexGrow = 1f
+        }
+    }
+
+    override fun generateLayoutParams(
+        c: Context?,
+        attrs: AttributeSet?
+    ): RecyclerView.LayoutParams {
+        return LayoutParams(c, attrs).apply {
+            flexGrow = 1f
+        }
+    }
 
     private class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
         override fun calculateDtToFit(

@@ -15,10 +15,16 @@ class InternalFormGroupTitleProvider : AbstractFormProviderGroupTitle() {
     override fun onBindViewHolder(
         scope: CoroutineScope,
         holder: FormViewHolder,
-        view: View,
         item: BaseForm<*>,
         adapterEnabled: Boolean
     ) {
         TODO("Not yet implemented")
+    }
+
+    override fun onBindContentViewGravity(
+        holder: FormViewHolder,
+        item: BaseForm<*>,
+        isMultiColumn: Boolean
+    ) {
     }
 }

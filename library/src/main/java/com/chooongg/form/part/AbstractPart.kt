@@ -5,16 +5,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.form.FormAdapter
 import com.chooongg.form.FormManager
+import com.chooongg.form.boundary.Boundary
 import com.chooongg.form.data.AbstractFormId
 import com.chooongg.form.data.IFormPart
 import com.chooongg.form.holder.FormViewHolder
 import com.chooongg.form.item.BaseForm
+import com.chooongg.form.layoutManager.FormLayoutManager
 import com.chooongg.form.style.AbstractStyle
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,6 +25,16 @@ import kotlinx.coroutines.cancel
 abstract class AbstractPart<DATA>(
     val style: AbstractStyle, var data: DATA
 ) : RecyclerView.Adapter<FormViewHolder>() where DATA : IFormPart, DATA : AbstractFormId {
+
+    var isEnable = false
+        internal set(value) {
+            if (field != value) {
+                field = value
+                update()
+            }
+        }
+
+    private var _recyclerView: RecyclerView? = null
 
     private var _adapter: FormAdapter? = null
 
@@ -97,8 +109,12 @@ abstract class AbstractPart<DATA>(
         holder.itemView.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_START
         holder.itemView.textDirection = TextView.TEXT_DIRECTION_LOCALE
         holder.itemView.layoutParams = if (holder.itemView.layoutParams != null) {
-            GridLayoutManager.LayoutParams(holder.itemView.layoutParams!!)
-        } else GridLayoutManager.LayoutParams(-1, -2)
+            FlexboxLayoutManager.LayoutParams(holder.itemView.layoutParams!!).apply {
+                flexGrow = 1f
+            }
+        } else FlexboxLayoutManager.LayoutParams(720, -2).apply {
+            flexGrow = 1f
+        }
         return holder
     }
 
@@ -106,6 +122,28 @@ abstract class AbstractPart<DATA>(
         holder.style.onViewAttachedToWindow(holder)
         holder.typeset.onViewAttachedToWindow(holder)
         adapter.getProvider4ItemViewType(holder.itemViewType).onViewAttachedToWindow(holder)
+        val item = get(holder.bindingAdapterPosition)
+        val manager = _recyclerView?.layoutManager as? FormLayoutManager ?: return
+        val line = manager.flexLines.find {
+            holder.absoluteAdapterPosition in it.firstIndex until it.firstIndex + it.itemCount
+        }
+        holder.provider.onBindContentViewGravity(holder, item, (line?.itemCount ?: 0) > 1)
+        var start: Int = Boundary.NONE
+        var end: Int = Boundary.NONE
+        var top: Int = Boundary.NONE
+        var bottom: Int = Boundary.NONE
+        if (line != null) {
+            if (line.firstIndex == holder.absoluteAdapterPosition) {
+                start = Boundary.GLOBAL
+            }
+            if (line.firstIndex + line.itemCount - 1 == holder.absoluteAdapterPosition) {
+                end = Boundary.GLOBAL
+            }
+        } else {
+            start = Boundary.NONE
+            end = Boundary.NONE
+        }
+        item.boundary = Boundary(start, top, end, bottom)
     }
 
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
@@ -120,7 +158,7 @@ abstract class AbstractPart<DATA>(
         }
 
         holder.provider.onBindViewItemClick(adapterScope, holder, item, adapter.isEnabled)
-        holder.provider.onBindViewHolder(adapterScope, holder, holder.view, item, adapter.isEnabled)
+        holder.provider.onBindViewHolder(adapterScope, holder, item, adapter.isEnabled)
         holder.style.onBindViewHolderAfter(holder, item, adapter.isEnabled)
     }
 
@@ -137,7 +175,7 @@ abstract class AbstractPart<DATA>(
             when (it) {
                 FormManager.FLAG_PAYLOAD_UPDATE_CONTENT -> {
                     holder.provider.onBindViewHolder(
-                        adapterScope, holder, holder.view, item, adapter.isEnabled
+                        adapterScope, holder, item, adapter.isEnabled
                     )
                 }
 
@@ -149,7 +187,7 @@ abstract class AbstractPart<DATA>(
                 }
 
                 else -> holder.provider.onBindViewHolderOther(
-                    adapterScope, holder, holder.view, item, adapter.isEnabled, it
+                    adapterScope, holder, item, adapter.isEnabled, it
                 )
             }
         }
@@ -171,6 +209,7 @@ abstract class AbstractPart<DATA>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        _recyclerView = recyclerView
         _adapter = recyclerView.adapter as FormAdapter
     }
 
@@ -179,5 +218,6 @@ abstract class AbstractPart<DATA>(
         adapterScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         asyncDiffer.submitList(emptyList())
         _adapter = null
+        _recyclerView = null
     }
 }

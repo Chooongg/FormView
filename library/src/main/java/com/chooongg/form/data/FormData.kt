@@ -25,10 +25,11 @@ class FormData {
 
     fun addPart(part: AbstractPart<*>) {
         concatAdapter.addAdapter(part)
+        part.update()
     }
 
     fun addPart(style: AbstractStyle = FormManager.defaultStyle, block: FormPartData.() -> Unit) {
-        addPart(FormPart(style, FormPartData().apply(block)))
+        addPart(FormPart(style, FormPartData().apply(block)).apply { update() })
     }
 
     fun getWrappedAdapterAndPosition(globalPosition: Int) =

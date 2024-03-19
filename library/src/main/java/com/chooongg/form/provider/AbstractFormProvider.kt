@@ -19,15 +19,19 @@ abstract class AbstractFormProvider : FormTextAppearanceHelper {
     abstract fun onBindViewHolder(
         scope: CoroutineScope,
         holder: FormViewHolder,
-        view: View,
         item: BaseForm<*>,
         adapterEnabled: Boolean
+    )
+
+    abstract fun onBindContentViewGravity(
+        holder: FormViewHolder,
+        item: BaseForm<*>,
+        isMultiColumn: Boolean
     )
 
     open fun onBindViewHolderErrorNotify(
         scope: CoroutineScope,
         holder: FormViewHolder,
-        view: View,
         item: BaseForm<*>,
         adapterEnabled: Boolean
     ) = Unit
@@ -35,22 +39,20 @@ abstract class AbstractFormProvider : FormTextAppearanceHelper {
     open fun onBindViewHolderOther(
         scope: CoroutineScope,
         holder: FormViewHolder,
-        view: View,
         item: BaseForm<*>,
         adapterEnabled: Boolean,
         payload: Any,
     ) = Unit
 
     open fun onBindViewItemClick(
-        scope: CoroutineScope,
-        holder: FormViewHolder,
-        item: BaseForm<*>,
-        adapterEnabled: Boolean
+        scope: CoroutineScope, holder: FormViewHolder, item: BaseForm<*>, adapterEnabled: Boolean
     ) {
         if (item.isRespondToClickEvents && item.isEnable(adapterEnabled)) {
             holder.itemView.doOnClick {
-                (holder.bindingAdapter as? AbstractPart<*>)?.adapter
-                    ?.onItemClickListener?.invoke(it, item)
+                (holder.bindingAdapter as? AbstractPart<*>)?.adapter?.onItemClickListener?.invoke(
+                    it,
+                    item
+                )
             }
         } else holder.itemView.setOnClickListener(null)
     }

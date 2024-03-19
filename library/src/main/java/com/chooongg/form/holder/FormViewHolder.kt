@@ -2,6 +2,7 @@ package com.chooongg.form.holder
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.form.provider.AbstractFormProvider
 import com.chooongg.form.style.AbstractStyle
@@ -29,5 +30,9 @@ class FormViewHolder(
         if (typesetLayout != null) {
             typeset.executeAddView(style, typesetLayout, view)
         }
+    }
+
+    fun <T : View> findViewById(@IdRes id: Int): T {
+        return view.findViewById(id)
     }
 }

@@ -2,7 +2,6 @@ package com.chooongg.form.item
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.GravityInt
-import com.chooongg.form.FormAdapter
 import com.chooongg.form.FormColorStateListBlock
 import com.chooongg.form.FormDataVerificationException
 import com.chooongg.form.FormLinkageBlock
@@ -12,6 +11,7 @@ import com.chooongg.form.data.FormExtensionMap
 import com.chooongg.form.enum.FormContentGravity
 import com.chooongg.form.enum.FormOutputMode
 import com.chooongg.form.enum.FormValidateMode
+import com.chooongg.form.holder.FormViewHolder
 import com.chooongg.form.linkage.FormLinkage
 import com.chooongg.form.part.AbstractPart
 import com.chooongg.form.provider.AbstractFormProvider
@@ -124,6 +124,18 @@ abstract class BaseForm<CONTENT>(
      * 填充边缘
      */
     open var fillEdges: Boolean = true
+
+    @GravityInt
+    open fun getContentGravity(holder: FormViewHolder, isMultiColumn: Boolean): Int {
+        return if (isMultiColumn) {
+            contentGravity?.multiColumnGravity ?: gravity
+            ?: holder.typeset.contentGravity?.multiColumnGravity
+            ?: holder.style.config.contentGravity.multiColumnGravity
+        } else {
+            contentGravity?.gravity ?: gravity ?: holder.typeset.contentGravity?.gravity
+            ?: holder.style.config.contentGravity.gravity
+        }
+    }
 
     //</editor-fold>
 

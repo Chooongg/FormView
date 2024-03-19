@@ -1,5 +1,6 @@
 package com.chooongg.form.part
 
+import com.chooongg.android.ktx.LogKtx.isEnable
 import com.chooongg.form.data.FormPartData
 import com.chooongg.form.item.BaseForm
 import com.chooongg.form.style.AbstractStyle
@@ -11,10 +12,10 @@ class FormPart(
     override fun executeUpdate(commitCallback: Runnable) {
         val items = ArrayList<BaseForm<*>>()
         data.getItems().forEach { item ->
-            item.enabled = item.isEnable(adapter.isEnabled)
+            item.enabled = item.isEnable(isEnable)
             item.resetInternalData()
             item.initialize()
-            if (item.isVisible(adapter.isEnabled)) {
+            if (item.isVisible(isEnable)) {
                 when (item) {
                     else -> items.add(item)
                 }

@@ -19,7 +19,7 @@ class FormView @JvmOverloads constructor(
         super.setAdapter(FormAdapter(data))
     }
 
-    fun setData(block:FormData.() -> Unit){
+    fun setData(block: FormData.() -> Unit) {
         setData(FormData().apply(block))
     }
 
@@ -43,8 +43,27 @@ class FormView @JvmOverloads constructor(
         return super.getAdapter() as? FormAdapter
     }
 
+    override fun addItemDecoration(decor: ItemDecoration) {
+        var hasFormItemDecoration = false
+        for (i in 0 until itemDecorationCount) {
+            if (getItemDecorationAt(i) is FormItemDecoration) {
+                hasFormItemDecoration = true
+                break
+            }
+        }
+        if (hasFormItemDecoration) throw IllegalArgumentException("FormView only supports single FormItemDecoration")
+        super.addItemDecoration(decor)
+    }
+
     override fun addItemDecoration(decor: ItemDecoration, index: Int) {
-        if (decor is FormItemDecoration) throw IllegalArgumentException("FormView only supports single FormItemDecoration")
+        var hasFormItemDecoration = false
+        for (i in 0 until itemDecorationCount) {
+            if (getItemDecorationAt(i) is FormItemDecoration) {
+                hasFormItemDecoration = true
+                break
+            }
+        }
+        if (hasFormItemDecoration) throw IllegalArgumentException("FormView only supports single FormItemDecoration")
         super.addItemDecoration(decor, index)
     }
 
