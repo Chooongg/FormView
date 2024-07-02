@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.FormView2" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Base.Theme.FormView" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <style name="Theme.FormView" parent="Base.Theme.FormView" />
 </resources>

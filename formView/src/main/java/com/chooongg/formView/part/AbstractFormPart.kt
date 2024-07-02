@@ -5,8 +5,6 @@ import com.chooongg.formView.holder.FormViewHolder
 
 abstract class AbstractFormPart<DATA>() : RecyclerView.Adapter<FormViewHolder>() {
 
-
-
     var isEnabled = false
         internal set(value) {
             if (field != value) {

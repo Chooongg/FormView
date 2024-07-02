@@ -1,28 +1,17 @@
 package com.chooongg.formView.app
 
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.chooongg.formView.app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private val holderScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        holderScope.launch {
-            Log.e("Scope", "launch1")
-            delay(2000)
-            Log.e("Scope", "launch2")
-        }
-        holderScope.cancel()
-        holderScope.launch {
-            delay(2000)
-            Log.e("Scope", "launch3")
-        }
+        enableEdgeToEdge()
+        setContentView(binding.root)
     }
 }
