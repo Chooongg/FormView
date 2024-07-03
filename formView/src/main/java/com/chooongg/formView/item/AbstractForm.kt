@@ -1,9 +1,9 @@
 package com.chooongg.formView.item
 
 import androidx.annotation.MenuRes
-import com.chooongg.form.FormOnMenuCreatedListener
-import com.chooongg.form.FormOnMenuItemClickListener
-import com.chooongg.form.data.AbstractFormId
+import com.chooongg.formView.FormOnMenuCreatedListener
+import com.chooongg.formView.FormOnMenuItemClickListener
+import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.IFormIcon
 import com.chooongg.formView.data.IFormMenu
 import com.chooongg.formView.enum.FormEnableMode

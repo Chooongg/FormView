@@ -1,5 +1,6 @@
 package com.chooongg.formView.data
 
+import com.chooongg.formView.FormColorStateListBlock
 import com.google.android.material.button.MaterialButton
 
 interface IFormIcon {
@@ -18,7 +19,7 @@ interface IFormIcon {
      * 图标重力
      */
     @MaterialButton.IconGravity
-    var iconGravity: Int
+    var iconGravity: Int?
 
     /**
      * 图标大小

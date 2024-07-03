@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="formStyleView" type="id" />
+    <item name="formLayoutView" type="id" />
+    <item name="formNameView" type="id" />
+    <item name="formMenuView" type="id" />
+    <item name="formContentView" type="id" />
+</resources>

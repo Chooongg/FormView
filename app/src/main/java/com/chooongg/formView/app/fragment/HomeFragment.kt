@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.chooongg.formView.app.databinding.FragmentHomeBinding
+import com.chooongg.ktx.attrColorStateList
 
 class HomeFragment : Fragment() {
 
@@ -19,6 +20,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        attrColorStateList(android.R.attr.colorControlHighlight)
     }
 }

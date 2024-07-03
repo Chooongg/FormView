@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
-import com.chooongg.formView.holder.FormViewHolder
+import com.chooongg.formView.holder.FormItemViewHolder
 
 class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -84,7 +84,7 @@ class FormAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        if (holder is FormViewHolder) {
+        if (holder is FormItemViewHolder) {
             holder.clear()
         }
         return data.concatAdapter.onViewRecycled(holder)

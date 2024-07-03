@@ -3,13 +3,13 @@ package com.chooongg.formView.holder
 import android.util.SparseArray
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
-open class FormViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+open class FormViewHolder(view: View) : ViewHolder(view) {
 
     private val views: SparseArray<View> = SparseArray()
 
