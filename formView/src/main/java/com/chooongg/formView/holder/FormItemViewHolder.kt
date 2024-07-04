@@ -1,7 +1,7 @@
 package com.chooongg.formView.holder
 
 import android.view.View
-import com.chooongg.formView.layout.AbstractFormTypeset
+import com.chooongg.formView.typeset.AbstractFormTypeset
 import com.chooongg.formView.style.AbstractFormStyle
 
 open class FormItemViewHolder(

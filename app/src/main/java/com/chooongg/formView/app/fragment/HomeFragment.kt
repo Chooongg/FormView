@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.chooongg.formView.app.databinding.FragmentHomeBinding
-import com.chooongg.ktx.attrColorStateList
+import com.chooongg.formView.style.NoneFormStyle
+import com.chooongg.ktx.logE
 
 class HomeFragment : Fragment() {
 
@@ -20,6 +21,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        attrColorStateList(android.R.attr.colorControlHighlight)
+        val style = NoneFormStyle()
+        style.createSizeInfo(requireContext())
+        logE("Form", style.marginInfo.toString())
     }
 }

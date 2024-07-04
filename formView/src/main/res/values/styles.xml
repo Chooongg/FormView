@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Form" />
+
+    <style name="Form.Size.Margin" parent="Form">
+        <item name="formStart">16dp</item>
+        <item name="formTop">16dp</item>
+        <item name="formEnd">16dp</item>
+        <item name="formBottom">16dp</item>
+        <item name="formStartMedium">8dp</item>
+        <item name="formTopMedium">8dp</item>
+        <item name="formEndMedium">8dp</item>
+        <item name="formBottomMedium">8dp</item>
+    </style>
+
+    <style name="Form.Size.Padding" parent="Form">
+        <item name="formStart">16dp</item>
+        <item name="formTop">16dp</item>
+        <item name="formEnd">16dp</item>
+        <item name="formBottom">16dp</item>
+        <item name="formStartMedium">8dp</item>
+        <item name="formTopMedium">8dp</item>
+        <item name="formEndMedium">8dp</item>
+        <item name="formBottomMedium">8dp</item>
+    </style>
+</resources>

@@ -40,7 +40,7 @@ typealias FormOnMenuClickListener = (view: View, menuView: View, menuItem: MenuI
 /**
  * 联动Block
  */
-typealias FormLinkageBlock = FormLinkage.() -> Unit
+//typealias FormLinkageBlock = FormLinkage.() -> Unit
 
 /**
  * 内容格式化程序

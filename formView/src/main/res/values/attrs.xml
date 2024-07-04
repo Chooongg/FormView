@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="formShapeAppearanceCorner" format="reference" />
+
+    <attr name="formMarginInfo" format="reference" />
+    <attr name="formPaddingInfo" format="reference" />
+
+    <declare-styleable name="FormSizeInfo">
+        <attr name="formStart" format="dimension" />
+        <attr name="formTop" format="dimension" />
+        <attr name="formEnd" format="dimension" />
+        <attr name="formBottom" format="dimension" />
+        <attr name="formStartMedium" format="dimension" />
+        <attr name="formTopMedium" format="dimension" />
+        <attr name="formEndMedium" format="dimension" />
+        <attr name="formBottomMedium" format="dimension" />
+    </declare-styleable>
+
+    <attr name="formTextAppearanceGroupTitle" format="reference" />
+    <attr name="formTextAppearanceDetailTitle" format="reference" />
+    <attr name="formTextAppearanceName" format="reference" />
+    <attr name="formTextAppearanceContent" format="reference" />
+    <attr name="formTextAppearanceHint" format="reference" />
+    <attr name="formTextAppearanceLabel" format="reference" />
+    <attr name="formTextAppearanceSearch" format="reference" />
+    <attr name="formTextAppearancePrefix" format="reference" />
+    <attr name="formTextAppearanceSuffix" format="reference" />
+    <attr name="formTextAppearancePlaceholder" format="reference" />
+    <attr name="formTextAppearanceCounter" format="reference" />
+
+</resources>

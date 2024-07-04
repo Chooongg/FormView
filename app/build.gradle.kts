@@ -47,4 +47,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
     implementation(libs.android.ktx)
+    implementation(project(":formView"))
 }
