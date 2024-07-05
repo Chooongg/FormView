@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
@@ -18,6 +19,9 @@ class HorizontalFormTypeset : AbstractFormTypeset() {
         }
         layout.addView(MaterialButton(layout.context).apply {
             id = R.id.formNameView
+            setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
+            insetTop = 0
+            insetBottom = 0
             isClickable = false
             gravity = Gravity.NO_GRAVITY
             background = null
@@ -25,7 +29,13 @@ class HorizontalFormTypeset : AbstractFormTypeset() {
             minHeight = 0
             minimumWidth = 0
             minimumHeight = 0
-            includeFontPadding = true
+            iconSize = FormUtils.getFontRealHeight(this)
+            setPaddingRelative(
+                style.paddingInfo.startMedium,
+                style.paddingInfo.topMedium,
+                style.paddingInfo.endMedium,
+                style.paddingInfo.bottomMedium
+            )
         }, LinearLayoutCompat.LayoutParams(-2, -2))
         layout.addView(FormMenuView(layout.context, style).apply {
             id = R.id.formMenuView

@@ -7,21 +7,21 @@ import com.chooongg.formView.data.FormData
 import com.chooongg.formView.decoration.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 
-class FormView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    RecyclerView(context, attrs, defStyleAttr) {
+class FormView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : RecyclerView(context, attrs, defStyleAttr) {
 
     init {
         super.setLayoutManager(FormLayoutManager(context))
         super.addItemDecoration(FormItemDecoration())
-        super.setAdapter(FormAdapter())
     }
 
     fun setData(data: FormData) {
-        adapter.setData(data)
+        super.setAdapter(FormAdapter(data))
     }
 
     fun setData(block: FormData.() -> Unit) {
-
+        setData(FormData().apply(block))
     }
 
     @Deprecated("this method external calls not supported")
@@ -29,8 +29,8 @@ class FormView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int 
         throw IllegalArgumentException("this method external calls not supported")
     }
 
-    override fun getAdapter(): FormAdapter {
-        return super.getAdapter() as FormAdapter
+    override fun getAdapter(): FormAdapter? {
+        return super.getAdapter() as? FormAdapter
     }
 
     @Deprecated("this method external calls not supported")

@@ -3,12 +3,16 @@ package com.chooongg.formView.item
 import androidx.annotation.DrawableRes
 import androidx.annotation.GravityInt
 import com.chooongg.formView.FormColorStateListBlock
+import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
 import com.chooongg.formView.enum.FormContentGravity
+import com.chooongg.formView.itemProvider.AbstractFormItemProvider
+import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import com.google.android.material.button.MaterialButton
+import kotlin.reflect.KClass
 
-open class BaseForm<CONTENT>(
+abstract class BaseForm<CONTENT>(
     /**
      * 名称
      */
@@ -17,9 +21,18 @@ open class BaseForm<CONTENT>(
      * 字段
      */
     var field: String?,
+    /**
+     * 内容
+     */
+    var content: CONTENT?
 ) : AbstractForm() {
 
     //<editor-fold desc="基础 Basic">
+
+    /**
+     * 获取提供程序
+     */
+    abstract fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider>
 
     @DrawableRes
     override var icon: Int? = null
@@ -37,11 +50,6 @@ open class BaseForm<CONTENT>(
     var hint: Any? = null
 
     /**
-     * 内容
-     */
-    var content: CONTENT? = null
-
-    /**
      * 扩展内容
      */
     val extensionContent = FormExtensionMap()
@@ -50,6 +58,13 @@ open class BaseForm<CONTENT>(
      * 是否为必填项
      */
     var required: Boolean = false
+
+    /**
+     * 获取内容文本
+     */
+    open fun getContentText(): CharSequence? {
+        return content.toString()
+    }
 
     //</editor-fold>
 
@@ -228,4 +243,55 @@ open class BaseForm<CONTENT>(
 //    }
 //
 //    //</editor-fold>
+
+    //<editor-fold desc="内部 Internal">
+
+    /**
+     * 真实的启用状态
+     */
+    var enabled: Boolean? = null
+        internal set
+
+    /**
+     * 边界信息
+     */
+    var boundary: FormBoundary = FormBoundary()
+
+    /**
+     * 全局坐标
+     */
+    var globalPosition: Int = -1
+        internal set
+
+    var localPosition: Int = -1
+        internal set
+
+    var groupCount = -1
+        internal set
+
+    var groupIndex = -1
+        internal set
+
+    var countInGroup = -1
+        internal set
+
+    var positionInGroup = -1
+        internal set
+
+    var lastEnabled: Boolean? = null
+        internal set
+
+    var lastBoundary: FormBoundary? = null
+        internal set
+
+    open fun resetInternalData() {
+        lastEnabled = enabled
+        lastBoundary = boundary
+        groupCount = -1
+        groupIndex = -1
+        countInGroup = -1
+        positionInGroup = -1
+    }
+
+    //</editor-fold>
 }

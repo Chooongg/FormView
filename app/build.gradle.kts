@@ -48,4 +48,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.android.ktx)
     implementation(project(":formView"))
+    debugImplementation("com.facebook.soloader:soloader:0.11.0")
+    debugImplementation("com.facebook.flipper:flipper:0.249.0")
 }
