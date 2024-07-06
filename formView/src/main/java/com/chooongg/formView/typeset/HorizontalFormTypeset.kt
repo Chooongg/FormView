@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
+import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 import com.google.android.material.button.MaterialButton
@@ -41,6 +43,12 @@ class HorizontalFormTypeset : AbstractFormTypeset() {
             id = R.id.formMenuView
         }, LinearLayoutCompat.LayoutParams(-2, -2))
         return layout
+    }
+
+    override fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) {
+        with(holder.getView<MaterialButton>(R.id.formNameView)) {
+            text = item.name.toString()
+        }
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {

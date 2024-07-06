@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.0"
 flexboxVersion = "3.0.0"
+flipper = "0.249.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 ktxVersion = "0.0.3"
@@ -8,6 +9,7 @@ lifecycleRuntimeKtx = "2.8.2"
 appcompat = "1.7.0"
 material = "1.12.0"
 recyclerview = "1.3.2"
+soloader = "0.11.0"
 
 [libraries]
 android-ktx = { module = "com.chooongg.android:ktx", version.ref = "ktxVersion" }
@@ -15,8 +17,10 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipper" }
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexboxVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
