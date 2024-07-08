@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
+import com.chooongg.formView.FormView
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
@@ -35,6 +36,8 @@ abstract class AbstractFormPart<DATA>(
     var partScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         internal set
 
+    internal var _recyclerView: FormView? = null
+
     internal var _adapter: FormAdapter? = null
 
     val adapter: FormAdapter get() = _adapter!!
@@ -55,10 +58,6 @@ abstract class AbstractFormPart<DATA>(
         override fun areItemsTheSame(oldItem: BaseForm<*>, newItem: BaseForm<*>) =
             oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
-
-//    init {
-//        update()
-//    }
 
     fun update() {
         executeUpdate {
@@ -143,6 +142,9 @@ abstract class AbstractFormPart<DATA>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        if (recyclerView is FormView) {
+            _recyclerView = recyclerView
+        }
         if (recyclerView.adapter is FormAdapter) {
             _adapter = recyclerView.adapter as FormAdapter
             update()
@@ -153,5 +155,6 @@ abstract class AbstractFormPart<DATA>(
         partScope.cancel()
         partScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         _adapter = null
+        _recyclerView = null
     }
 }
