@@ -2,9 +2,13 @@ package com.chooongg.formView.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormUtils
@@ -13,9 +17,10 @@ import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.doOnClick
 import com.google.android.material.button.MaterialButton
 
-@SuppressLint("ViewConstructor")
+@SuppressLint("RestrictedApi", "ViewConstructor")
 class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(context) {
 
     private val menuAdapter = Adapter(style)
@@ -27,15 +32,43 @@ class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(co
         adapter = menuAdapter
     }
 
-    fun setMenu(item: BaseForm<*>) {
-
+    fun setMenu(
+        item: BaseForm<*>,
+        enabled: Boolean,
+        onMenuItemClickListener: (view: View, menu: MenuItem) -> Unit
+    ) {
+        if (item.isMenuVisible(enabled)) {
+            val menu = MenuBuilder(context)
+            if (item.menu != null) MenuInflater(context).inflate(item.menu!!, menu)
+            item.onMenuCreatedListener?.invoke(menu)
+            val visibleMenus = menu.visibleItems
+            menuAdapter.setData(visibleMenus, item.isMenuEnable(enabled), onMenuItemClickListener)
+            visibility = if (visibleMenus.isEmpty()) View.GONE else View.VISIBLE
+        } else {
+            menuAdapter.setData(emptyList(), false, null)
+            visibility = View.GONE
+        }
     }
 
     private class Adapter(
         private val style: AbstractFormStyle
     ) : RecyclerView.Adapter<FormViewHolder>(), FormTextAppearanceHelper {
 
-        private var menus = ArrayList<MenuItemImpl>()
+        private var menus: List<MenuItemImpl> = emptyList()
+
+        private var enabled: Boolean = false
+
+        private var onMenuItemClickListener: ((view: View, menu: MenuItem) -> Unit)? = null
+
+        fun setData(
+            menus: List<MenuItemImpl>,
+            enabled: Boolean,
+            onMenuItemClickListener: ((view: View, menu: MenuItem) -> Unit)?
+        ) {
+            this.menus = menus
+            this.enabled = enabled
+            this.onMenuItemClickListener = onMenuItemClickListener
+        }
 
         override fun getItemCount(): Int = menus.size
 
@@ -43,16 +76,17 @@ class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(co
             FormViewHolder(MaterialButton(
                 parent.context, null, com.google.android.material.R.attr.borderlessButtonStyle
             ).apply {
+                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
+                iconSize = FormUtils.getFontRealHeight(this)
                 insetTop = 0
                 insetBottom = 0
+                minimumWidth =
+                    style.paddingInfo.startMedium + style.paddingInfo.endMedium + iconSize
+                minimumHeight =
+                    style.paddingInfo.topMedium + style.paddingInfo.bottomMedium + iconSize
+                minWidth = minimumWidth
+                minHeight = minimumHeight
                 iconPadding = 0
-                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceContent))
-                val textHeight = FormUtils.getFontRealHeight(this)
-                minWidth = 0
-                minHeight = 0
-                minimumWidth = 0
-                minimumHeight = 0
-                iconSize = textHeight
                 setPaddingRelative(
                     style.paddingInfo.startMedium,
                     style.paddingInfo.topMedium,
@@ -65,10 +99,13 @@ class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(co
         override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
             val menu = menus[position]
             val icon = menu.getIcon()
-            if (icon == null) {
-
-            } else {
-
+            (holder.itemView as MaterialButton).let {
+                it.icon = icon
+                it.text = if (icon == null) menu.titleCondensed else null
+                ViewCompat.setTooltipText(it, menu.title ?: menu.titleCondensed)
+                it.doOnClick { view ->
+                    onMenuItemClickListener?.invoke(view, menu)
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.chooongg.formView.data
 
 import androidx.recyclerview.widget.ConcatAdapter
-import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
+import com.chooongg.formView.decoration.FormTopBottomDecoration
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.part.FormPart
 import com.chooongg.formView.style.AbstractFormStyle
@@ -11,7 +11,7 @@ class FormData {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
-    )
+    ).apply { addAdapter(FormTopBottomDecoration()) }
 
     val parts get() = concatAdapter.adapters.filterIsInstance<AbstractFormPart<*>>()
 

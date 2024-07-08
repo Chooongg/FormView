@@ -21,4 +21,7 @@ abstract class AbstractFormItemProvider : FormTextAppearanceHelper {
 
     open fun onViewRecycled(holder: FormItemViewHolder) = Unit
 
+    override fun equals(other: Any?) = other?.javaClass == javaClass
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }

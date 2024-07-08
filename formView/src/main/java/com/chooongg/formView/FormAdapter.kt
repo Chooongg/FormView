@@ -1,6 +1,5 @@
 package com.chooongg.formView
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
@@ -12,7 +11,7 @@ import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.math.abs
 
-class FormAdapter(private val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val dataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
@@ -40,10 +39,25 @@ class FormAdapter(private val data: FormData) : RecyclerView.Adapter<RecyclerVie
         }
     }
 
+    val isEnabled get() = data.isEnabled
+
+    var onItemClickListener: FormOnItemClickListener? = null
+        private set
+
+    var onMenuClickListener: FormOnMenuClickListener? = null
+        private set
+
+
     override fun getItemCount(): Int = data.concatAdapter.itemCount
 
     override fun getItemId(position: Int): Long {
         return data.concatAdapter.getItemId(position)
+    }
+
+    fun getItem(position: Int): BaseForm<*>? {
+        val pair = data.concatAdapter.getWrappedAdapterAndPosition(position)
+        val part = pair.first as? AbstractFormPart<*> ?: return null
+        return part[pair.second]
     }
 
     override fun getItemViewType(position: Int): Int {

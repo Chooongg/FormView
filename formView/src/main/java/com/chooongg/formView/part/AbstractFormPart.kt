@@ -13,6 +13,8 @@ import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.resDimensionPixelSize
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -72,6 +74,8 @@ abstract class AbstractFormPart<DATA>(
 
     protected abstract fun executeUpdate(commitCallback: Runnable)
 
+    operator fun get(position: Int): BaseForm<*> = differ.currentList[position]
+
     abstract operator fun get(field: String): BaseForm<*>?
 
     abstract operator fun contains(field: String): Boolean
@@ -94,7 +98,11 @@ abstract class AbstractFormPart<DATA>(
             if (typesetView != null) style.configStyleAddChildView(styleView, typesetView)
             else style.configStyleAddChildView(styleView, itemView)
         } else if (typesetView != null) typeset.configTypesetAddChildView(typesetView, itemView)
-        return FormItemViewHolder(style, typeset, styleView ?: typesetView ?: itemView)
+        return FormItemViewHolder(style, typeset, styleView ?: typesetView ?: itemView).apply {
+            this.itemView.layoutParams = FlexboxLayoutManager.LayoutParams(-2, -2).apply {
+                flexGrow = 1f
+            }
+        }
     }
 
     override fun onViewAttachedToWindow(holder: FormItemViewHolder) {
@@ -105,6 +113,11 @@ abstract class AbstractFormPart<DATA>(
 
     override fun onBindViewHolder(holder: FormItemViewHolder, position: Int) {
         val item = differ.currentList[position]
+        val layoutParams = (holder.itemView.layoutParams as? FlexboxLayoutManager.LayoutParams)
+            ?: FlexboxLayoutManager.LayoutParams(-2, -2)
+        layoutParams.width = if (item.loneLine) -1
+        else holder.itemView.resDimensionPixelSize(holder.style.config.itemMaxWidth)
+        holder.itemView.layoutParams = layoutParams
         holder.style.onBindStyle(holder, item)
         holder.typeset.onBindTypeset(holder, item)
         adapter.getItemProvider(holder.itemViewType).onBindViewHolder(holder, item, isEnabled)

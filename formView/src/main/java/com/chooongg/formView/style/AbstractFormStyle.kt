@@ -79,4 +79,11 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
     open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
 
     open fun onStyleRecycled(holder: FormItemViewHolder) = Unit
+    override fun equals(other: Any?): Boolean {
+        if (other !is AbstractFormStyle) return false
+        if (other.javaClass != javaClass) return false
+        return other.config == config
+    }
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }

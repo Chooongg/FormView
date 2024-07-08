@@ -12,11 +12,10 @@ open class FormGroupData : AbstractFormId(), IFormGroupData, IFormIcon, IFormMen
 
     private val _items = mutableListOf<BaseForm<*>>()
 
-    override var icon: Int? = null
-    override var iconTint: FormColorStateListBlock? = null
-
     @MaterialButton.IconGravity
     override var iconGravity: Int? = null
+    override var icon: Any? = null
+    override var iconTint: FormColorStateListBlock? = null
     override var iconSize: Int? = null
 
     override var menu: Int? = null

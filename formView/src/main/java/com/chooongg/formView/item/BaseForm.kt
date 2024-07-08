@@ -1,6 +1,5 @@
 package com.chooongg.formView.item
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.GravityInt
 import com.chooongg.formView.FormColorStateListBlock
 import com.chooongg.formView.data.FormBoundary
@@ -34,14 +33,10 @@ abstract class BaseForm<CONTENT>(
      */
     abstract fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider>
 
-    @DrawableRes
-    override var icon: Int? = null
-
-    override var iconTint: FormColorStateListBlock? = null
-
     @MaterialButton.IconGravity
     override var iconGravity: Int? = null
-
+    override var icon: Any? = null
+    override var iconTint: FormColorStateListBlock? = null
     override var iconSize: Int? = null
 
     /**
@@ -62,8 +57,8 @@ abstract class BaseForm<CONTENT>(
     /**
      * 获取内容文本
      */
-    open fun getContentText(): CharSequence? {
-        return content.toString()
+    open fun getContentText(): Any? {
+        return content
     }
 
     //</editor-fold>

@@ -4,8 +4,10 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
+import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
@@ -13,6 +15,8 @@ import com.chooongg.formView.widget.FormMenuView
 import com.google.android.material.button.MaterialButton
 
 class HorizontalFormTypeset : AbstractFormTypeset() {
+
+    override var emsMode: FormEmsMode = FormEmsMode(FormEmsMode.FIXED)
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup {
         val layout = LinearLayoutCompat(parent.context).apply {
@@ -32,6 +36,7 @@ class HorizontalFormTypeset : AbstractFormTypeset() {
             minimumWidth = 0
             minimumHeight = 0
             iconSize = FormUtils.getFontRealHeight(this)
+            iconPadding = (style.paddingInfo.startMedium + style.paddingInfo.endMedium) / 2
             setPaddingRelative(
                 style.paddingInfo.startMedium,
                 style.paddingInfo.topMedium,
@@ -47,8 +52,16 @@ class HorizontalFormTypeset : AbstractFormTypeset() {
 
     override fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
-            text = item.name.toString()
+            iconGravity = item.iconGravity ?: nameIconGravity ?: holder.style.config.nameIconGravity
+            val nameIcon = FormManager.parseIcon(context, item.icon)
+            if (nameIcon != null) {
+                icon = nameIcon
+                iconTint = item.iconTint?.invoke(context) ?: textColors
+            } else icon = null
+            text = holder.style.config.nameFormatter.format(context, item)
+            configNameView(holder, this)
         }
+        configMenuView(holder, item, holder.getView(R.id.formMenuView))
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {

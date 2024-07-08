@@ -1,7 +1,9 @@
 package com.chooongg.formView.layoutManager
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -10,49 +12,38 @@ import com.google.android.flexbox.FlexboxLayoutManager
 
 class FormLayoutManager(context: Context) : FlexboxLayoutManager(context) {
 
-    override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
-        return super.generateDefaultLayoutParams()
-    }
+    private var padding: Rect = Rect()
 
-    override fun generateLayoutParams(lp: ViewGroup.LayoutParams?): RecyclerView.LayoutParams {
-        return super.generateLayoutParams(lp)
-    }
-
-    override fun generateLayoutParams(
-        c: Context?,
-        attrs: AttributeSet?
-    ): RecyclerView.LayoutParams {
-        return super.generateLayoutParams(c, attrs)
+    fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        padding = Rect(left, top, right, bottom)
     }
 
     override fun getPaddingTop(): Int {
-        return super.getPaddingTop()
+        return padding.top
     }
 
     override fun getPaddingStart(): Int {
-        return super.getPaddingStart()
+        return if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.right else padding.left
     }
 
     override fun getPaddingEnd(): Int {
-        return super.getPaddingEnd()
+        return if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.left else padding.right
     }
 
     override fun getPaddingLeft(): Int {
-        return super.getPaddingLeft()
+        return padding.left
     }
 
     override fun getPaddingRight(): Int {
-        return super.getPaddingRight()
+        return padding.right
     }
 
     override fun getPaddingBottom(): Int {
-        return super.getPaddingBottom()
+        return padding.bottom
     }
 
     override fun smoothScrollToPosition(
-        recyclerView: RecyclerView,
-        state: RecyclerView.State,
-        position: Int
+        recyclerView: RecyclerView, state: RecyclerView.State, position: Int
     ) {
         if (FormManager.centerSmoothScroll) {
             startSmoothScroll(CenterSmoothScroller(recyclerView.context).apply {

@@ -1,6 +1,7 @@
 package com.chooongg.formView.itemProvider
 
 import android.view.ViewGroup
+import com.chooongg.formView.FormManager
 import com.chooongg.formView.R
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
@@ -22,7 +23,7 @@ class FormTextProvider : AbstractFormItemProvider() {
 
     override fun onBindViewHolder(holder: FormItemViewHolder, item: BaseForm<*>, enabled: Boolean) {
         with(holder.getView<MaterialTextView>(R.id.formContentView)) {
-            text = item.getContentText()
+            text = FormManager.parseText(context,item.getContentText())
         }
     }
 }

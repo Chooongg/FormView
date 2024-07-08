@@ -9,7 +9,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chooongg.formView.app.databinding.ActivityMainBinding
 import com.chooongg.formView.app.fragment.AboutFragment
 import com.chooongg.formView.app.fragment.HomeFragment
-import com.google.android.material.navigation.NavigationBarPresenter
 import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
@@ -24,6 +23,8 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+        binding.viewPager.offscreenPageLimit = 999
+        binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = Adapter(this, fragments)
         with(binding.navigationView as NavigationBarView) {
             onFragmentSelected(selectedItemId)

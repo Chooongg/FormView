@@ -2,6 +2,7 @@ package com.chooongg.formView
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.decoration.FormItemDecoration
@@ -11,17 +12,40 @@ class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
+    private val layoutManager = FormLayoutManager(context)
+
     init {
-        super.setLayoutManager(FormLayoutManager(context))
+        layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)
+        super.setLayoutManager(layoutManager)
+        super.setPadding(0, 0, 0, 0)
         super.addItemDecoration(FormItemDecoration())
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        layoutManager.setPadding(left, top, right, bottom)
+        requestLayout()
+    }
+
+    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
+        if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            layoutManager.setPadding(end, top, start, bottom)
+        } else {
+            layoutManager.setPadding(start, top, end, bottom)
+        }
+        requestLayout()
     }
 
     fun setData(data: FormData) {
         super.setAdapter(FormAdapter(data))
+        isEnabled = data.isEnabled
     }
 
     fun setData(block: FormData.() -> Unit) {
         setData(FormData().apply(block))
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        adapter?.data?.isEnabled = enabled
     }
 
     @Deprecated("this method external calls not supported")
