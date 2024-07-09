@@ -1,14 +1,13 @@
 package com.chooongg.formView.style
 
-import android.view.ViewGroup.MarginLayoutParams
-import androidx.core.view.updateLayoutParams
 import com.chooongg.formView.config.AbstractFormConfig
 import com.chooongg.formView.config.FormNoneConfig
-import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 
 class FormNoneStyle(config: AbstractFormConfig = FormNoneConfig()) : AbstractFormStyle(config) {
+
+    override fun isDecorateNoneItem(): Boolean = false
 
     override fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) {
 //        holder.itemView.updateLayoutParams<MarginLayoutParams> {

@@ -3,25 +3,32 @@ package com.chooongg.formView
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.IntRange
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
-import com.chooongg.formView.decoration.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 
 class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    private val layoutManager: FormLayoutManager
+    private val layoutManager: FormLayoutManager =
+        context.obtainStyledAttributes(R.styleable.FormView).use {
+            FormLayoutManager(context, it.getInt(R.styleable.FormView_formColumn, 1))
+        }
+
+    @setparam:IntRange(from = 1, to = 27720)
+    var formColumn: Int
+        get() = layoutManager.formColumn
+        set(value) {
+            layoutManager.formColumn = value
+        }
 
     init {
-        context.obtainStyledAttributes(R.styleable.FormView).use {
-            layoutManager = FormLayoutManager(context)
-        }
         layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)
-        super.addItemDecoration(FormItemDecoration())
+//        super.addItemDecoration(FormItemDecoration())
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {

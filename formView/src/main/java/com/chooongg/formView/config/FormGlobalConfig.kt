@@ -1,8 +1,6 @@
 package com.chooongg.formView.config
 
 import android.view.Gravity
-import androidx.annotation.DimenRes
-import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.formatter.name.FormNameFormatter
@@ -58,9 +56,4 @@ class FormGlobalConfig {
      */
     var typeset: AbstractFormTypeset = FormHorizontalTypeset()
 
-    /**
-     * 项目最大宽度
-     */
-    @DimenRes
-    val itemMaxWidth: Int = R.dimen.formItemMaxWidth
 }

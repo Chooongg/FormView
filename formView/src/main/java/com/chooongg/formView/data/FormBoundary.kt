@@ -3,7 +3,7 @@ package com.chooongg.formView.data
 import androidx.annotation.IntDef
 
 data class FormBoundary(
-    @BoundaryInt val start: Int,
+    @BoundaryInt var start: Int,
     @BoundaryInt val top: Int,
     @BoundaryInt val end: Int,
     @BoundaryInt val bottom: Int
@@ -19,6 +19,13 @@ data class FormBoundary(
 
     @IntDef(NONE, MIDDLE, GLOBAL)
     annotation class BoundaryInt
+
+    fun update(
+        @BoundaryInt start: Int = this.start,
+        @BoundaryInt top: Int = this.top,
+        @BoundaryInt end: Int = this.end,
+        @BoundaryInt bottom: Int = this.bottom
+    ): FormBoundary = FormBoundary(start, top, end, bottom)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

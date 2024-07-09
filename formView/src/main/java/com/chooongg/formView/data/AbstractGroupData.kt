@@ -1,35 +1,24 @@
 package com.chooongg.formView.data
 
-import com.chooongg.formView.FormColorStateListBlock
+import androidx.annotation.MenuRes
 import com.chooongg.formView.FormOnMenuCreatedListener
 import com.chooongg.formView.FormOnMenuItemClickListener
 import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormVisibilityMode
-import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.item.InternalFormGroupTitle
-import com.google.android.material.button.MaterialButton
 
-open class FormGroupData : AbstractFormId(), IFormGroupData, IFormName, IFormMenu {
+abstract class AbstractGroupData : AbstractFormId(), IFormName, IFormMenu {
 
-    private val _items = mutableListOf<BaseForm<*>>()
-
-    override var isEnabled: Boolean = true
-    override var name: Any? = null
-    override var field: String? = null
-
-    @MaterialButton.IconGravity
-    override var iconGravity: Int? = null
-    override var icon: Any? = null
-    override var iconTint: FormColorStateListBlock? = null
-    override var iconSize: Int? = null
-
+    @MenuRes
     override var menu: Int? = null
-    override var menuVisibilityMode: FormVisibilityMode = FormVisibilityMode.ENABLED
-    override var menuEnableMode: FormEnableMode = FormEnableMode.ENABLED
-    override var onMenuCreatedListener: FormOnMenuCreatedListener? = null
-    override var onMenuItemClickListener: FormOnMenuItemClickListener? = null
 
-    override fun getItems(): MutableList<BaseForm<*>> = _items
+    override var menuVisibilityMode: FormVisibilityMode = FormVisibilityMode.ENABLED
+
+    override var menuEnableMode: FormEnableMode = FormEnableMode.ENABLED
+
+    override var onMenuCreatedListener: FormOnMenuCreatedListener? = null
+
+    override var onMenuItemClickListener: FormOnMenuItemClickListener? = null
 
     private var _groupTitleItem: InternalFormGroupTitle<Any>? = null
 

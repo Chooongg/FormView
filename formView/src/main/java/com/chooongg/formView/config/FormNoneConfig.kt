@@ -16,5 +16,4 @@ class FormNoneConfig(
     override val _nameIconGravity: Int? = null,
     override val _contentGravity: FormContentGravity? = null,
     override val _typeset: AbstractFormTypeset? = null,
-    override val _itemMaxWidth: Int? = null,
 ) : AbstractFormConfig()

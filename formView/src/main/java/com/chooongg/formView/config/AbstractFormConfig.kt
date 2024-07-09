@@ -1,6 +1,5 @@
 package com.chooongg.formView.config
 
-import androidx.annotation.DimenRes
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsSize
@@ -29,9 +28,6 @@ abstract class AbstractFormConfig {
 
     protected abstract val _typeset: AbstractFormTypeset?
 
-    @get:DimenRes
-    protected abstract val _itemMaxWidth: Int?
-
     val nameFormatter: FormNameFormatter
         get() = _nameFormatter ?: FormManager.globalConfig.nameFormatter
 
@@ -56,23 +52,26 @@ abstract class AbstractFormConfig {
     val typeset: AbstractFormTypeset
         get() = _typeset ?: FormManager.globalConfig.typeset
 
-    val itemMaxWidth: Int
-        get() = _itemMaxWidth ?: FormManager.globalConfig.itemMaxWidth
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is AbstractFormConfig) return false
-        if (other._nameFormatter != _nameFormatter) return false
-        if (other._emsSize != _emsSize) return false
-        if (other._nameIconGravity != _nameIconGravity) return false
-        if (other._contentGravity != _contentGravity) return false
-        if (other._typeset != _typeset) return false
-        if (other._itemMaxWidth != _itemMaxWidth) return false
+        if (javaClass != other.javaClass) return false
+        if (_nameFormatter != other._nameFormatter) return false
+        if (_groupTitleProvider != other._groupTitleProvider) return false
+        if (_nestedGroupTitleProvider != other._nestedGroupTitleProvider) return false
+        if (_detailTitleProvider != other._detailTitleProvider) return false
+        if (_emsSize != other._emsSize) return false
+        if (_nameIconGravity != other._nameIconGravity) return false
+        if (_contentGravity != other._contentGravity) return false
+        if (_typeset != other._typeset) return false
         return true
     }
 
     override fun hashCode(): Int {
         var result = _nameFormatter?.hashCode() ?: 0
+        result = 31 * result + (_groupTitleProvider?.hashCode() ?: 0)
+        result = 31 * result + (_nestedGroupTitleProvider?.hashCode() ?: 0)
+        result = 31 * result + (_detailTitleProvider?.hashCode() ?: 0)
         result = 31 * result + (_emsSize?.hashCode() ?: 0)
         result = 31 * result + (_nameIconGravity ?: 0)
         result = 31 * result + (_contentGravity?.hashCode() ?: 0)

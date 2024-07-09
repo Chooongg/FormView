@@ -23,6 +23,7 @@ class FormData {
         }
 
     fun addPart(part: AbstractFormPart<*>) {
+        part.isEnabled = isEnabled
         concatAdapter.addAdapter(part)
     }
 

@@ -8,39 +8,13 @@ class FormPart(
     style: AbstractFormStyle, data: FormPartData, isEnabled: Boolean
 ) : AbstractFormPart<FormPartData>(style, data, isEnabled) {
 
-    override fun getOriginalItemList(): List<List<BaseForm<*>>> {
-        if (data.partEnabled) {
-            val list = ArrayList<BaseForm<*>>()
-            val title = data
-        }
-    }
-
-    override fun executeUpdate(commitCallback: Runnable) {
-        val items = ArrayList<BaseForm<*>>()
-        data.getItems().forEach {
-            it.enabled = it.isEnable(isEnabled)
-            it.resetInternalData()
-            if (it.isVisible(isEnabled)) {
-                when (it) {
-                    else -> items.add(it)
-                }
-            }
-        }
-        while (items.firstOrNull()?.showAtEdge == false) {
-            items.removeFirst()
-        }
-        while (items.lastOrNull()?.showAtEdge == false) {
-            items.removeLast()
-        }
-        items.forEachIndexed { index, item ->
-            item.localPosition = index
-            item.groupCount = 1
-            item.groupIndex = 0
-            item.countInGroup = items.size
-            item.positionInGroup = index
-        }
-        differ.submitList(items, commitCallback)
-    }
+    override fun getOriginalItemList(): List<List<BaseForm<*>>> = if (data.isEnabled) {
+        val itemList = ArrayList<BaseForm<*>>()
+        val title = data.getGroupTitleItem()
+        if (title != null) itemList.add(title)
+        itemList.addAll(data.getItems())
+        listOf(itemList)
+    } else emptyList()
 
     override fun get(field: String): BaseForm<*>? = data.getItems().find { it.field == field }
     override fun contains(field: String) = data.getItems().any { it.field == field }

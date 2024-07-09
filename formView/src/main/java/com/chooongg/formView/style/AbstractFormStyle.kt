@@ -21,6 +21,34 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
     var paddingInfo: FormSizeInfo = FormSizeInfo()
         private set
 
+    /**
+     * 是否为独立的项目
+     */
+    var isIndependentItem = false
+
+    /**
+     * 是否装饰空项目
+     */
+    open fun isDecorateNoneItem(): Boolean = true
+
+    open fun onCreateStyle(parent: ViewGroup): ViewGroup? = null
+
+    open fun configStyleAddChildView(styleView: ViewGroup, childView: View) {
+        styleView.addView(childView)
+    }
+
+    open fun onStyleAttachedToWindow(holder: FormItemViewHolder) = Unit
+
+    open fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+
+    open fun onBindStyle(
+        holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
+    ) = onBindStyle(holder, item)
+
+    open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
+
+    open fun onStyleRecycled(holder: FormItemViewHolder) = Unit
+
     fun createSizeInfo(context: Context) {
         if (isInstanceSizeInfo) return
         isInstanceSizeInfo = true
@@ -62,23 +90,6 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
         }
     }
 
-    open fun onCreateStyle(parent: ViewGroup): ViewGroup? = null
-
-    open fun configStyleAddChildView(styleView: ViewGroup, childView: View) {
-        styleView.addView(childView)
-    }
-
-    open fun onStyleAttachedToWindow(holder: FormItemViewHolder) = Unit
-
-    open fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
-
-    open fun onBindStyle(
-        holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
-    ) = onBindStyle(holder, item)
-
-    open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
-
-    open fun onStyleRecycled(holder: FormItemViewHolder) = Unit
     override fun equals(other: Any?): Boolean {
         if (other !is AbstractFormStyle) return false
         if (other.javaClass != javaClass) return false

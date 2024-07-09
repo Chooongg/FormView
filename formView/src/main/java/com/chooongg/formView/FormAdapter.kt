@@ -104,13 +104,13 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        data.concatAdapter.onAttachedToRecyclerView(recyclerView)
         data.concatAdapter.registerAdapterDataObserver(dataObserver)
+        data.concatAdapter.onAttachedToRecyclerView(recyclerView)
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        data.concatAdapter.unregisterAdapterDataObserver(dataObserver)
         data.concatAdapter.onDetachedFromRecyclerView(recyclerView)
+        data.concatAdapter.unregisterAdapterDataObserver(dataObserver)
     }
 
     //<editor-fold desc="类型池 TypePool">
