@@ -28,8 +28,8 @@ class FormItemDecoration : ItemDecoration() {
         val position = holder.absoluteAdapterPosition
         val adapter = parent.adapter ?: return
         val layoutManager = parent.layoutManager
-        getCacheFromState(state)[position] =
-            FlexInternalFunction.getPositionToFlexLineIndex(layoutManager, position)
+//        getCacheFromState(state)[position] =
+//            FlexInternalFunction.getPositionToFlexLineIndex(layoutManager, position)
         if (!state.didStructureChange() || state.willRunPredictiveAnimations()) {
             val item = adapter.getItem(holder.absoluteAdapterPosition) ?: return
             val line = getFlexLineFromPosition(state, position)

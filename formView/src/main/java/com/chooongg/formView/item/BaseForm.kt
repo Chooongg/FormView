@@ -96,10 +96,10 @@ abstract class BaseForm<CONTENT>(
      */
     open var contentGravity: FormContentGravity? = null
 
-//    /**
-//     * 填充边缘
-//     */
-//    open var fillEdges: Boolean = true
+    /**
+     * 填充边缘
+     */
+    open var fillEdges: Boolean = true
 //
 //    @GravityInt
 //    open fun getContentGravity(holder: FormItemViewHolder, isMultiColumn: Boolean): Int {
@@ -271,6 +271,12 @@ abstract class BaseForm<CONTENT>(
         internal set
 
     var positionInGroup = -1
+        internal set
+
+    var spanIndex: Int = -1
+        internal set
+
+    var spanSize: Int = -1
         internal set
 
     var lastEnabled: Boolean? = null

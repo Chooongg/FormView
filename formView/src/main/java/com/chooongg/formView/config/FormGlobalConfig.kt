@@ -7,8 +7,12 @@ import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.formatter.name.NormalFormNameFormatter
+import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
+import com.chooongg.formView.provider.groupTitle.FormNormalGroupTitleProvider
+import com.chooongg.formView.provider.nested.AbstractNestedProvider
+import com.chooongg.formView.provider.nested.FormNormalNestedProvider
 import com.chooongg.formView.typeset.AbstractFormTypeset
-import com.chooongg.formView.typeset.HorizontalFormTypeset
+import com.chooongg.formView.typeset.FormHorizontalTypeset
 import com.google.android.material.button.MaterialButton
 
 class FormGlobalConfig {
@@ -17,6 +21,21 @@ class FormGlobalConfig {
      * 名称格式化程序
      */
     var nameFormatter: FormNameFormatter = NormalFormNameFormatter()
+
+    /**
+     * 组标题视图提供器
+     */
+    var groupTitleProvider: AbstractGroupTitleProvider = FormNormalGroupTitleProvider()
+
+    /**
+     * 嵌套视图中组标题视图提供器
+     */
+    var nestedGroupTitleProvider: AbstractGroupTitleProvider = FormNormalGroupTitleProvider()
+
+    /**
+     * 嵌套视图提供器
+     */
+    var detailTitleProvider: AbstractNestedProvider = FormNormalNestedProvider()
 
     /**
      * EMS 值
@@ -37,7 +56,7 @@ class FormGlobalConfig {
     /**
      * 排版
      */
-    var typeset: AbstractFormTypeset = HorizontalFormTypeset()
+    var typeset: AbstractFormTypeset = FormHorizontalTypeset()
 
     /**
      * 项目最大宽度

@@ -7,15 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
+import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.ktx.logE
 import com.chooongg.ktx.resDimensionPixelSize
-import com.google.android.flexbox.FlexInternalFunction
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,16 +43,10 @@ abstract class AbstractFormPart<DATA>(
     val adapter: FormAdapter get() = _adapter!!
 
     protected val differ = AsyncListDiffer(object : ListUpdateCallback {
-        override fun onChanged(position: Int, count: Int, payload: Any?) = Unit
-
-        override fun onRemoved(position: Int, count: Int) = notifyItemRangeRemoved(position, count)
-
-        override fun onInserted(position: Int, count: Int) =
-            notifyItemRangeInserted(position, count)
-
-        override fun onMoved(fromPosition: Int, toPosition: Int) =
-            notifyItemMoved(fromPosition, toPosition)
-
+        override fun onChanged(p: Int, count: Int, payload: Any?) = Unit
+        override fun onRemoved(p: Int, count: Int) = notifyItemRangeRemoved(p, count)
+        override fun onInserted(p: Int, count: Int) = notifyItemRangeInserted(p, count)
+        override fun onMoved(from: Int, to: Int) = notifyItemMoved(from, to)
     }, AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<BaseForm<*>>() {
         override fun areContentsTheSame(oldItem: BaseForm<*>, newItem: BaseForm<*>) = true
         override fun areItemsTheSame(oldItem: BaseForm<*>, newItem: BaseForm<*>) =
@@ -61,17 +54,24 @@ abstract class AbstractFormPart<DATA>(
     }).build())
 
     fun update() {
+        if (_adapter == null) return
         executeUpdate {
             differ.currentList.forEachIndexed { index, item ->
                 if (item.lastEnabled != item.enabled) {
                     notifyItemChanged(index)
                 } else {
-                    notifyItemChanged(index)
-//                    notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
+                    notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
+                    if (item.lastBoundary != item.boundary) {
+                        notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY)
+                    }
                 }
             }
         }
     }
+
+    protected abstract fun getOriginalItemList(): List<List<BaseForm<*>>>
+
+    protected open fun getIgnoreListCount(): Int = 0
 
     protected abstract fun executeUpdate(commitCallback: Runnable)
 
@@ -155,10 +155,6 @@ abstract class AbstractFormPart<DATA>(
         holder.itemView.layoutParams = layoutParams
         holder.style.onBindStyle(holder, item)
         holder.typeset.onBindTypeset(holder, item)
-        val lineIndex = FlexInternalFunction.getPositionToFlexLineIndex(
-            _recyclerView!!.layoutManager, holder.absoluteAdapterPosition
-        )
-        logE("Form", "onBind: Position: ${holder.absoluteAdapterPosition}, LineIndex: ${lineIndex}")
     }
 
     override fun onViewDetachedFromWindow(holder: FormItemViewHolder) {
@@ -175,19 +171,15 @@ abstract class AbstractFormPart<DATA>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        if (recyclerView is FormView) {
-            _recyclerView = recyclerView
-        }
         if (recyclerView.adapter is FormAdapter) {
             _adapter = recyclerView.adapter as FormAdapter
             update()
-        }
+        } else _adapter = null
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         partScope.cancel()
         partScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         _adapter = null
-        _recyclerView = null
     }
 }

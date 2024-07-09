@@ -12,9 +12,12 @@ class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    private val layoutManager = FormLayoutManager(context)
+    private val layoutManager: FormLayoutManager
 
     init {
+        context.obtainStyledAttributes(R.styleable.FormView).use {
+            layoutManager = FormLayoutManager(context)
+        }
         layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)

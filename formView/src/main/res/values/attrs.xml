@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="FormView">
+        <attr name="formColumn" format="integer" />
+    </declare-styleable>
+
     <attr name="formShapeAppearanceCorner" format="reference" />
 
     <attr name="formMarginInfo" format="reference" />

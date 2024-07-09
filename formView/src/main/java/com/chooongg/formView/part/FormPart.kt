@@ -8,6 +8,13 @@ class FormPart(
     style: AbstractFormStyle, data: FormPartData, isEnabled: Boolean
 ) : AbstractFormPart<FormPartData>(style, data, isEnabled) {
 
+    override fun getOriginalItemList(): List<List<BaseForm<*>>> {
+        if (data.partEnabled) {
+            val list = ArrayList<BaseForm<*>>()
+            val title = data
+        }
+    }
+
     override fun executeUpdate(commitCallback: Runnable) {
         val items = ArrayList<BaseForm<*>>()
         data.getItems().forEach {

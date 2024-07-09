@@ -3,27 +3,58 @@ package com.chooongg.formView.layoutManager
 import android.content.Context
 import android.graphics.Rect
 import android.view.View
+import androidx.annotation.IntRange
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
-import com.chooongg.ktx.logE
-import com.google.android.flexbox.FlexInternalFunction
-import com.google.android.flexbox.FlexboxLayoutManager
+import com.chooongg.formView.part.AbstractFormPart
+import kotlin.math.max
+import kotlin.math.min
 
-class FormLayoutManager(context: Context) : FlexboxLayoutManager(context) {
+class FormLayoutManager internal constructor(context: Context, formColumn: Int) :
+    GridLayoutManager(context, 27720) {
 
-    private var _recyclerView: RecyclerView? = null
+    private var adapter: FormAdapter? = null
+
+    @IntRange(from = 1, to = 27720)
+    var formColumn: Int = min(max(formColumn, 1), 27720)
+        set(value) {
+            if (field != value) {
+                field = value
+                adapter?.update()
+            }
+        }
 
     private var padding: Rect = Rect()
 
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
-        super.onLayoutChildren(recycler, state)
-        val adapter = _recyclerView?.adapter as? FormAdapter ?: return
-        for (position in 0 until state.itemCount) {
-            val item = adapter.getItem(position) ?: continue
-            val lineIndex = FlexInternalFunction.getPositionToFlexLineIndex(this, position)
-//            logE("Form", "Position: ${position}, Line: ${lineIndex}")
+    init {
+        spanSizeLookup = object : SpanSizeLookup() {
+            override fun invalidateSpanIndexCache() {
+                super.invalidateSpanIndexCache()
+                adapter?.data?.concatAdapter?.adapters?.forEach {
+                    if (it is FormCustomSpanLookup) it.invalidateSpanIndexCache()
+                }
+            }
+
+            override fun getSpanSize(position: Int): Int {
+                val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
+                return when (val part = pair.first) {
+                    is AbstractFormPart<*> -> part[pair.second].spanSize
+                    is FormCustomSpanLookup -> part.getSpanSize(position, formColumn)
+                    else -> spanCount
+                }
+            }
+
+            override fun getSpanIndex(position: Int, spanCount: Int): Int {
+                val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
+                return when (val part = pair.first) {
+                    is AbstractFormPart<*> -> part[pair.second].spanIndex
+                    is FormCustomSpanLookup -> part.getSpanIndex(position, formColumn)
+                    else -> 0
+                }
+            }
         }
     }
 
@@ -31,38 +62,31 @@ class FormLayoutManager(context: Context) : FlexboxLayoutManager(context) {
         padding = Rect(left, top, right, bottom)
     }
 
-    override fun getPaddingTop(): Int {
-        return padding.top
-    }
+    override fun getPaddingTop(): Int = padding.top
+    override fun getPaddingBottom(): Int = padding.bottom
+    override fun getPaddingLeft(): Int = padding.left
+    override fun getPaddingRight(): Int = padding.right
 
-    override fun getPaddingStart(): Int {
-        return if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.right else padding.left
-    }
+    override fun getPaddingStart(): Int =
+        if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.right else padding.left
 
-    override fun getPaddingEnd(): Int {
-        return if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.left else padding.right
-    }
+    override fun getPaddingEnd(): Int =
+        if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.left else padding.right
 
-    override fun getPaddingLeft(): Int {
-        return padding.left
-    }
-
-    override fun getPaddingRight(): Int {
-        return padding.right
-    }
-
-    override fun getPaddingBottom(): Int {
-        return padding.bottom
+    override fun onMeasure(
+        recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int
+    ) {
+        super.onMeasure(recycler, state, widthSpec, heightSpec)
     }
 
     override fun onAttachedToWindow(recyclerView: RecyclerView) {
-        _recyclerView = recyclerView
+        adapter = recyclerView.adapter as? FormAdapter
         super.onAttachedToWindow(recyclerView)
     }
 
     override fun onDetachedFromWindow(view: RecyclerView, recycler: RecyclerView.Recycler) {
         super.onDetachedFromWindow(view, recycler)
-        _recyclerView = null
+        adapter = null
     }
 
     override fun smoothScrollToPosition(

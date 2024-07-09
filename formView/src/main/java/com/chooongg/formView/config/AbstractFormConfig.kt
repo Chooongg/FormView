@@ -5,12 +5,20 @@ import com.chooongg.formView.FormManager
 import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.formatter.name.FormNameFormatter
+import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
+import com.chooongg.formView.provider.nested.AbstractNestedProvider
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import com.google.android.material.button.MaterialButton
 
 abstract class AbstractFormConfig {
 
     protected abstract val _nameFormatter: FormNameFormatter?
+
+    protected abstract val _groupTitleProvider: AbstractGroupTitleProvider?
+
+    protected abstract val _nestedGroupTitleProvider: AbstractGroupTitleProvider?
+
+    protected abstract val _detailTitleProvider: AbstractNestedProvider?
 
     protected abstract val _emsSize: FormEmsSize?
 
@@ -26,6 +34,15 @@ abstract class AbstractFormConfig {
 
     val nameFormatter: FormNameFormatter
         get() = _nameFormatter ?: FormManager.globalConfig.nameFormatter
+
+    val groupTitleProvider: AbstractGroupTitleProvider
+        get() = _groupTitleProvider ?: FormManager.globalConfig.groupTitleProvider
+
+    val nestedGroupTitleProvider: AbstractGroupTitleProvider
+        get() = _nestedGroupTitleProvider ?: FormManager.globalConfig.nestedGroupTitleProvider
+
+    val detailTitleProvider: AbstractNestedProvider
+        get() = _detailTitleProvider ?: FormManager.globalConfig.detailTitleProvider
 
     val emsSize: FormEmsSize
         get() = _emsSize ?: FormManager.globalConfig.emsSize

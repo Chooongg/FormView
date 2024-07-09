@@ -14,7 +14,7 @@ import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 import com.google.android.material.button.MaterialButton
 
-class HorizontalFormTypeset : AbstractFormTypeset() {
+class FormHorizontalTypeset : AbstractFormTypeset() {
 
     override var emsMode: FormEmsMode = FormEmsMode(FormEmsMode.FIXED)
 

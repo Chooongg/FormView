@@ -1,5 +1,6 @@
 package com.chooongg.formView
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
@@ -47,6 +48,13 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     var onMenuClickListener: FormOnMenuClickListener? = null
         private set
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun update() {
+        data.concatAdapter.adapters.forEach {
+            if (it is AbstractFormPart<*>) it.update()
+            else it.notifyDataSetChanged()
+        }
+    }
 
     override fun getItemCount(): Int = data.concatAdapter.itemCount
 
