@@ -48,6 +48,10 @@ class FormView @JvmOverloads constructor(
         adapter?.data?.isEnabled = enabled
     }
 
+    override fun isEnabled(): Boolean {
+        return adapter?.data?.isEnabled ?: false
+    }
+
     @Deprecated("this method external calls not supported")
     override fun setAdapter(adapter: Adapter<*>?) {
         throw IllegalArgumentException("this method external calls not supported")

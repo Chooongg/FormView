@@ -37,7 +37,7 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
 
     open fun onBindTypeset(
         holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
-    ) = Unit
+    ) = onBindTypeset(holder, item)
 
     open fun onTypesetDetachedFromWindow(holder: FormItemViewHolder) = Unit
 

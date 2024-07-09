@@ -5,6 +5,7 @@
         android:title="@string/home" />
     <item
         android:id="@+id/nav_about"
+        android:iconTint="?colorPrimary"
         android:icon="@drawable/ic_main_about"
         android:title="@string/about" />
 </menu>

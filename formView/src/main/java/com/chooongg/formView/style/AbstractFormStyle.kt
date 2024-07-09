@@ -74,7 +74,7 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
 
     open fun onBindStyle(
         holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
-    ) = Unit
+    ) = onBindStyle(holder, item)
 
     open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
 

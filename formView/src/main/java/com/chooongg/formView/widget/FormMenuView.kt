@@ -21,15 +21,12 @@ import com.chooongg.ktx.doOnClick
 import com.google.android.material.button.MaterialButton
 
 @SuppressLint("RestrictedApi", "ViewConstructor")
-class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(context) {
-
-    private val menuAdapter = Adapter(style)
+class FormMenuView(context: Context, private val style: AbstractFormStyle) : RecyclerView(context) {
 
     init {
         overScrollMode = View.OVER_SCROLL_NEVER
         isNestedScrollingEnabled = false
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        adapter = menuAdapter
     }
 
     fun setMenu(
@@ -42,10 +39,12 @@ class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(co
             if (item.menu != null) MenuInflater(context).inflate(item.menu!!, menu)
             item.onMenuCreatedListener?.invoke(menu)
             val visibleMenus = menu.visibleItems
-            menuAdapter.setData(visibleMenus, item.isMenuEnable(enabled), onMenuItemClickListener)
+            adapter = Adapter(style).apply {
+                setData(visibleMenus, item.isMenuEnable(enabled), onMenuItemClickListener)
+            }
             visibility = if (visibleMenus.isEmpty()) View.GONE else View.VISIBLE
         } else {
-            menuAdapter.setData(emptyList(), false, null)
+            adapter = null
             visibility = View.GONE
         }
     }
@@ -100,6 +99,7 @@ class FormMenuView(context: Context, style: AbstractFormStyle) : RecyclerView(co
             val menu = menus[position]
             val icon = menu.getIcon()
             (holder.itemView as MaterialButton).let {
+                it.isEnabled = enabled && menu.isEnabled
                 it.icon = icon
                 it.text = if (icon == null) menu.titleCondensed else null
                 ViewCompat.setTooltipText(it, menu.title ?: menu.titleCondensed)

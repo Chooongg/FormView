@@ -5,4 +5,6 @@
     <item name="formNameView" type="id" />
     <item name="formMenuView" type="id" />
     <item name="formContentView" type="id" />
+
+    <item name="formItemDecorationCache" type="id" />
 </resources>

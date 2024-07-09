@@ -3,4 +3,6 @@
 
     <string name="home">首页</string>
     <string name="about">关于</string>
+
+    <string name="editing_status">编辑状态</string>
 </resources>

@@ -13,6 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/edit"
             app:title="@string/app_name"
             app:titleCentered="true" />
 

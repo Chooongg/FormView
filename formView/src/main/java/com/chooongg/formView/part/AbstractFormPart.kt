@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
-import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.logE
 import com.chooongg.ktx.resDimensionPixelSize
+import com.google.android.flexbox.FlexInternalFunction
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +66,8 @@ abstract class AbstractFormPart<DATA>(
                 if (item.lastEnabled != item.enabled) {
                     notifyItemChanged(index)
                 } else {
-                    notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
+                    notifyItemChanged(index)
+//                    notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
                 }
             }
         }
@@ -114,8 +116,18 @@ abstract class AbstractFormPart<DATA>(
         val item = differ.currentList[position]
         val layoutParams = (holder.itemView.layoutParams as? FlexboxLayoutManager.LayoutParams)
             ?: FlexboxLayoutManager.LayoutParams(-2, -2)
-        layoutParams.width = if (item.loneLine) -1
-        else holder.itemView.resDimensionPixelSize(holder.style.config.itemMaxWidth)
+        layoutParams.let {
+            if (item.loneLine) {
+                it.isWrapBefore = true
+                it.width = -1
+            } else {
+                it.isWrapBefore = false
+                it.width = holder.itemView.resDimensionPixelSize(holder.style.config.itemMaxWidth)
+            }
+            if (item.positionInGroup == 0) {
+                it.isWrapBefore = true
+            }
+        }
         holder.itemView.layoutParams = layoutParams
         holder.style.onBindStyle(holder, item)
         holder.typeset.onBindTypeset(holder, item)
@@ -125,7 +137,28 @@ abstract class AbstractFormPart<DATA>(
     override fun onBindViewHolder(
         holder: FormItemViewHolder, position: Int, payloads: MutableList<Any>
     ) {
-        super.onBindViewHolder(holder, position, payloads)
+        val item = differ.currentList[position]
+        val layoutParams = (holder.itemView.layoutParams as? FlexboxLayoutManager.LayoutParams)
+            ?: FlexboxLayoutManager.LayoutParams(-2, -2)
+        layoutParams.let {
+            if (item.loneLine) {
+                it.isWrapBefore = true
+                it.width = -1
+            } else {
+                it.isWrapBefore = false
+                it.width = holder.itemView.resDimensionPixelSize(holder.style.config.itemMaxWidth)
+            }
+            if (item.positionInGroup == 0) {
+                it.isWrapBefore = true
+            }
+        }
+        holder.itemView.layoutParams = layoutParams
+        holder.style.onBindStyle(holder, item)
+        holder.typeset.onBindTypeset(holder, item)
+        val lineIndex = FlexInternalFunction.getPositionToFlexLineIndex(
+            _recyclerView!!.layoutManager, holder.absoluteAdapterPosition
+        )
+        logE("Form", "onBind: Position: ${holder.absoluteAdapterPosition}, LineIndex: ${lineIndex}")
     }
 
     override fun onViewDetachedFromWindow(holder: FormItemViewHolder) {

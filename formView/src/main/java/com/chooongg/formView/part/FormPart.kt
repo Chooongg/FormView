@@ -27,6 +27,10 @@ class FormPart(
         }
         items.forEachIndexed { index, item ->
             item.localPosition = index
+            item.groupCount = 1
+            item.groupIndex = 0
+            item.countInGroup = items.size
+            item.positionInGroup = index
         }
         differ.submitList(items, commitCallback)
     }

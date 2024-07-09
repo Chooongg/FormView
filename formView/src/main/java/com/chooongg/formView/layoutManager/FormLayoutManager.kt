@@ -2,17 +2,30 @@ package com.chooongg.formView.layoutManager
 
 import android.content.Context
 import android.graphics.Rect
-import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
+import com.chooongg.ktx.logE
+import com.google.android.flexbox.FlexInternalFunction
 import com.google.android.flexbox.FlexboxLayoutManager
 
 class FormLayoutManager(context: Context) : FlexboxLayoutManager(context) {
 
+    private var _recyclerView: RecyclerView? = null
+
     private var padding: Rect = Rect()
+
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
+        super.onLayoutChildren(recycler, state)
+        val adapter = _recyclerView?.adapter as? FormAdapter ?: return
+        for (position in 0 until state.itemCount) {
+            val item = adapter.getItem(position) ?: continue
+            val lineIndex = FlexInternalFunction.getPositionToFlexLineIndex(this, position)
+//            logE("Form", "Position: ${position}, Line: ${lineIndex}")
+        }
+    }
 
     fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         padding = Rect(left, top, right, bottom)
@@ -40,6 +53,16 @@ class FormLayoutManager(context: Context) : FlexboxLayoutManager(context) {
 
     override fun getPaddingBottom(): Int {
         return padding.bottom
+    }
+
+    override fun onAttachedToWindow(recyclerView: RecyclerView) {
+        _recyclerView = recyclerView
+        super.onAttachedToWindow(recyclerView)
+    }
+
+    override fun onDetachedFromWindow(view: RecyclerView, recycler: RecyclerView.Recycler) {
+        super.onDetachedFromWindow(view, recycler)
+        _recyclerView = null
     }
 
     override fun smoothScrollToPosition(
