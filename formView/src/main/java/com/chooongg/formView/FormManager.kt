@@ -7,7 +7,7 @@ import com.chooongg.formView.parser.FormTextParser
 import com.chooongg.formView.parser.NormalFormIconParser
 import com.chooongg.formView.parser.NormalFormTextParser
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.formView.style.FormNoneStyle
+import com.chooongg.formView.style.FormAlignedStyle
 
 object FormManager {
 
@@ -28,7 +28,7 @@ object FormManager {
     /**
      * 默认样式
      */
-    var defaultStyle: AbstractFormStyle = FormNoneStyle()
+    var defaultStyle: AbstractFormStyle = FormAlignedStyle()
 
     /**
      * 文本解析器

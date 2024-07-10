@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.IntRange
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
+import com.chooongg.formView.decoration.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 
 class FormView @JvmOverloads constructor(
@@ -13,11 +14,11 @@ class FormView @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
     private val layoutManager: FormLayoutManager =
-        context.obtainStyledAttributes(R.styleable.FormView).use {
+        context.obtainStyledAttributes(attrs, R.styleable.FormView, 0, 0).use {
             FormLayoutManager(context, it.getInt(R.styleable.FormView_formColumn, 1))
         }
 
-    @setparam:IntRange(from = 1, to = 27720)
+    @setparam:IntRange(from = 1, to = 10)
     var formColumn: Int
         get() = layoutManager.formColumn
         set(value) {
@@ -28,7 +29,7 @@ class FormView @JvmOverloads constructor(
         layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)
-//        super.addItemDecoration(FormItemDecoration())
+        super.addItemDecoration(FormItemDecoration())
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
@@ -46,7 +47,7 @@ class FormView @JvmOverloads constructor(
     }
 
     fun setData(data: FormData) {
-        super.setAdapter(FormAdapter(data))
+        super.setAdapter(FormAdapter(data).apply { columnCount = layoutManager.formColumn })
         isEnabled = data.isEnabled
     }
 

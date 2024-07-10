@@ -10,7 +10,7 @@ class FormData {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
-    )/*.apply { addAdapter(FormTopBottomDecoration()) }*/
+    )
 
     val parts get() = concatAdapter.adapters.filterIsInstance<AbstractFormPart<*>>()
 

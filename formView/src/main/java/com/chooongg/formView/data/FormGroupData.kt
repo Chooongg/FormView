@@ -9,11 +9,10 @@ import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.item.InternalFormGroupTitle
 import com.google.android.material.button.MaterialButton
 
-open class FormGroupData : AbstractFormId(), IFormGroupData, IFormName, IFormMenu {
+open class FormGroupData : AbstractFormId(), IFormGroupData, IFormName, IFormIcon, IFormMenu {
 
     private val _items = mutableListOf<BaseForm<*>>()
 
-    override var isEnabled: Boolean = true
     override var name: Any? = null
     override var field: String? = null
 

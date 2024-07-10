@@ -56,4 +56,9 @@ class FormGlobalConfig {
      */
     var typeset: AbstractFormTypeset = FormHorizontalTypeset()
 
+    /**
+     * 是否是独立子项
+     */
+    var isIndependentItem: Boolean = false
+
 }

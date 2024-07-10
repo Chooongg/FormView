@@ -42,6 +42,8 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
 
     val isEnabled get() = data.isEnabled
 
+    internal var columnCount: Int = 1
+
     var onItemClickListener: FormOnItemClickListener? = null
         private set
 
@@ -113,6 +115,19 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
         data.concatAdapter.unregisterAdapterDataObserver(dataObserver)
     }
 
+    override fun findRelativeAdapterPositionIn(
+        adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
+        viewHolder: RecyclerView.ViewHolder,
+        localPosition: Int
+    ) = data.concatAdapter.findRelativeAdapterPositionIn(adapter, viewHolder, localPosition)
+
+    fun partIndexOf(part: AbstractFormPart<*>): Int {
+        return data.concatAdapter.adapters.indexOfFirst { it == part }
+    }
+
+    fun partCount(): Int = data.concatAdapter.adapters.size
+
+
     //<editor-fold desc="类型池 TypePool">
 
     private val stylePool = ArrayList<AbstractFormStyle>()
@@ -164,12 +179,6 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     internal fun getItemProvider(viewType: Int): AbstractFormItemProvider {
         return providerPool[itemTypePool[abs(viewType) - 1].third]
     }
-
-    override fun findRelativeAdapterPositionIn(
-        adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
-        viewHolder: RecyclerView.ViewHolder,
-        localPosition: Int
-    ) = data.concatAdapter.findRelativeAdapterPositionIn(adapter, viewHolder, localPosition)
 
     //</editor-fold>
 }

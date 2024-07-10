@@ -25,7 +25,7 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
 
     open var contentGravity: FormContentGravity? = null
 
-    open fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup? = null
+    abstract fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup
 
     open fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {
         layoutView.addView(childView)

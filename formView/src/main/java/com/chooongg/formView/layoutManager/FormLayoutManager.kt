@@ -18,9 +18,10 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
 
     private var adapter: FormAdapter? = null
 
-    @IntRange(from = 1, to = 27720)
-    var formColumn: Int = min(max(formColumn, 1), 27720)
+    @IntRange(from = 1, to = 10)
+    var formColumn: Int = min(max(formColumn, 1), 10)
         set(value) {
+            adapter?.columnCount = value
             if (field != value) {
                 field = value
                 adapter?.update()

@@ -10,24 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
-import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
-import com.chooongg.formView.data.IFormName
+import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.item.InternalFormNone
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.ktx.resDimensionPixelSize
-import com.chooongg.ktx.showToast
-import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
-abstract class AbstractFormPart<DATA>(
+abstract class AbstractFormPart<DATA : IFormPart>(
     val style: AbstractFormStyle, var data: DATA, isEnabled: Boolean
-) : RecyclerView.Adapter<FormItemViewHolder>() where DATA : IFormName, DATA : AbstractFormId {
+) : RecyclerView.Adapter<FormItemViewHolder>() {
 
     private val spanCount = 27720
 
@@ -48,7 +44,9 @@ abstract class AbstractFormPart<DATA>(
 
     val adapter: FormAdapter get() = _adapter!!
 
-    internal val columnCount: Int get() = _recyclerView?.layoutManager?.formColumn ?: 1
+    val columnCount
+        get() = data.fixedColumn ?: data.columnProvider?.invoke(adapter.columnCount)
+        ?: adapter.columnCount
 
     protected val differ = AsyncListDiffer(object : ListUpdateCallback {
         override fun onChanged(p: Int, count: Int, payload: Any?) = Unit
@@ -62,16 +60,16 @@ abstract class AbstractFormPart<DATA>(
     }).build())
 
     fun update() {
-        showToast("列数${columnCount}")
         if (_adapter == null) return
+        val columnCount = columnCount
         val groups = getOriginalItemList()
         val ignoreListCount = getIgnoreListCount()
         val tempList = ArrayList<ArrayList<BaseForm<*>>>()
         groups.forEach { group ->
             val tempGroup = ArrayList<BaseForm<*>>()
             group.forEach { item ->
-                item.enabled = item.isEnable(isEnabled)
                 item.resetInternalData()
+                item.enabled = item.isEnable(isEnabled)
 //                item.initialize()
                 if (item.isVisible(isEnabled)) {
                     when (item) {
@@ -107,7 +105,7 @@ abstract class AbstractFormPart<DATA>(
                     if (lastItem.spanIndex + lastItem.spanSize < spanCount) {
                         if (lastItem.autoFill) {
                             lastItem.spanSize = spanCount - lastItem.spanIndex
-                        } else if (style.isDecorateNoneItem()) {
+                        } else if (style.isDecorateNoneItem() && !style.config.isIndependentItem) {
                             val noneIndex = lastItem.spanIndex + lastItem.spanSize
                             tempGroup.add(InternalFormNone(noneIndex, spanCount - noneIndex))
                         }
@@ -120,7 +118,7 @@ abstract class AbstractFormPart<DATA>(
                 if (position == group.lastIndex && item.spanIndex + item.spanSize < spanCount) {
                     if (item.autoFill) {
                         item.spanSize = spanCount - item.spanIndex
-                    } else if (style.isDecorateNoneItem()) {
+                    } else if (style.isDecorateNoneItem() && !style.config.isIndependentItem) {
                         val noneIndex = item.spanIndex + item.spanSize
                         tempGroup.add(InternalFormNone(noneIndex, spanCount - noneIndex))
                     }
@@ -155,26 +153,30 @@ abstract class AbstractFormPart<DATA>(
     }
 
     private fun calculateBoundary() {
+        val partIndex = _adapter?.partIndexOf(this) ?: -1
+        val partCount = _adapter?.partCount() ?: -1
         differ.currentList.forEachIndexed { index, item ->
             // Start
             val start = if (item.spanIndex == 0) {
                 FormBoundary.GLOBAL
-            } else if (style.isIndependentItem) {
+            } else if (style.config.isIndependentItem) {
                 FormBoundary.MIDDLE
             } else {
                 FormBoundary.NONE
             }
             // End
             val isGroupLast = item.positionInGroup == item.countInGroup - 1
-            val end = if ((item.spanIndex + item.spanSize >= spanCount || isGroupLast)) {
+            val end = if (item.spanIndex + item.spanSize >= spanCount) {
                 FormBoundary.GLOBAL
-            } else if (style.isIndependentItem) {
+            } else if (isGroupLast || style.config.isIndependentItem) {
                 FormBoundary.MIDDLE
             } else {
                 FormBoundary.NONE
             }
             // Top
-            val top = if (item.positionInGroup == 0) {
+            val top = if (partCount > 0 && partIndex == 0 && item.positionInGroup == 0) {
+                FormBoundary.GLOBAL
+            } else if (item.positionInGroup == 0) {
                 FormBoundary.MIDDLE
             } else if (item.spanIndex == 0) {
                 FormBoundary.NONE
@@ -187,25 +189,35 @@ abstract class AbstractFormPart<DATA>(
                 }
                 beginItem.boundary.top
             }
-            item.boundary = FormBoundary(start, top, end, FormBoundary.NONE)
+            item.boundary = FormBoundary(
+                start,
+                if (style.config.isIndependentItem && top == FormBoundary.NONE) FormBoundary.MIDDLE else top,
+                end,
+                FormBoundary.NONE
+            )
         }
         for (index in differ.currentList.lastIndex downTo 0) {
             val item = get(index)
             // Bottom
-            val bottom = if (item.countInGroup - 1 - item.positionInGroup == 0) {
-                FormBoundary.MIDDLE
-            } else if (item.spanIndex + item.spanIndex >= spanCount) {
-                FormBoundary.NONE
-            } else {
-                var lastIndex = index
-                var lastItem = get(lastIndex)
-                while (lastIndex < differ.currentList.lastIndex && get(lastIndex + 1).spanIndex != 0 && lastItem.countInGroup - 1 - lastItem.positionInGroup != 0) {
-                    lastIndex++
-                    lastItem = get(lastIndex)
+            val bottom =
+                if (partCount != -1 && partIndex == partCount - 1 && item.countInGroup - 1 - item.positionInGroup == 0) {
+                    FormBoundary.GLOBAL
+                } else if (item.countInGroup - 1 - item.positionInGroup == 0) {
+                    FormBoundary.MIDDLE
+                } else if (item.spanIndex + item.spanSize >= spanCount) {
+                    if (style.config.isIndependentItem) FormBoundary.MIDDLE else FormBoundary.NONE
+                } else {
+                    var lastIndex = index
+                    var lastItem = get(lastIndex)
+                    while (lastIndex < differ.currentList.lastIndex && get(lastIndex + 1).spanIndex != 0 && lastItem.countInGroup - 1 - lastItem.positionInGroup != 0) {
+                        lastIndex++
+                        lastItem = get(lastIndex)
+                    }
+                    lastItem.boundary.bottom
                 }
-                lastItem.boundary.bottom
-            }
-            item.boundary = item.boundary.update(bottom = bottom)
+            item.boundary = item.boundary.update(
+                bottom = if (style.config.isIndependentItem && bottom == FormBoundary.NONE) FormBoundary.MIDDLE else bottom
+            )
         }
     }
 
@@ -232,12 +244,11 @@ abstract class AbstractFormPart<DATA>(
         val itemProvider = adapter.getItemProvider(viewType)
         val styleView = style.onCreateStyle(parent)
         val typesetView = typeset.onCreateTypeset(style, styleView ?: parent)
-        val itemView = itemProvider.onCreateViewHolder(style, typesetView ?: styleView ?: parent)
+        val itemView = itemProvider.onCreateViewHolder(style, typesetView)
         if (styleView != null) {
-            if (typesetView != null) style.configStyleAddChildView(styleView, typesetView)
-            else style.configStyleAddChildView(styleView, itemView)
-        } else if (typesetView != null) typeset.configTypesetAddChildView(typesetView, itemView)
-        return FormItemViewHolder(style, typeset, styleView ?: typesetView ?: itemView).apply {
+            style.configStyleAddChildView(styleView, typesetView)
+        } else typeset.configTypesetAddChildView(typesetView, itemView)
+        return FormItemViewHolder(style, typeset, styleView ?: typesetView).apply {
             this.itemView.layoutParams = GridLayoutManager.LayoutParams(-1, -2)
         }
     }
@@ -250,7 +261,12 @@ abstract class AbstractFormPart<DATA>(
 
     override fun onBindViewHolder(holder: FormItemViewHolder, position: Int) {
         val item = differ.currentList[position]
+        holder.itemView.tag = item.boundary
+        item.globalPosition = holder.absoluteAdapterPosition
+        item.localPosition = holder.bindingAdapterPosition
+        holder.style.onBindStyleBefore(holder, item)
         holder.style.onBindStyle(holder, item)
+        holder.style.onBindStyleAfter(holder, item)
         holder.typeset.onBindTypeset(holder, item)
         adapter.getItemProvider(holder.itemViewType).onBindViewHolder(holder, item, isEnabled)
     }
@@ -259,8 +275,30 @@ abstract class AbstractFormPart<DATA>(
         holder: FormItemViewHolder, position: Int, payloads: MutableList<Any>
     ) {
         val item = differ.currentList[position]
-        holder.style.onBindStyle(holder, item)
-        holder.typeset.onBindTypeset(holder, item)
+        item.globalPosition = holder.absoluteAdapterPosition
+        item.localPosition = holder.bindingAdapterPosition
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position)
+            return
+        }
+        payloads.forEach {
+            when (it) {
+                FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY -> {
+                    holder.style.onBindStyleBefore(holder, item)
+                    holder.style.onBindStyle(holder, item)
+                    holder.style.onBindStyleAfter(holder, item)
+                }
+
+                FormManager.FLAG_PAYLOAD_UPDATE_CONTENT -> {
+                    holder.typeset.onBindTypeset(holder, item, payloads)
+                    adapter.getItemProvider(holder.itemViewType)
+                        .onBindViewHolder(holder, item, isEnabled)
+                }
+
+                else -> adapter.getItemProvider(holder.itemViewType)
+                    .onBindViewHolderOther(holder, item, isEnabled, it)
+            }
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: FormItemViewHolder) {

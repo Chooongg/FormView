@@ -22,14 +22,14 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
         private set
 
     /**
-     * 是否为独立的项目
-     */
-    var isIndependentItem = false
-
-    /**
      * 是否装饰空项目
      */
     open fun isDecorateNoneItem(): Boolean = true
+
+    /**
+     * 内容是否与边缘对齐
+     */
+    open fun isAlignmentToEdge(): Boolean = false
 
     open fun onCreateStyle(parent: ViewGroup): ViewGroup? = null
 
@@ -39,11 +39,11 @@ abstract class AbstractFormStyle(val config: AbstractFormConfig) {
 
     open fun onStyleAttachedToWindow(holder: FormItemViewHolder) = Unit
 
+    open fun onBindStyleBefore(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+
     open fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
 
-    open fun onBindStyle(
-        holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
-    ) = onBindStyle(holder, item)
+    open fun onBindStyleAfter(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
 
     open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
 

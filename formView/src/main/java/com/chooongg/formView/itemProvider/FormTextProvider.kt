@@ -23,7 +23,7 @@ class FormTextProvider : AbstractFormItemProvider() {
 
     override fun onBindViewHolder(holder: FormItemViewHolder, item: BaseForm<*>, enabled: Boolean) {
         with(holder.getView<MaterialTextView>(R.id.formContentView)) {
-            text = FormManager.parseText(context,item.getContentText())
+            text = FormManager.parseText(context, item.getContentText())
         }
     }
 }

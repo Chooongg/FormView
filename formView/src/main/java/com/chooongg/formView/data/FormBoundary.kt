@@ -13,8 +13,8 @@ data class FormBoundary(
 
     companion object {
         const val NONE = 0
-        const val MIDDLE = 2
-        const val GLOBAL = 3
+        const val MIDDLE = 1
+        const val GLOBAL = 2
     }
 
     @IntDef(NONE, MIDDLE, GLOBAL)

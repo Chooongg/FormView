@@ -8,6 +8,11 @@ import android.view.View
 import com.chooongg.formView.item.BaseForm
 
 /**
+ * 列代理Block
+ */
+typealias FormColumnProviderBlock = (formColumn: Int) -> Int
+
+/**
  * 颜色Block
  */
 typealias FormColorBlock = Context.() -> Int?

@@ -1,7 +1,6 @@
 package com.chooongg.formView.data
 
-interface IFormName : IFormIcon {
-    var isEnabled: Boolean
+interface IFormName {
     var name: Any?
     var field: String?
 }
