@@ -85,7 +85,7 @@ abstract class BaseForm<CONTENT>(
     open var showAtEdge = true
 
     /**
-     * 自动填充
+     * 空位自动填充
      */
     open var autoFill = false
 
