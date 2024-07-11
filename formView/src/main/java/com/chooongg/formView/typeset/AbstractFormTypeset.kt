@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.delegation.IFormMenu
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
@@ -64,6 +65,10 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
     protected fun configMenuView(
         holder: FormItemViewHolder, item: BaseForm<*>, menuView: FormMenuView
     ) {
+        if (item !is IFormMenu) {
+            menuView.gone()
+            return
+        }
         menuView.setMenu(item, item.enabled ?: false) { view, menu ->
             val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
             if (isIntercept != true) {

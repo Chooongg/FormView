@@ -1,16 +1,11 @@
 package com.chooongg.formView.item
 
-import androidx.annotation.MenuRes
-import com.chooongg.formView.FormOnMenuCreatedListener
-import com.chooongg.formView.FormOnMenuItemClickListener
 import com.chooongg.formView.data.AbstractFormId
-import com.chooongg.formView.data.IFormIcon
-import com.chooongg.formView.data.IFormMenu
-import com.chooongg.formView.data.IFormName
 import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormVisibilityMode
+import com.chooongg.formView.delegation.IFormName
 
-abstract class AbstractForm : AbstractFormId(), IFormName, IFormIcon, IFormMenu {
+abstract class AbstractForm : AbstractFormId(), IFormName {
 
     //<editor-fold desc="基础 Basic">
 
@@ -23,17 +18,6 @@ abstract class AbstractForm : AbstractFormId(), IFormName, IFormIcon, IFormMenu 
      * 启用模式
      */
     var enableMode: FormEnableMode = FormEnableMode.ENABLED
-
-    @MenuRes
-    override var menu: Int? = null
-
-    override var menuVisibilityMode: FormVisibilityMode = FormVisibilityMode.ALWAYS
-
-    override var menuEnableMode: FormEnableMode = FormEnableMode.ENABLED
-
-    override var onMenuCreatedListener: FormOnMenuCreatedListener? = null
-
-    override var onMenuItemClickListener: FormOnMenuItemClickListener? = null
 
     /**
      * 是否可见

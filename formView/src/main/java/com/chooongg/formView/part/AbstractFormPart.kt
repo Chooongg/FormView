@@ -11,7 +11,7 @@ import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
-import com.chooongg.formView.data.IFormPart
+import com.chooongg.formView.delegation.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.item.InternalFormNone

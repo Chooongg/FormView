@@ -1,5 +1,6 @@
 package com.chooongg.formView.item
 
+import androidx.annotation.CallSuper
 import androidx.annotation.GravityInt
 import com.chooongg.formView.FormColorStateListBlock
 import com.chooongg.formView.FormTypesetProviderBlock
@@ -37,11 +38,6 @@ abstract class BaseForm<CONTENT>(
     abstract fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider>
 
     /**
-     * 提示
-     */
-    var hint: Any? = null
-
-    /**
      * 扩展内容
      */
     val extensionContent = FormExtensionMap()
@@ -77,12 +73,6 @@ abstract class BaseForm<CONTENT>(
      * 名称Ems
      */
     open var emsSize: FormEmsSize? = null
-
-    @MaterialButton.IconGravity
-    override var iconGravity: Int? = null
-    override var icon: Any? = null
-    override var iconTint: FormColorStateListBlock? = null
-    override var iconSize: Int? = null
 
     /**
      * 独占一行
@@ -287,6 +277,7 @@ abstract class BaseForm<CONTENT>(
     var lastBoundary: FormBoundary? = null
         internal set
 
+    @CallSuper
     open fun resetInternalData() {
         lastEnabled = enabled
         lastBoundary = boundary

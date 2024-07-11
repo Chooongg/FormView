@@ -5,6 +5,9 @@ import com.chooongg.formView.FormOnMenuCreatedListener
 import com.chooongg.formView.FormOnMenuItemClickListener
 import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormVisibilityMode
+import com.chooongg.formView.delegation.IFormIcon
+import com.chooongg.formView.delegation.IFormMenu
+import com.chooongg.formView.delegation.IFormName
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.item.InternalFormGroupTitle
 import com.google.android.material.button.MaterialButton

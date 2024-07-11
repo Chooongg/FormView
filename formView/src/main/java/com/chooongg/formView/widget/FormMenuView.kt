@@ -15,7 +15,7 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.delegation.IFormMenu
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.ktx.doOnClick
 import com.google.android.material.button.MaterialButton
@@ -30,7 +30,7 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
     }
 
     fun setMenu(
-        item: BaseForm<*>,
+        item: IFormMenu,
         enabled: Boolean,
         onMenuItemClickListener: (view: View, menu: MenuItem) -> Unit
     ) {
@@ -47,6 +47,11 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
             adapter = null
             visibility = View.GONE
         }
+    }
+
+    fun gone() {
+        adapter = null
+        visibility = View.GONE
     }
 
     private class Adapter(

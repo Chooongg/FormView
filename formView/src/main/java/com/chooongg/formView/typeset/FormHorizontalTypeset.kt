@@ -9,6 +9,7 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.delegation.IFormIcon
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
@@ -50,11 +51,13 @@ class FormHorizontalTypeset : AbstractFormTypeset() {
 
     override fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
-            iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity
-            val nameIcon = FormManager.parseIcon(context, item.icon)
-            if (nameIcon != null) {
-                icon = nameIcon
-                iconTint = item.iconTint?.invoke(context) ?: textColors
+            if (item is IFormIcon) {
+                iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity
+                val nameIcon = FormManager.parseIcon(context, item.icon)
+                if (nameIcon != null) {
+                    icon = nameIcon
+                    iconTint = item.iconTint?.invoke(context) ?: textColors
+                } else icon = null
             } else icon = null
             text = holder.style.config.nameFormatter.format(context, item)
             configNameView(holder, item, this)

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentHomeBinding
 import com.chooongg.formView.config.FormIndependentStyleConfig
+import com.chooongg.formView.divider
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.style.FormCardM3Style
@@ -51,6 +52,9 @@ class HomeFragment : Fragment() {
                     loneLine = true
                     menu = R.menu.main
                     typeset = FormTypeset(FormNoneTypeset::class)
+                }
+                divider {
+
                 }
                 text("文本", "field", "测试") {
                     menu = R.menu.item

@@ -1,4 +1,4 @@
-package com.chooongg.formView.data
+package com.chooongg.formView.delegation
 
 interface IFormName {
     var name: Any?
