@@ -17,7 +17,7 @@ class FormDivider : BaseForm<Any>(null, null, null) {
     override var loneLine: Boolean = true
 
     @Deprecated("Disabled")
-    override var fillEdges: Boolean = false
+    override var fillEdgesPadding: Boolean = false
 
     @Deprecated("Disabled")
     override var showAtEdge: Boolean = false

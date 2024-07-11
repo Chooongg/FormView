@@ -11,7 +11,7 @@ open class InternalFormGroupTitle<CONTENT> : BaseForm<CONTENT>(null, null, null)
 
     override var loneLine: Boolean = true
 
-    override var fillEdges: Boolean = false
+    override var fillEdgesPadding: Boolean = false
 
     override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 

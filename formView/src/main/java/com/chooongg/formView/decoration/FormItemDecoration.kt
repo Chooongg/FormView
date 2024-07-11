@@ -43,12 +43,12 @@ class FormItemDecoration : ItemDecoration() {
         val end = holder.style.paddingInfo.end - holder.style.paddingInfo.endMedium
         when (item.boundary.start) {
             FormBoundary.GLOBAL -> {
-                _paddingStart = if (item.fillEdges && !isAlignmentToEdge) start else 0
+                _paddingStart = if (item.fillEdgesPadding && !isAlignmentToEdge) start else 0
                 _marginStart = if (isAlignmentToEdge) -start else 0
             }
 
             FormBoundary.MIDDLE -> {
-                _paddingStart = if (item.fillEdges && !isAlignmentToEdge) start else 0
+                _paddingStart = if (item.fillEdgesPadding && !isAlignmentToEdge) start else 0
                 _marginStart = if (holder.style.config.isIndependentItem) {
                     (start + end) / columns * index
                 } else holder.style.marginInfo.startMedium - if (isAlignmentToEdge) start else 0
@@ -56,12 +56,12 @@ class FormItemDecoration : ItemDecoration() {
         }
         when (item.boundary.end) {
             FormBoundary.GLOBAL -> {
-                _paddingEnd = if (item.fillEdges && !isAlignmentToEdge) end else 0
+                _paddingEnd = if (item.fillEdgesPadding && !isAlignmentToEdge) end else 0
                 _marginEnd = if (isAlignmentToEdge) -end else 0
             }
 
             FormBoundary.MIDDLE -> {
-                _paddingEnd = if (item.fillEdges && !isAlignmentToEdge) end else 0
+                _paddingEnd = if (item.fillEdgesPadding && !isAlignmentToEdge) end else 0
                 _marginEnd = if (holder.style.config.isIndependentItem) {
                     (start + end) / columns * (columns - 1 - index)
                 } else holder.style.marginInfo.endMedium - if (isAlignmentToEdge) end else 0
@@ -70,24 +70,24 @@ class FormItemDecoration : ItemDecoration() {
         val top = holder.style.paddingInfo.top - holder.style.paddingInfo.topMedium
         when (item.boundary.top) {
             FormBoundary.GLOBAL -> {
-                _paddingTop = if (item.fillEdges && !isAlignmentToEdge) top else 0
+                _paddingTop = if (item.fillEdgesPadding && !isAlignmentToEdge) top else 0
                 _marginTop = if (isAlignmentToEdge) -top else 0
             }
 
             FormBoundary.MIDDLE -> {
-                _paddingTop = if (item.fillEdges && !isAlignmentToEdge) top else 0
+                _paddingTop = if (item.fillEdgesPadding && !isAlignmentToEdge) top else 0
                 _marginTop = if (isAlignmentToEdge) 0 else holder.style.marginInfo.topMedium
             }
         }
         val bottom = holder.style.paddingInfo.bottom - holder.style.paddingInfo.bottomMedium
         when (item.boundary.bottom) {
             FormBoundary.GLOBAL -> {
-                _paddingBottom = if (item.fillEdges && !isAlignmentToEdge) bottom else 0
+                _paddingBottom = if (item.fillEdgesPadding && !isAlignmentToEdge) bottom else 0
                 _marginBottom = if (isAlignmentToEdge) -bottom else 0
             }
 
             FormBoundary.MIDDLE -> {
-                _paddingBottom = if (item.fillEdges && !isAlignmentToEdge) bottom else 0
+                _paddingBottom = if (item.fillEdgesPadding && !isAlignmentToEdge) bottom else 0
                 _marginBottom = if (isAlignmentToEdge) 0 else holder.style.marginInfo.bottomMedium
             }
         }

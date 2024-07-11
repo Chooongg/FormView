@@ -2,7 +2,6 @@ package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
 import androidx.annotation.GravityInt
-import com.chooongg.formView.FormColorStateListBlock
 import com.chooongg.formView.FormTypesetProviderBlock
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
@@ -12,7 +11,6 @@ import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
-import com.google.android.material.button.MaterialButton
 import kotlin.reflect.KClass
 
 abstract class BaseForm<CONTENT>(
@@ -103,7 +101,7 @@ abstract class BaseForm<CONTENT>(
     /**
      * 填充边缘
      */
-    open var fillEdges: Boolean = true
+    open var fillEdgesPadding: Boolean = true
 
 //    //</editor-fold>
 //
