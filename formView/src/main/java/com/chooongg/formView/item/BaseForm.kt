@@ -2,12 +2,15 @@ package com.chooongg.formView.item
 
 import androidx.annotation.GravityInt
 import com.chooongg.formView.FormColorStateListBlock
+import com.chooongg.formView.FormTypesetProviderBlock
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
 import com.chooongg.formView.enum.FormContentGravity
+import com.chooongg.formView.enum.FormEmsMode
+import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
-import com.chooongg.formView.typeset.AbstractFormTypeset
 import com.google.android.material.button.MaterialButton
 import kotlin.reflect.KClass
 
@@ -15,11 +18,11 @@ abstract class BaseForm<CONTENT>(
     /**
      * 名称
      */
-    var name: Any?,
+    override var name: Any?,
     /**
      * 字段
      */
-    var field: String?,
+    override var field: String?,
     /**
      * 内容
      */
@@ -32,12 +35,6 @@ abstract class BaseForm<CONTENT>(
      * 获取提供程序
      */
     abstract fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider>
-
-    @MaterialButton.IconGravity
-    override var iconGravity: Int? = null
-    override var icon: Any? = null
-    override var iconTint: FormColorStateListBlock? = null
-    override var iconSize: Int? = null
 
     /**
      * 提示
@@ -68,7 +65,24 @@ abstract class BaseForm<CONTENT>(
     /**
      * 排版
      */
-    open var typeset: AbstractFormTypeset? = null
+    open var typesetProvider: FormTypesetProviderBlock? = null
+    open var typeset: FormTypeset? = null
+
+    /**
+     * 名称Ems模式
+     */
+    open var emsMode: FormEmsMode? = null
+
+    /**
+     * 名称Ems
+     */
+    open var emsSize: FormEmsSize? = null
+
+    @MaterialButton.IconGravity
+    override var iconGravity: Int? = null
+    override var icon: Any? = null
+    override var iconTint: FormColorStateListBlock? = null
+    override var iconSize: Int? = null
 
     /**
      * 独占一行
@@ -100,19 +114,7 @@ abstract class BaseForm<CONTENT>(
      * 填充边缘
      */
     open var fillEdges: Boolean = true
-//
-//    @GravityInt
-//    open fun getContentGravity(holder: FormItemViewHolder, isMultiColumn: Boolean): Int {
-//        return if (isMultiColumn) {
-//            contentGravity?.multiColumnGravity ?: gravity
-//            ?: holder.layout.contentGravity?.multiColumnGravity
-//            ?: holder.style.config.contentGravity.multiColumnGravity
-//        } else {
-//            contentGravity?.gravity ?: gravity ?: holder.layout.contentGravity?.gravity
-//            ?: holder.style.config.contentGravity.gravity
-//        }
-//    }
-//
+
 //    //</editor-fold>
 //
 //    //<editor-fold desc="联动 Linkage">

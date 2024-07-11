@@ -22,7 +22,7 @@
     </declare-styleable>
 
     <attr name="formTextAppearanceGroupTitle" format="reference" />
-    <attr name="formTextAppearanceDetailTitle" format="reference" />
+    <attr name="formTextAppearanceChildTitle" format="reference" />
     <attr name="formTextAppearanceName" format="reference" />
     <attr name="formTextAppearanceContent" format="reference" />
     <attr name="formTextAppearanceHint" format="reference" />

@@ -14,7 +14,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class FormLayoutManager internal constructor(context: Context, formColumn: Int) :
-    GridLayoutManager(context, 27720) {
+    GridLayoutManager(context, FormManager.FORM_SPAN_COUNT) {
 
     private var adapter: FormAdapter? = null
 

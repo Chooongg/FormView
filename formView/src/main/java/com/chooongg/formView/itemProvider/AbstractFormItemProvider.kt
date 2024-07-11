@@ -8,6 +8,9 @@ import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 
+/**
+ * Item Provider
+ */
 abstract class AbstractFormItemProvider : FormTextAppearanceHelper {
 
     abstract fun onCreateViewHolder(style: AbstractFormStyle, parent: ViewGroup): View
@@ -31,10 +34,9 @@ abstract class AbstractFormItemProvider : FormTextAppearanceHelper {
             (holder.bindingAdapter as? AbstractFormPart<*>)?._adapter?.columnCount ?: 1
         return if (columnCount > 1) {
             item.gravity ?: item.contentGravity?.multiColumnGravity
-            ?: holder.typeset.contentGravity?.multiColumnGravity
             ?: holder.style.config.contentGravity.multiColumnGravity
         } else {
-            item.gravity ?: item.contentGravity?.gravity ?: holder.typeset.contentGravity?.gravity
+            item.gravity ?: item.contentGravity?.gravity
             ?: holder.style.config.contentGravity.gravity
         }
     }

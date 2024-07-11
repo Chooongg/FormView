@@ -13,14 +13,13 @@ import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.button.MaterialButton
 
-class FormNormalGroupTitleProvider : AbstractGroupTitleProvider() {
+class FormNormalChildTitleProvider : AbstractGroupTitleProvider() {
     override fun onCreateViewHolder(style: AbstractFormStyle, parent: ViewGroup): View =
         LinearLayoutCompat(parent.context).also {
-            it.id = R.id.formContentView
             it.orientation = LinearLayoutCompat.HORIZONTAL
             it.addView(MaterialButton(it.context).apply {
                 id = R.id.formNameView
-                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceGroupTitle))
+                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceChildTitle))
                 insetTop = 0
                 insetBottom = 0
                 isClickable = false

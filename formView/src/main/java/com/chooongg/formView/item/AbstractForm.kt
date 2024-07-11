@@ -6,10 +6,11 @@ import com.chooongg.formView.FormOnMenuItemClickListener
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.IFormIcon
 import com.chooongg.formView.data.IFormMenu
+import com.chooongg.formView.data.IFormName
 import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormVisibilityMode
 
-abstract class AbstractForm : AbstractFormId(), IFormIcon, IFormMenu {
+abstract class AbstractForm : AbstractFormId(), IFormName, IFormIcon, IFormMenu {
 
     //<editor-fold desc="基础 Basic">
 

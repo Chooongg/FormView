@@ -11,6 +11,7 @@ import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.math.abs
+import kotlin.reflect.KClass
 
 class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -127,7 +128,6 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
 
     fun partCount(): Int = data.concatAdapter.adapters.size
 
-
     //<editor-fold desc="类型池 TypePool">
 
     private val stylePool = ArrayList<AbstractFormStyle>()
@@ -136,7 +136,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     private val itemTypePool = ArrayList<Triple<Int, Int, Int>>()
 
     internal fun getItemViewType4Pool(
-        part: AbstractFormPart<*>, style: AbstractFormStyle, item: BaseForm<*>
+        part: AbstractFormPart<*>, style: AbstractFormStyle, item: BaseForm<*>, columnCount: Int
     ): Int {
         val styleIndex = stylePool.indexOf(style).let {
             if (it < 0) {
@@ -144,10 +144,29 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
                 stylePool.lastIndex
             } else it
         }
-        val typeset = item.typeset ?: style.config.typeset
-        val typesetIndex = typesetPool.indexOf(typeset).let {
+        val typesetClass: KClass<out AbstractFormTypeset> = if (item.typesetProvider != null) {
+            item.typesetProvider!!.invoke(
+                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
+            )
+        } else if (item.typeset != null) {
+            if (item.spanSize >= FormManager.FORM_SPAN_COUNT) item.typeset!!.typeset
+            else item.typeset!!.multipleTypeset
+        } else if (style.config.typesetProvider != null) {
+            style.config.typesetProvider!!.invoke(
+                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
+            )
+        } else if (part._adapter?.data?.typesetProvider != null) {
+            part._adapter!!.data.typesetProvider!!.invoke(
+                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
+            )
+        } else if (item.spanSize >= FormManager.FORM_SPAN_COUNT) {
+            style.config.typeset.typeset
+        } else {
+            style.config.typeset.multipleTypeset
+        }
+        val typesetIndex = typesetPool.indexOfFirst { it::class == typesetClass }.let {
             if (it < 0) {
-                typesetPool.add(typeset)
+                typesetPool.add(typesetClass.java.getDeclaredConstructor().newInstance())
                 typesetPool.lastIndex
             } else it
         }

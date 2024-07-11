@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Form.TextAppearance.GroupTitle" parent="TextAppearance.Material3.HeadlineMedium" />
+    <style name="Form.TextAppearance.GroupTitle" parent="TextAppearance.Material3.HeadlineSmall" />
 
-    <style name="Form.TextAppearance.DetailTitle" parent="TextAppearance.Material3.TitleLarge" />
+    <style name="Form.TextAppearance.ChildTitle" parent="TextAppearance.Material3.TitleMedium" />
 
     <style name="Form.TextAppearance.Name" parent="TextAppearance.Material3.BodyMedium" />
 

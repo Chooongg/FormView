@@ -2,11 +2,12 @@ package com.chooongg.formView.data
 
 import androidx.recyclerview.widget.ConcatAdapter
 import com.chooongg.formView.FormManager
+import com.chooongg.formView.FormTypesetProviderBlock
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.part.FormPart
 import com.chooongg.formView.style.AbstractFormStyle
 
-class FormData {
+class FormData(block: (FormData.() -> Unit)? = null) {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
@@ -22,6 +23,16 @@ class FormData {
             }
         }
 
+    var typesetProvider: FormTypesetProviderBlock? = null
+        private set
+
+    init {
+        block?.invoke(this)
+    }
+
+    fun getWrappedAdapterAndPosition(globalPosition: Int) =
+        concatAdapter.getWrappedAdapterAndPosition(globalPosition)
+
     fun addPart(part: AbstractFormPart<*>) {
         part.isEnabled = isEnabled
         concatAdapter.addAdapter(part)
@@ -31,7 +42,7 @@ class FormData {
         style: AbstractFormStyle = FormManager.defaultStyle, block: FormPartData.() -> Unit
     ) = addPart(FormPart(style, FormPartData().apply(block), isEnabled))
 
-
-    fun getWrappedAdapterAndPosition(globalPosition: Int) =
-        concatAdapter.getWrappedAdapterAndPosition(globalPosition)
+    fun typesetProvider(block: FormTypesetProviderBlock?) {
+        typesetProvider = block
+    }
 }

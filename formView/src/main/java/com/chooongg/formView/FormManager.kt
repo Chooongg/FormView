@@ -11,6 +11,8 @@ import com.chooongg.formView.style.FormAlignedStyle
 
 object FormManager {
 
+    const val FORM_SPAN_COUNT = 27720
+
     const val FLAG_PAYLOAD_UPDATE_CONTENT = "form_flag_update_content"
     const val FLAG_PAYLOAD_UPDATE_BOUNDARY = "form_flag_update_boundary"
     const val FLAG_PAYLOAD_ERROR_NOTIFY = "form_flag_error_notify"

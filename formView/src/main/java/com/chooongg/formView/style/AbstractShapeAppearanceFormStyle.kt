@@ -1,20 +1,15 @@
 package com.chooongg.formView.style
 
-import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
-import com.chooongg.formView.config.AbstractFormConfig
-import com.chooongg.formView.config.FormNoneConfig
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.config.AbstractFormStyleConfig
 import com.chooongg.formView.item.BaseForm
-import com.chooongg.ktx.attrColor
 import com.chooongg.ktx.attrResourcesId
 import com.google.android.material.shape.AbsoluteCornerSize
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 
-abstract class AbstractShapeAppearanceFormStyle(config: AbstractFormConfig) :
+abstract class AbstractShapeAppearanceFormStyle(config: AbstractFormStyleConfig) :
     AbstractFormStyle(config) {
 
     protected lateinit var shapeAppearanceModel: ShapeAppearanceModel

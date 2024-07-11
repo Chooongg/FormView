@@ -25,7 +25,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     val style: AbstractFormStyle, var data: DATA, isEnabled: Boolean
 ) : RecyclerView.Adapter<FormItemViewHolder>() {
 
-    private val spanCount = 27720
+    private val spanCount = FormManager.FORM_SPAN_COUNT
 
     var isEnabled = isEnabled
         internal set(value) {
@@ -236,7 +236,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     override fun getItemCount() = differ.currentList.size
 
     override fun getItemViewType(position: Int) =
-        adapter.getItemViewType4Pool(this, style, differ.currentList[position])
+        adapter.getItemViewType4Pool(this, style, differ.currentList[position], columnCount)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormItemViewHolder {
         val style = adapter.getStyle(viewType).apply { createSizeInfo(parent.context) }

@@ -8,6 +8,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMarginsRelative
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormItemViewHolder
@@ -37,7 +38,7 @@ class FormItemDecoration : ItemDecoration() {
         var _paddingBottom = 0
         val isAlignmentToEdge = holder.style.isAlignmentToEdge()
         val columns = (pair.first as AbstractFormPart<*>).columnCount
-        val index = item.spanIndex / (27720 / columns)
+        val index = item.spanIndex / (FormManager.FORM_SPAN_COUNT / columns)
         val start = holder.style.paddingInfo.start - holder.style.paddingInfo.startMedium
         val end = holder.style.paddingInfo.end - holder.style.paddingInfo.endMedium
         when (item.boundary.start) {

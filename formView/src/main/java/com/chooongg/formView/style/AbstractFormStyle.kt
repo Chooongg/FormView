@@ -5,13 +5,13 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
-import com.chooongg.formView.config.AbstractFormConfig
+import com.chooongg.formView.config.AbstractFormStyleConfig
 import com.chooongg.formView.data.FormSizeInfo
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.ktx.attrResourcesId
 
-abstract class AbstractFormStyle(val config: AbstractFormConfig) {
+abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
 
     private var isInstanceSizeInfo: Boolean = false
 

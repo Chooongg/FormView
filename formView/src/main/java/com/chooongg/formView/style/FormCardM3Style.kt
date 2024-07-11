@@ -1,14 +1,14 @@
 package com.chooongg.formView.style
 
 import android.content.res.ColorStateList
-import com.chooongg.formView.config.AbstractFormConfig
-import com.chooongg.formView.config.FormNoneConfig
+import com.chooongg.formView.config.AbstractFormStyleConfig
+import com.chooongg.formView.config.FormStyleConfig
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.ktx.attrColor
 import com.google.android.material.shape.MaterialShapeDrawable
 
-class FormCardM3Style(config: AbstractFormConfig = FormNoneConfig()) :
+class FormCardM3Style(config: AbstractFormStyleConfig = FormStyleConfig()) :
     AbstractShapeAppearanceFormStyle(config) {
 
     override fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) {

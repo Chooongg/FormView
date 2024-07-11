@@ -52,7 +52,7 @@ class FormView @JvmOverloads constructor(
     }
 
     fun setData(block: FormData.() -> Unit) {
-        setData(FormData().apply(block))
+        setData(FormData(block))
     }
 
     override fun setEnabled(enabled: Boolean) {

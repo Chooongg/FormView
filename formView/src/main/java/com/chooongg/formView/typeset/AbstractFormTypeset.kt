@@ -3,27 +3,17 @@ package com.chooongg.formView.typeset
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsMode
-import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
-import com.google.android.material.button.MaterialButton
 
 abstract class AbstractFormTypeset : FormTextAppearanceHelper {
 
     abstract var emsMode: FormEmsMode
-
-    open var emsSize: FormEmsSize? = null
-
-    @MaterialButton.IconGravity
-    open var nameIconGravity: Int? = null
-
-    open var contentGravity: FormContentGravity? = null
 
     abstract fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup
 
@@ -44,9 +34,10 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
     open fun onTypesetRecycled(holder: FormItemViewHolder) = Unit
 
     protected fun configNameView(
-        holder: FormItemViewHolder, nameView: TextView
+        holder: FormItemViewHolder, item: BaseForm<*>, nameView: TextView
     ) {
-        val size = emsSize ?: holder.style.config.emsSize
+        val size = item.emsSize ?: holder.style.config.emsSize
+        val emsMode = item.emsMode ?: emsMode
         val isMultiColumn = false
         when (if (isMultiColumn) emsMode.multiColumnMode else emsMode.mode) {
             FormEmsMode.MIN -> {
@@ -87,8 +78,7 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
         if (other !is AbstractFormTypeset) return false
         if (other.javaClass != javaClass) return false
         if (other.emsMode != emsMode) return false
-        if (other.emsSize != emsSize) return false
-        return other.contentGravity == contentGravity
+        return true
     }
 
     override fun hashCode(): Int = javaClass.hashCode()

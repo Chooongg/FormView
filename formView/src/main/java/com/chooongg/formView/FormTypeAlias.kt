@@ -5,12 +5,17 @@ import android.content.res.ColorStateList
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.IntRange
 import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.typeset.AbstractFormTypeset
+import kotlin.reflect.KClass
 
 /**
  * 列代理Block
  */
-typealias FormColumnProviderBlock = (formColumn: Int) -> Int
+typealias FormColumnProviderBlock = (formColumn: Int) -> @receiver:IntRange(from = 1, to = 10) Int
+
+typealias FormTypesetProviderBlock = (formColumn: Int, itemColumn: Int) -> KClass<out AbstractFormTypeset>
 
 /**
  * 颜色Block

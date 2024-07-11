@@ -4,14 +4,14 @@ import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
-import com.chooongg.formView.config.AbstractFormConfig
-import com.chooongg.formView.config.FormNoneConfig
+import com.chooongg.formView.config.AbstractFormStyleConfig
+import com.chooongg.formView.config.FormStyleConfig
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.BaseForm
 import com.chooongg.formView.widget.OutlinedCutoutDrawable
 import com.chooongg.ktx.isLayoutRtl
 
-class FormCardStrokeStyle(config: AbstractFormConfig = FormNoneConfig()) :
+class FormCardStrokeStyle(config: AbstractFormStyleConfig = FormStyleConfig()) :
     AbstractShapeAppearanceFormStyle(config) {
 
     @ColorRes

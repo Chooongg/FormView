@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentHomeBinding
-import com.chooongg.formView.config.FormIndependentItemConfig
+import com.chooongg.formView.config.FormIndependentStyleConfig
+import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.style.FormCardM3Style
 import com.chooongg.formView.style.FormCardStrokeStyle
 import com.chooongg.formView.text
+import com.chooongg.formView.typeset.FormHorizontalTypeset
 import com.chooongg.formView.typeset.FormNoneTypeset
 
 class HomeFragment : Fragment() {
@@ -37,13 +39,18 @@ class HomeFragment : Fragment() {
             true
         }
         binding.formView.setData {
+            typesetProvider { formColumn, itemColumn ->
+                FormHorizontalTypeset::class
+            }
             addPart(FormCardStrokeStyle()) {
+                name = "NormalPart"
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
                 text("文本", "field", "测试") {
                     loneLine = true
                     menu = R.menu.main
+                    typeset = FormTypeset(FormNoneTypeset::class)
                 }
                 text("文本", "field", "测试") {
                     menu = R.menu.item
@@ -53,7 +60,8 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试")
                 text("文本", "field", "测试")
             }
-            addPart(FormCardStrokeStyle(FormIndependentItemConfig())) {
+            addPart(FormCardStrokeStyle(FormIndependentStyleConfig())) {
+                name = "Independent"
                 columnProvider = { if (it == 1) 2 else it }
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
@@ -121,7 +129,6 @@ class HomeFragment : Fragment() {
             addPart {
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
-                    typeset = FormNoneTypeset()
                 }
                 text("文本", "field", "测试") {
                     loneLine = true
@@ -138,7 +145,6 @@ class HomeFragment : Fragment() {
             addPart {
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
-                    typeset = FormNoneTypeset()
                 }
                 text("文本", "field", "测试") {
                     loneLine = true

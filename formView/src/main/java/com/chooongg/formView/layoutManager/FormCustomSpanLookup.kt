@@ -1,10 +1,11 @@
 package com.chooongg.formView.layoutManager
 
 import android.util.SparseIntArray
+import com.chooongg.formView.FormManager
 
 interface FormCustomSpanLookup {
 
-    val spanCount get() = 27720
+    val spanCount get() = FormManager.FORM_SPAN_COUNT
 
     fun getSpanIndexCache(): SparseIntArray
 
