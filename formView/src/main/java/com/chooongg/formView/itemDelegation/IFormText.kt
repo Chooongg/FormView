@@ -1,4 +1,4 @@
-package com.chooongg.formView.delegation
+package com.chooongg.formView.itemDelegation
 
 interface IFormText {
     /**

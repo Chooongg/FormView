@@ -11,9 +11,9 @@ import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
-import com.chooongg.formView.delegation.IFormPart
+import com.chooongg.formView.data.IFormPart
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.InternalFormNone
 import com.chooongg.formView.style.AbstractFormStyle
 import kotlinx.coroutines.CoroutineScope
@@ -53,9 +53,12 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         override fun onRemoved(p: Int, count: Int) = notifyItemRangeRemoved(p, count)
         override fun onInserted(p: Int, count: Int) = notifyItemRangeInserted(p, count)
         override fun onMoved(from: Int, to: Int) = notifyItemMoved(from, to)
-    }, AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<BaseForm<*>>() {
-        override fun areContentsTheSame(oldItem: BaseForm<*>, newItem: BaseForm<*>) = true
-        override fun areItemsTheSame(oldItem: BaseForm<*>, newItem: BaseForm<*>) =
+    }, AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<AbstractFormItem<*>>() {
+        override fun areContentsTheSame(
+            oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>
+        ) = true
+
+        override fun areItemsTheSame(oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>) =
             oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
 
@@ -64,12 +67,12 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         val columnCount = columnCount
         val groups = getOriginalItemList()
         val ignoreListCount = getIgnoreListCount()
-        val tempList = ArrayList<ArrayList<BaseForm<*>>>()
+        val tempList = ArrayList<ArrayList<AbstractFormItem<*>>>()
         groups.forEach { group ->
-            val tempGroup = ArrayList<BaseForm<*>>()
+            val tempGroup = ArrayList<AbstractFormItem<*>>()
             group.forEach { item ->
                 item.resetInternalData()
-                item.enabled = item.isEnable(isEnabled)
+                item.isEnabled = item.isEnable(isEnabled)
 //                item.initialize()
                 if (item.isVisible(isEnabled)) {
                     when (item) {
@@ -85,9 +88,9 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             }
             tempList.add(tempGroup)
         }
-        val tempList2 = ArrayList<List<BaseForm<*>>>()
+        val tempList2 = ArrayList<List<AbstractFormItem<*>>>()
         tempList.forEach { group ->
-            val tempGroup = ArrayList<BaseForm<*>>()
+            val tempGroup = ArrayList<AbstractFormItem<*>>()
             var spanIndex = 0
             group.forEachIndexed { position, item ->
                 item.spanIndex = spanIndex
@@ -137,10 +140,10 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                 localPosition++
             }
         }
-        differ.submitList(ArrayList<BaseForm<*>>().apply { tempList2.forEach { addAll(it) } }) {
+        differ.submitList(ArrayList<AbstractFormItem<*>>().apply { tempList2.forEach { addAll(it) } }) {
             calculateBoundary()
             differ.currentList.forEachIndexed { index, item ->
-                if (item.lastEnabled != item.enabled) {
+                if (item.lastEnabled != item.isEnabled) {
                     notifyItemChanged(index)
                 } else {
                     notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
@@ -221,17 +224,17 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         }
     }
 
-    protected abstract fun getOriginalItemList(): List<List<BaseForm<*>>>
+    protected abstract fun getOriginalItemList(): List<List<AbstractFormItem<*>>>
 
     protected open fun getIgnoreListCount(): Int = 0
 
-    operator fun get(position: Int): BaseForm<*> = differ.currentList[position]
+    operator fun get(position: Int): AbstractFormItem<*> = differ.currentList[position]
 
-    abstract operator fun get(field: String): BaseForm<*>?
+    abstract operator fun get(field: String): AbstractFormItem<*>?
 
     abstract operator fun contains(field: String): Boolean
 
-    abstract operator fun contains(item: BaseForm<*>): Boolean
+    abstract operator fun contains(item: AbstractFormItem<*>): Boolean
 
     override fun getItemCount() = differ.currentList.size
 

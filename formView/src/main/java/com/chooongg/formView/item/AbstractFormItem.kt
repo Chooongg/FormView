@@ -1,19 +1,26 @@
 package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
-import androidx.annotation.GravityInt
 import com.chooongg.formView.FormTypesetProviderBlock
+import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
-import com.chooongg.formView.enum.FormContentGravity
-import com.chooongg.formView.enum.FormEmsMode
-import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormTypeset
+import com.chooongg.formView.enum.FormVisibilityMode
+import com.chooongg.formView.itemDelegation.FormContentGravityImpl
+import com.chooongg.formView.itemDelegation.FormIconImpl
+import com.chooongg.formView.itemDelegation.FormMenuImpl
+import com.chooongg.formView.itemDelegation.IFormContentGravity
+import com.chooongg.formView.itemDelegation.IFormField
+import com.chooongg.formView.itemDelegation.IFormIcon
+import com.chooongg.formView.itemDelegation.IFormMenu
+import com.chooongg.formView.itemDelegation.IFormName
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
 import kotlin.reflect.KClass
 
-abstract class BaseForm<CONTENT>(
+abstract class AbstractFormItem<CONTENT>(
     /**
      * 名称
      */
@@ -26,7 +33,8 @@ abstract class BaseForm<CONTENT>(
      * 内容
      */
     var content: CONTENT?
-) : AbstractForm() {
+) : AbstractFormId(), IFormName, IFormField, IFormIcon by FormIconImpl(),
+    IFormMenu by FormMenuImpl(), IFormContentGravity by FormContentGravityImpl() {
 
     //<editor-fold desc="基础 Basic">
 
@@ -41,9 +49,43 @@ abstract class BaseForm<CONTENT>(
     val extensionContent = FormExtensionMap()
 
     /**
+     * 可见模式
+     */
+    var visibilityMode: FormVisibilityMode = FormVisibilityMode.ALWAYS
+
+    /**
+     * 启用模式
+     */
+    var enableMode: FormEnableMode = FormEnableMode.ENABLED
+
+    /**
      * 是否为必填项
      */
     var required: Boolean = false
+
+    /**
+     * 是否可见
+     */
+    internal fun isVisible(adapterEnabled: Boolean): Boolean {
+        return when (visibilityMode) {
+            FormVisibilityMode.ALWAYS -> true
+            FormVisibilityMode.ENABLED -> adapterEnabled
+            FormVisibilityMode.DISABLED -> !adapterEnabled
+            FormVisibilityMode.NEVER -> false
+        }
+    }
+
+    /**
+     * 是否可用
+     */
+    internal fun isEnable(adapterEnabled: Boolean): Boolean {
+        return when (enableMode) {
+            FormEnableMode.ALWAYS -> true
+            FormEnableMode.ENABLED -> adapterEnabled
+            FormEnableMode.DISABLED -> !adapterEnabled
+            FormEnableMode.NEVER -> false
+        }
+    }
 
     /**
      * 获取内容文本
@@ -62,15 +104,7 @@ abstract class BaseForm<CONTENT>(
     open var typesetProvider: FormTypesetProviderBlock? = null
     open var typeset: FormTypeset? = null
 
-    /**
-     * 名称Ems模式
-     */
-    open var emsMode: FormEmsMode? = null
-
-    /**
-     * 名称Ems
-     */
-    open var emsSize: FormEmsSize? = null
+    override var nameGravity: Int? = null
 
     /**
      * 独占一行
@@ -88,23 +122,12 @@ abstract class BaseForm<CONTENT>(
     open var autoFill = false
 
     /**
-     * 重力
-     */
-    @GravityInt
-    open var gravity: Int? = null
-
-    /**
-     * 内容重力
-     */
-    open var contentGravity: FormContentGravity? = null
-
-    /**
      * 填充边缘
      */
     open var fillEdgesPadding: Boolean = true
 
-//    //</editor-fold>
-//
+    //</editor-fold>
+
 //    //<editor-fold desc="联动 Linkage">
 //
 //    /**
@@ -234,7 +257,7 @@ abstract class BaseForm<CONTENT>(
     /**
      * 真实的启用状态
      */
-    var enabled: Boolean? = null
+    var isEnabled: Boolean? = null
         internal set
 
     /**
@@ -269,6 +292,15 @@ abstract class BaseForm<CONTENT>(
     var spanSize: Int = -1
         internal set
 
+    var columnCount: Int = -1
+        internal set
+
+    var columnIndex: Int = -1
+        internal set
+
+    var columnSize: Int = -1
+        internal set
+
     var lastEnabled: Boolean? = null
         internal set
 
@@ -277,7 +309,7 @@ abstract class BaseForm<CONTENT>(
 
     @CallSuper
     open fun resetInternalData() {
-        lastEnabled = enabled
+        lastEnabled = isEnabled
         lastBoundary = boundary
         groupCount = -1
         groupIndex = -1
@@ -286,4 +318,12 @@ abstract class BaseForm<CONTENT>(
     }
 
     //</editor-fold>
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AbstractFormItem<*>) return false
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }

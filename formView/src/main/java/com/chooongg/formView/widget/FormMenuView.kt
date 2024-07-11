@@ -15,7 +15,7 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormViewHolder
-import com.chooongg.formView.delegation.IFormMenu
+import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.ktx.doOnClick
 import com.google.android.material.button.MaterialButton

@@ -1,4 +1,4 @@
-package com.chooongg.formView.delegation
+package com.chooongg.formView.itemDelegation
 
 import com.chooongg.formView.FormOnMenuCreatedListener
 import com.chooongg.formView.FormOnMenuItemClickListener
@@ -56,10 +56,16 @@ interface IFormMenu {
         }
     }
 
+    /**
+     * 菜单创建时监听
+     */
     fun setMenuOnCreatedListener(listener: FormOnMenuCreatedListener?) {
         onMenuCreatedListener = listener
     }
 
+    /**
+     * 菜单点击时监听
+     */
     fun setMenuOnItemCLickListener(listener: FormOnMenuItemClickListener?) {
         onMenuItemClickListener = listener
     }

@@ -8,7 +8,7 @@ import com.chooongg.formView.R
 import com.chooongg.formView.config.AbstractFormStyleConfig
 import com.chooongg.formView.data.FormSizeInfo
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 
 abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
@@ -39,11 +39,11 @@ abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
 
     open fun onStyleAttachedToWindow(holder: FormItemViewHolder) = Unit
 
-    open fun onBindStyleBefore(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+    open fun onBindStyleBefore(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
 
-    open fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+    open fun onBindStyle(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
 
-    open fun onBindStyleAfter(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+    open fun onBindStyleAfter(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
 
     open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
 

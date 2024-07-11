@@ -6,8 +6,9 @@ import android.widget.TextView
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.delegation.IFormMenu
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.formView.itemDelegation.IFormEms
+import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
@@ -24,10 +25,10 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
 
     open fun onTypesetAttachedToWindow(holder: FormItemViewHolder) = Unit
 
-    open fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) = Unit
+    open fun onBindTypeset(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
 
     open fun onBindTypeset(
-        holder: FormItemViewHolder, item: BaseForm<*>, payloads: MutableList<Any>
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, payloads: MutableList<Any>
     ) = onBindTypeset(holder, item)
 
     open fun onTypesetDetachedFromWindow(holder: FormItemViewHolder) = Unit
@@ -35,10 +36,10 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
     open fun onTypesetRecycled(holder: FormItemViewHolder) = Unit
 
     protected fun configNameView(
-        holder: FormItemViewHolder, item: BaseForm<*>, nameView: TextView
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, nameView: TextView
     ) {
-        val size = item.emsSize ?: holder.style.config.emsSize
-        val emsMode = item.emsMode ?: emsMode
+        val size = (item as? IFormEms)?.emsSize ?: holder.style.config.emsSize
+        val emsMode = (item as? IFormEms)?.emsMode ?: emsMode
         val isMultiColumn = false
         when (if (isMultiColumn) emsMode.multiColumnMode else emsMode.mode) {
             FormEmsMode.MIN -> {
@@ -63,16 +64,16 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
     }
 
     protected fun configMenuView(
-        holder: FormItemViewHolder, item: BaseForm<*>, menuView: FormMenuView
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
     ) {
         if (item !is IFormMenu) {
             menuView.gone()
             return
         }
-        menuView.setMenu(item, item.enabled ?: false) { view, menu ->
+        menuView.setMenu(item, item.isEnabled ?: false) { view, menu ->
             val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
             if (isIntercept != true) {
-                (holder.bindingAdapter as? AbstractFormPart<*>)?._adapter?.onMenuClickListener?.invoke(
+                (holder.bindingAdapter as? AbstractFormPart<*>)?._recyclerView?.onMenuClickListener?.invoke(
                     holder.itemView, view, menu, item
                 )
             }

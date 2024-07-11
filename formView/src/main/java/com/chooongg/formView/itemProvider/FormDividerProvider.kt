@@ -3,7 +3,7 @@ package com.chooongg.formView.itemProvider
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.style.AbstractFormStyle
 
 class FormDividerProvider : AbstractFormItemProvider() {
@@ -12,6 +12,8 @@ class FormDividerProvider : AbstractFormItemProvider() {
         return View(parent.context)
     }
 
-    override fun onBindViewHolder(holder: FormItemViewHolder, item: BaseForm<*>, enabled: Boolean) {
+    override fun onBindViewHolder(
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+    ) {
     }
 }

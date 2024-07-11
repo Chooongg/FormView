@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
 import com.chooongg.formView.config.AbstractFormStyleConfig
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -26,7 +26,7 @@ abstract class AbstractShapeAppearanceFormStyle(config: AbstractFormStyleConfig)
         return null
     }
 
-    fun getShapeAppearanceModel(view: View, item: BaseForm<*>) =
+    fun getShapeAppearanceModel(view: View, item: AbstractFormItem<*>) =
         ShapeAppearanceModel.builder().apply {
             if (view.layoutDirection != View.LAYOUT_DIRECTION_RTL) {
                 setTopLeftCornerSize(

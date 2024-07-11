@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
@@ -45,12 +45,6 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
 
     internal var columnCount: Int = 1
 
-    var onItemClickListener: FormOnItemClickListener? = null
-        private set
-
-    var onMenuClickListener: FormOnMenuClickListener? = null
-        private set
-
     @SuppressLint("NotifyDataSetChanged")
     fun update() {
         data.concatAdapter.adapters.forEach {
@@ -65,7 +59,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
         return data.concatAdapter.getItemId(position)
     }
 
-    fun getItem(position: Int): BaseForm<*>? {
+    fun getItem(position: Int): AbstractFormItem<*>? {
         val pair = data.concatAdapter.getWrappedAdapterAndPosition(position)
         val part = pair.first as? AbstractFormPart<*> ?: return null
         return part[pair.second]
@@ -136,7 +130,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     private val itemTypePool = ArrayList<Triple<Int, Int, Int>>()
 
     internal fun getItemViewType4Pool(
-        part: AbstractFormPart<*>, style: AbstractFormStyle, item: BaseForm<*>, columnCount: Int
+        part: AbstractFormPart<*>, style: AbstractFormStyle, item: AbstractFormItem<*>, columnCount: Int
     ): Int {
         val styleIndex = stylePool.indexOf(style).let {
             if (it < 0) {
@@ -144,6 +138,8 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
                 stylePool.lastIndex
             } else it
         }
+
+
         val typesetClass: KClass<out AbstractFormTypeset> = if (item.typesetProvider != null) {
             item.typesetProvider!!.invoke(
                 columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)

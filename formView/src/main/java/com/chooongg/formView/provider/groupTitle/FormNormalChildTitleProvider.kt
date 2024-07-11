@@ -9,7 +9,8 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.formView.itemDelegation.IFormIcon
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.button.MaterialButton
 
@@ -40,7 +41,9 @@ class FormNormalChildTitleProvider : AbstractGroupTitleProvider() {
             }, LinearLayoutCompat.LayoutParams(-1, -2))
         }
 
-    override fun onBindViewHolder(holder: FormItemViewHolder, item: BaseForm<*>, enabled: Boolean) {
+    override fun onBindViewHolder(
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+    ) {
         with(holder.getView<LinearLayoutCompat>(R.id.formContentView)) {
             setPaddingRelative(
                 when (item.boundary.start) {
@@ -59,12 +62,14 @@ class FormNormalChildTitleProvider : AbstractGroupTitleProvider() {
             )
         }
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
-            iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity
-            val nameIcon = FormManager.parseIcon(context, item.icon)
-            if (nameIcon != null) {
-                icon = nameIcon
-                iconTint = item.iconTint?.invoke(context) ?: textColors
-            } else icon = null
+            if (item is IFormIcon) {
+                iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity
+                val nameIcon = FormManager.parseIcon(context, item.icon)
+                if (nameIcon != null) {
+                    icon = nameIcon
+                    iconTint = item.iconTint?.invoke(context) ?: textColors
+                } else icon = null
+            }
             text = holder.style.config.nameFormatter.format(context, item)
         }
     }

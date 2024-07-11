@@ -6,7 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.IntRange
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.reflect.KClass
 
@@ -30,7 +30,7 @@ typealias FormColorStateListBlock = Context.() -> ColorStateList?
 /**
  * 项目点击时的监听
  */
-typealias FormOnItemClickListener = (view: View, item: BaseForm<*>) -> Unit
+typealias FormOnItemClickListener = (view: View, item: AbstractFormItem<*>) -> Unit
 
 /**
  * 菜单创建后监听
@@ -45,7 +45,7 @@ typealias FormOnMenuItemClickListener = (view: View, menuView: View, menuItem: M
 /**
  * 菜单点击时的监听
  */
-typealias FormOnMenuClickListener = (view: View, menuView: View, menuItem: MenuItem, item: BaseForm<*>) -> Unit
+typealias FormOnMenuClickListener = (view: View, menuView: View, menuItem: MenuItem, item: AbstractFormItem<*>) -> Unit
 
 /**
  * 联动Block

@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
             }
             addPart(FormCardStrokeStyle()) {
                 name = "NormalPart"
+                isEnabled = false
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
@@ -54,7 +55,7 @@ class HomeFragment : Fragment() {
                     typeset = FormTypeset(FormNoneTypeset::class)
                 }
                 divider {
-
+                    icon = 1
                 }
                 text("文本", "field", "测试") {
                     menu = R.menu.item

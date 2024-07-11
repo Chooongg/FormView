@@ -1,10 +1,10 @@
 package com.chooongg.formView.data
 
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 
 interface IFormGroupData {
 
-    fun getItems(): MutableList<BaseForm<*>>
+    fun getItems(): MutableList<AbstractFormItem<*>>
 
-    fun addItem(item: BaseForm<*>) = getItems().add(item)
+    fun addItem(item: AbstractFormItem<*>) = getItems().add(item)
 }

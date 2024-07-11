@@ -7,7 +7,7 @@ import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.typeset.FormNoneTypeset
 import kotlin.reflect.KClass
 
-open class InternalFormGroupTitle<CONTENT> : BaseForm<CONTENT>(null, null, null) {
+open class InternalFormGroupTitle<CONTENT> : AbstractFormItem<CONTENT>(null, null, null) {
 
     override var loneLine: Boolean = true
 

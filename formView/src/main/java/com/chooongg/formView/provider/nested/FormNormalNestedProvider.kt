@@ -3,7 +3,7 @@ package com.chooongg.formView.provider.nested
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.style.AbstractFormStyle
 
 class FormNormalNestedProvider : AbstractNestedProvider() {
@@ -11,6 +11,8 @@ class FormNormalNestedProvider : AbstractNestedProvider() {
         return View(parent.context)
     }
 
-    override fun onBindViewHolder(holder: FormItemViewHolder, item: BaseForm<*>, enabled: Boolean) {
+    override fun onBindViewHolder(
+        holder: FormItemViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+    ) {
     }
 }

@@ -7,7 +7,7 @@ import androidx.annotation.DimenRes
 import com.chooongg.formView.config.AbstractFormStyleConfig
 import com.chooongg.formView.config.FormStyleConfig
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.widget.OutlinedCutoutDrawable
 import com.chooongg.ktx.isLayoutRtl
 
@@ -20,7 +20,7 @@ class FormCardStrokeStyle(config: AbstractFormStyleConfig = FormStyleConfig()) :
     @DimenRes
     var strokeWidthResId: Int? = null
 
-    override fun onBindStyle(holder: FormItemViewHolder, item: BaseForm<*>) {
+    override fun onBindStyle(holder: FormItemViewHolder, item: AbstractFormItem<*>) {
         val shape = getShapeAppearanceModel(holder.itemView, item)
         val shapeDrawable =
             OutlinedCutoutDrawable(shape, item.boundary, holder.itemView.isLayoutRtl)

@@ -6,7 +6,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 
@@ -21,7 +21,7 @@ class FormNoneTypeset : AbstractFormTypeset() {
             }, LinearLayoutCompat.LayoutParams(-2, -2))
         }
 
-    override fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) {
+    override fun onBindTypeset(holder: FormItemViewHolder, item: AbstractFormItem<*>) {
         configMenuView(holder, item, holder.getView(R.id.formMenuView))
     }
 

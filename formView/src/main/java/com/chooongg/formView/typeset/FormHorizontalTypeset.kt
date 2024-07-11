@@ -9,8 +9,8 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormItemViewHolder
-import com.chooongg.formView.delegation.IFormIcon
-import com.chooongg.formView.item.BaseForm
+import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.formView.itemDelegation.IFormIcon
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 import com.google.android.material.button.MaterialButton
@@ -49,7 +49,7 @@ class FormHorizontalTypeset : AbstractFormTypeset() {
             }, LinearLayoutCompat.LayoutParams(-2, -2))
         }
 
-    override fun onBindTypeset(holder: FormItemViewHolder, item: BaseForm<*>) {
+    override fun onBindTypeset(holder: FormItemViewHolder, item: AbstractFormItem<*>) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
             if (item is IFormIcon) {
                 iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity

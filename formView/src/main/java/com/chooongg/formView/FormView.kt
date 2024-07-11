@@ -18,12 +18,18 @@ class FormView @JvmOverloads constructor(
             FormLayoutManager(context, it.getInt(R.styleable.FormView_formColumn, 1))
         }
 
-    @setparam:IntRange(from = 1, to = 10)
+    @setparam:IntRange(from = 1, to = FormManager.FORM_COLUMN_COUNT.toLong())
     var formColumn: Int
         get() = layoutManager.formColumn
         set(value) {
             layoutManager.formColumn = value
         }
+
+    var onItemClickListener: FormOnItemClickListener? = null
+        private set
+
+    var onMenuClickListener: FormOnMenuClickListener? = null
+        private set
 
     init {
         layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)

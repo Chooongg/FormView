@@ -18,8 +18,8 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
 
     private var adapter: FormAdapter? = null
 
-    @IntRange(from = 1, to = 10)
-    var formColumn: Int = min(max(formColumn, 1), 10)
+    @IntRange(from = 1, to = FormManager.FORM_COLUMN_COUNT.toLong())
+    var formColumn: Int = min(max(formColumn, 1), FormManager.FORM_COLUMN_COUNT)
         set(value) {
             adapter?.columnCount = value
             if (field != value) {
@@ -42,6 +42,7 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
             override fun getSpanSize(position: Int): Int {
                 val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
                 return when (val part = pair.first) {
+//                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnSize * part[pair.second].columnSize
                     is AbstractFormPart<*> -> part[pair.second].spanSize
                     is FormCustomSpanLookup -> part.getSpanSize(position, formColumn)
                     else -> spanCount
@@ -51,6 +52,7 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
             override fun getSpanIndex(position: Int, spanCount: Int): Int {
                 val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
                 return when (val part = pair.first) {
+//                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnSize * part[pair.second].columnIndex
                     is AbstractFormPart<*> -> part[pair.second].spanIndex
                     is FormCustomSpanLookup -> part.getSpanIndex(position, formColumn)
                     else -> 0
