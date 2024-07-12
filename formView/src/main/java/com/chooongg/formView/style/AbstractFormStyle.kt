@@ -24,12 +24,27 @@ abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
     /**
      * 是否装饰空项目
      */
-    open fun isDecorateNoneItem(): Boolean = true
+    open fun isDecorateNoneItem(): Boolean = !config.isIndependentItem
 
     /**
-     * 内容是否与边缘对齐
+     * 内容是否与边缘垂直对齐
      */
-    open fun isAlignmentToEdge(): Boolean = false
+    open fun isFillVerticalMargin(): Boolean = true
+
+    /**
+     * 内容是否与边缘水平对齐
+     */
+    open fun isFillHorizontalMargin(): Boolean = true
+
+    /**
+     * 是否填充垂直Padding
+     */
+    open fun isFillVerticalPadding(): Boolean = true
+
+    /**
+     * 是否填充水平Padding
+     */
+    open fun isFillHorizontalPadding(): Boolean = true
 
     open fun onCreateStyle(parent: ViewGroup): ViewGroup? = null
 

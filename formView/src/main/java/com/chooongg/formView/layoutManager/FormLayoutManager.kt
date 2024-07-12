@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.part.AbstractFormPart
+import com.chooongg.ktx.logE
 import kotlin.math.max
 import kotlin.math.min
 
@@ -41,23 +42,27 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
 
             override fun getSpanSize(position: Int): Int {
                 val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
-                return when (val part = pair.first) {
-//                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnSize * part[pair.second].columnSize
-                    is AbstractFormPart<*> -> part[pair.second].spanSize
+                val size = when (val part = pair.first) {
+                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnCount * part[pair.second].columnSize
                     is FormCustomSpanLookup -> part.getSpanSize(position, formColumn)
                     else -> spanCount
                 }
+                logE("Form", "Position: ${position}, Size: ${size}")
+                return size
             }
 
             override fun getSpanIndex(position: Int, spanCount: Int): Int {
                 val pair = adapter?.data?.getWrappedAdapterAndPosition(position) ?: return spanCount
-                return when (val part = pair.first) {
-//                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnSize * part[pair.second].columnIndex
-                    is AbstractFormPart<*> -> part[pair.second].spanIndex
+                val index = when (val part = pair.first) {
+                    is AbstractFormPart<*> -> spanCount / part[pair.second].columnCount * part[pair.second].columnIndex
                     is FormCustomSpanLookup -> part.getSpanIndex(position, formColumn)
                     else -> 0
                 }
+                logE("Form", "Position: ${position}, Index: ${index}")
+                return index
             }
+
+            override fun isSpanIndexCacheEnabled() = false
         }
     }
 

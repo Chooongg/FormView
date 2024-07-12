@@ -2,22 +2,22 @@ package com.chooongg.formView.item
 
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
-import com.chooongg.formView.itemProvider.InternalFormNoneProvider
+import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.typeset.FormNoneTypeset
 import kotlin.reflect.KClass
 
-class InternalFormNone internal constructor(spanIndex: Int, spanSize: Int) :
-    AbstractFormItem<Any>(null, null, null) {
+class FormPlaceHolder() : AbstractFormItem<Any>(null, null, null) {
 
     override val id: String = ""
     override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 
-    init {
-        this.spanIndex = spanIndex
-        this.spanSize = spanSize
+    internal constructor(columnCount: Int, columnIndex: Int, columnSize: Int) : this() {
+        this.columnCount = columnCount
+        this.columnIndex = columnIndex
+        this.columnSize = columnSize
     }
 
     override fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider> =
-        InternalFormNoneProvider::class
+        FormPlaceHolderProvider::class
 }

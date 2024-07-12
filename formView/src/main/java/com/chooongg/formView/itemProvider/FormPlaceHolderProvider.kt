@@ -6,7 +6,7 @@ import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.style.AbstractFormStyle
 
-class InternalFormNoneProvider : AbstractFormItemProvider() {
+class FormPlaceHolderProvider : AbstractFormItemProvider() {
 
     override fun onCreateViewHolder(style: AbstractFormStyle, parent: ViewGroup) =
         View(parent.context)

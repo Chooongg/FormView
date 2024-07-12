@@ -122,6 +122,19 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
 
     fun partCount(): Int = data.concatAdapter.adapters.size
 
+    fun visiblePartIndexOf(part: AbstractFormPart<*>): Int {
+        var index = 0
+        data.concatAdapter.adapters.forEach {
+            if (it is AbstractFormPart<*>) {
+                if (it == part) return index else if (it.data.isEnabled) index++
+            }
+        }
+        return -1
+    }
+
+    fun visiblePartCount(): Int =
+        data.concatAdapter.adapters.count { it is AbstractFormPart<*> && it.data.isEnabled }
+
     //<editor-fold desc="类型池 TypePool">
 
     private val stylePool = ArrayList<AbstractFormStyle>()
@@ -130,7 +143,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     private val itemTypePool = ArrayList<Triple<Int, Int, Int>>()
 
     internal fun getItemViewType4Pool(
-        part: AbstractFormPart<*>, style: AbstractFormStyle, item: AbstractFormItem<*>, columnCount: Int
+        part: AbstractFormPart<*>, style: AbstractFormStyle, item: AbstractFormItem<*>
     ): Int {
         val styleIndex = stylePool.indexOf(style).let {
             if (it < 0) {
@@ -138,24 +151,20 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
                 stylePool.lastIndex
             } else it
         }
-
-
         val typesetClass: KClass<out AbstractFormTypeset> = if (item.typesetProvider != null) {
-            item.typesetProvider!!.invoke(
-                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
-            )
+            item.typesetProvider!!.invoke(item.columnCount, item.columnSize)
         } else if (item.typeset != null) {
-            if (item.spanSize >= FormManager.FORM_SPAN_COUNT) item.typeset!!.typeset
+            if (item.columnSize >= item.columnCount) item.typeset!!.typeset
             else item.typeset!!.multipleTypeset
         } else if (style.config.typesetProvider != null) {
             style.config.typesetProvider!!.invoke(
-                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
+                item.columnCount, item.columnSize
             )
         } else if (part._adapter?.data?.typesetProvider != null) {
             part._adapter!!.data.typesetProvider!!.invoke(
-                columnCount, item.spanSize / (FormManager.FORM_SPAN_COUNT / columnCount)
+                item.columnCount, item.columnSize
             )
-        } else if (item.spanSize >= FormManager.FORM_SPAN_COUNT) {
+        } else if (item.columnSize >= item.columnCount) {
             style.config.typeset.typeset
         } else {
             style.config.typeset.multipleTypeset

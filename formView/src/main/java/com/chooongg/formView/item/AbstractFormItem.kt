@@ -1,6 +1,7 @@
 package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
+import com.chooongg.formView.FormColumnProviderBlock
 import com.chooongg.formView.FormTypesetProviderBlock
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
@@ -110,6 +111,16 @@ abstract class AbstractFormItem<CONTENT>(
      * 独占一行
      */
     open var loneLine = false
+
+    /**
+     * 新的一行
+     */
+    open var newLine = false
+
+    /**
+     * 列宽提供器
+     */
+    open var columnProvider: FormColumnProviderBlock? = null
 
     /**
      * 在边缘显示
@@ -286,12 +297,6 @@ abstract class AbstractFormItem<CONTENT>(
     var positionInGroup = -1
         internal set
 
-    var spanIndex: Int = -1
-        internal set
-
-    var spanSize: Int = -1
-        internal set
-
     var columnCount: Int = -1
         internal set
 
@@ -315,6 +320,9 @@ abstract class AbstractFormItem<CONTENT>(
         groupIndex = -1
         countInGroup = -1
         positionInGroup = -1
+        columnCount = -1
+        columnIndex = -1
+        columnSize = -1
     }
 
     //</editor-fold>

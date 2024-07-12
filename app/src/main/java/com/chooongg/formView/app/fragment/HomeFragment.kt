@@ -66,6 +66,7 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试")
             }
             addPart(FormCardStrokeStyle(FormIndependentStyleConfig())) {
+                isEnabled = true
                 name = "Independent"
                 columnProvider = { if (it == 1) 2 else it }
                 text("文本", "field", "测试") {
@@ -84,6 +85,7 @@ class HomeFragment : Fragment() {
                 }
             }
             addPart(FormCardM3Style()) {
+                isEnabled = false
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
@@ -100,6 +102,7 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试")
             }
             addPart(FormCardM3Style()) {
+                isEnabled = false
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
@@ -116,6 +119,7 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试")
             }
             addPart(FormCardM3Style()) {
+                isEnabled = false
                 text("文本", "field", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
