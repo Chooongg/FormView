@@ -8,8 +8,11 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrColor
 import com.google.android.material.shape.MaterialShapeDrawable
 
-class FormCardM3Style(config: AbstractFormStyleConfig = FormStyleConfig()) :
-    AbstractShapeAppearanceFormStyle(config) {
+class FormCardM3Style() : AbstractShapeAppearanceFormStyle() {
+
+    constructor(block: FormCardM3Style.() -> Unit) : this() {
+        block.invoke(this)
+    }
 
     override fun onBindStyle(holder: FormItemViewHolder, item: AbstractFormItem<*>) {
         val shapeDrawable = MaterialShapeDrawable(getShapeAppearanceModel(holder.itemView, item))

@@ -60,7 +60,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         ) = true
 
         override fun areItemsTheSame(oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>) =
-            oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
+            oldItem.id == newItem.id && oldItem.fixedTypeset == newItem.fixedTypeset
     }).build())
 
     fun update() {

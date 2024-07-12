@@ -1,10 +1,11 @@
 package com.chooongg.formView.style
 
-import com.chooongg.formView.config.AbstractFormStyleConfig
-import com.chooongg.formView.config.FormStyleConfig
+class FormNoneStyle() : AbstractFormStyle() {
 
-class FormNoneStyle(config: AbstractFormStyleConfig = FormStyleConfig()) :
-    AbstractFormStyle(config) {
+    constructor(block: FormNoneStyle.() -> Unit) : this() {
+        block.invoke(this)
+    }
+
     override fun isDecorateNoneItem(): Boolean = false
     override fun isFillVerticalMargin() = false
     override fun isFillHorizontalMargin() = false

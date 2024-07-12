@@ -145,12 +145,11 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
                 stylePool.lastIndex
             } else it
         }
-        val typesetClass: KClass<out AbstractFormTypeset> = if (item.typesetProvider != null) {
-            item.typesetProvider!!.invoke(item.columnCount, item.columnSize)
-        } else if (item.typeset != null) {
-            if (item.columnSize >= item.columnCount) item.typeset!!.typeset
-            else item.typeset!!.multipleTypeset
-        } else if (style.config.typesetProvider != null) {
+        val typesetClass: KClass<out AbstractFormTypeset> = if (item.typeset != null) {
+            item.typeset!!.invoke(item.columnCount, item.columnSize)
+        } else if (item.fixedTypeset != null) {
+            item.fixedTypeset!!
+        } else if (style.config.typeset != null) {
             style.config.typesetProvider!!.invoke(
                 item.columnCount, item.columnSize
             )

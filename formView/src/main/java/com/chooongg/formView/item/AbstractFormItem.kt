@@ -7,7 +7,6 @@ import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
 import com.chooongg.formView.enum.FormEnableMode
-import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.itemDelegation.FormContentGravityImpl
 import com.chooongg.formView.itemDelegation.FormIconImpl
@@ -19,6 +18,7 @@ import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.itemDelegation.IFormName
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
+import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.reflect.KClass
 
 abstract class AbstractFormItem<CONTENT>(
@@ -102,8 +102,8 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 排版
      */
-    open var typesetProvider: FormTypesetProviderBlock? = null
-    open var typeset: FormTypeset? = null
+    open var fixedTypeset: KClass<out AbstractFormTypeset>? = null
+    open var typeset: FormTypesetProviderBlock? = null
 
     override var nameGravity: Int? = null
 

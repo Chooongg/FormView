@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentHomeBinding
-import com.chooongg.formView.config.FormIndependentStyleConfig
 import com.chooongg.formView.divider
-import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.style.FormCardM3Style
 import com.chooongg.formView.style.FormCardStrokeStyle
@@ -52,7 +50,7 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试") {
                     loneLine = true
                     menu = R.menu.main
-                    typeset = FormTypeset(FormNoneTypeset::class)
+                    fixedTypeset = FormNoneTypeset::class
                 }
                 divider {
                     icon = 1
@@ -65,7 +63,7 @@ class HomeFragment : Fragment() {
                 text("文本", "field", "测试")
                 text("文本", "field", "测试")
             }
-            addPart(FormCardStrokeStyle(FormIndependentStyleConfig())) {
+            addPart(FormCardStrokeStyle { isIndependentItem = true }) {
                 isEnabled = true
                 name = "Independent"
                 columnProvider = { if (it == 1) 2 else it }

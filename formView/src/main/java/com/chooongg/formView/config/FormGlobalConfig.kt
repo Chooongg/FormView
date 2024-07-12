@@ -1,9 +1,9 @@
 package com.chooongg.formView.config
 
 import android.view.Gravity
+import com.chooongg.formView.FormTypesetProviderBlock
 import com.chooongg.formView.enum.FormContentGravity
 import com.chooongg.formView.enum.FormEmsSize
-import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.formatter.name.NormalFormNameFormatter
 import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
@@ -61,5 +61,7 @@ class FormGlobalConfig {
     /**
      * 排版
      */
-    var typeset: FormTypeset = FormTypeset(FormHorizontalTypeset::class, FormVerticalTypeset::class)
+    var typeset: FormTypesetProviderBlock = { columnCount, columnSize ->
+        if (columnSize > 1) FormVerticalTypeset::class else FormHorizontalTypeset::class
+    }
 }

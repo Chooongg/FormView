@@ -8,6 +8,7 @@ import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.itemProvider.FormButtonProvider
 import com.chooongg.formView.part.AbstractFormPart
+import com.chooongg.formView.typeset.AbstractFormTypeset
 import com.chooongg.formView.typeset.FormNoneTypeset
 import kotlin.reflect.KClass
 
@@ -24,10 +25,10 @@ class FormButton(
     override var fillEdgesPadding: Boolean = false
 
     @Deprecated("Disabled")
-    override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
+    override var fixedTypeset: KClass<out AbstractFormTypeset>? = FormNoneTypeset::class
 
     @Deprecated("Disabled")
-    override var typesetProvider: FormTypesetProviderBlock? = null
+    override var typeset: FormTypesetProviderBlock? = null
 
     override fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider> {
         return FormButtonProvider::class

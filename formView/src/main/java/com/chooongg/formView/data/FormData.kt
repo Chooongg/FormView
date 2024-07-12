@@ -3,11 +3,13 @@ package com.chooongg.formView.data
 import androidx.recyclerview.widget.ConcatAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormTypesetProviderBlock
+import com.chooongg.formView.config.FormConfigImpl
+import com.chooongg.formView.config.IFormConfig
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.part.FormPart
 import com.chooongg.formView.style.AbstractFormStyle
 
-class FormData(block: (FormData.() -> Unit)? = null) {
+class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfigImpl() {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()

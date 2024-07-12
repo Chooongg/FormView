@@ -30,9 +30,7 @@ abstract class AbstractFormStyleConfig {
 
     protected abstract val _isIndependentItem: Boolean?
 
-    protected abstract val _typeset: FormTypeset?
-
-    protected abstract val _typesetProvider: FormTypesetProviderBlock?
+    protected abstract val _typeset: FormTypesetProviderBlock?
 
     val nameFormatter: FormNameFormatter
         get() = _nameFormatter ?: FormManager.globalConfig.nameFormatter
@@ -58,11 +56,8 @@ abstract class AbstractFormStyleConfig {
     val isIndependentItem: Boolean
         get() = _isIndependentItem ?: FormManager.globalConfig.isIndependentItem
 
-    val typeset: FormTypeset
+    val typeset: FormTypesetProviderBlock
         get() = _typeset ?: FormManager.globalConfig.typeset
-
-    val typesetProvider: FormTypesetProviderBlock?
-        get() = _typesetProvider
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -77,7 +72,6 @@ abstract class AbstractFormStyleConfig {
         if (_contentGravity != other._contentGravity) return false
         if (_isIndependentItem != other._isIndependentItem) return false
         if (_typeset != other._typeset) return false
-        if (_typesetProvider != other._typesetProvider) return false
         return true
     }
 

@@ -5,13 +5,14 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
-import com.chooongg.formView.config.AbstractFormStyleConfig
+import com.chooongg.formView.config.FormConfigImpl
+import com.chooongg.formView.config.IFormConfig
 import com.chooongg.formView.data.FormSizeInfo
 import com.chooongg.formView.holder.FormItemViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 
-abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
+abstract class AbstractFormStyle : IFormConfig by FormConfigImpl() {
 
     private var isInstanceSizeInfo: Boolean = false
 
@@ -24,7 +25,7 @@ abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
     /**
      * 是否装饰空项目
      */
-    open fun isDecorateNoneItem(): Boolean = !config.isIndependentItem
+    open fun isDecorateNoneItem(): Boolean = !isIndependentItem
 
     /**
      * 内容是否与边缘垂直对齐
@@ -108,7 +109,7 @@ abstract class AbstractFormStyle(val config: AbstractFormStyleConfig) {
     override fun equals(other: Any?): Boolean {
         if (other !is AbstractFormStyle) return false
         if (other.javaClass != javaClass) return false
-        return other.config == config
+        return equalsConfig(other)
     }
 
     override fun hashCode(): Int = javaClass.hashCode()

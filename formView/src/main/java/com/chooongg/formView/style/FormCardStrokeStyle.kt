@@ -11,8 +11,11 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.widget.OutlinedCutoutDrawable
 import com.chooongg.ktx.isLayoutRtl
 
-class FormCardStrokeStyle(config: AbstractFormStyleConfig = FormStyleConfig()) :
-    AbstractShapeAppearanceFormStyle(config) {
+class FormCardStrokeStyle() : AbstractShapeAppearanceFormStyle() {
+
+    constructor(block: FormCardStrokeStyle.() -> Unit) : this() {
+        block.invoke(this)
+    }
 
     @ColorRes
     var strokeColorResId: Int? = null

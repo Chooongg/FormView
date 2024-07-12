@@ -9,8 +9,7 @@ import com.chooongg.ktx.attrResourcesId
 import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.ShapeAppearanceModel
 
-abstract class AbstractShapeAppearanceFormStyle(config: AbstractFormStyleConfig) :
-    AbstractFormStyle(config) {
+abstract class AbstractShapeAppearanceFormStyle : AbstractFormStyle() {
 
     protected lateinit var shapeAppearanceModel: ShapeAppearanceModel
 
