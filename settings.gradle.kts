@@ -24,6 +24,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FormView2"
+rootProject.name = "FormView"
 include(":app")
 include(":formView")
