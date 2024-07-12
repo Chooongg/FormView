@@ -116,12 +116,6 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
         localPosition: Int
     ) = data.concatAdapter.findRelativeAdapterPositionIn(adapter, viewHolder, localPosition)
 
-    fun partIndexOf(part: AbstractFormPart<*>): Int {
-        return data.concatAdapter.adapters.indexOfFirst { it == part }
-    }
-
-    fun partCount(): Int = data.concatAdapter.adapters.size
-
     fun visiblePartIndexOf(part: AbstractFormPart<*>): Int {
         var index = 0
         data.concatAdapter.adapters.forEach {
