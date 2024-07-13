@@ -7,20 +7,23 @@ import android.view.ViewGroup
 import com.chooongg.formView.R
 import com.chooongg.formView.config.FormConfigImpl
 import com.chooongg.formView.config.IFormConfig
+import com.chooongg.formView.config.IFormItemObtainAttr
 import com.chooongg.formView.data.FormSizeInfo
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 
-abstract class AbstractFormStyle : IFormConfig by FormConfigImpl() {
+abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(),IFormItemObtainAttr {
 
     private var isInstanceSizeInfo: Boolean = false
 
-    var marginInfo: FormSizeInfo = FormSizeInfo()
+    var margin: FormSizeInfo = FormSizeInfo()
         private set
 
-    var paddingInfo: FormSizeInfo = FormSizeInfo()
+    var padding: FormSizeInfo = FormSizeInfo()
         private set
+
+    open var isIndependentItem: Boolean = false
 
     /**
      * 是否装饰空项目
@@ -53,23 +56,23 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl() {
         styleView.addView(childView)
     }
 
-    open fun onStyleAttachedToWindow(holder: FormItemViewHolder) = Unit
+    open fun onStyleAttachedToWindow(holder: FormViewHolder) = Unit
 
-    open fun onBindStyleBefore(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
+    open fun onBindStyleBefore(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 
-    open fun onBindStyle(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
+    open fun onBindStyle(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 
-    open fun onBindStyleAfter(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
+    open fun onBindStyleAfter(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 
-    open fun onStyleDetachedFromWindow(holder: FormItemViewHolder) = Unit
+    open fun onStyleDetachedFromWindow(holder: FormViewHolder) = Unit
 
-    open fun onStyleRecycled(holder: FormItemViewHolder) = Unit
+    open fun onStyleRecycled(holder: FormViewHolder) = Unit
 
     fun createSizeInfo(context: Context) {
         if (isInstanceSizeInfo) return
         isInstanceSizeInfo = true
-        marginInfo = onCreateMargin(context)
-        paddingInfo = onCreatePadding(context)
+        margin = onCreateMargin(context)
+        padding = onCreatePadding(context)
     }
 
     open fun onCreateMargin(context: Context): FormSizeInfo {
@@ -109,6 +112,7 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl() {
     override fun equals(other: Any?): Boolean {
         if (other !is AbstractFormStyle) return false
         if (other.javaClass != javaClass) return false
+        if (other.isIndependentItem != isIndependentItem) return false
         return equalsConfig(other)
     }
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chooongg.formView.app.databinding.ActivityMainBinding
 import com.chooongg.formView.app.fragment.AboutFragment
+import com.chooongg.formView.app.fragment.ComponentsFragment
 import com.chooongg.formView.app.fragment.HomeFragment
 import com.google.android.material.navigation.NavigationBarView
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val fragments = arrayListOf(
-        HomeFragment(), AboutFragment()
+        HomeFragment(), ComponentsFragment(), AboutFragment()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun onFragmentSelected(itemId: Int): Boolean {
         when (itemId) {
             R.id.nav_home -> binding.viewPager.setCurrentItem(0, false)
-            R.id.nav_about -> binding.viewPager.setCurrentItem(1, false)
+            R.id.nav_components -> binding.viewPager.setCurrentItem(1, false)
+            R.id.nav_about -> binding.viewPager.setCurrentItem(2, false)
             else -> return false
         }
         return true

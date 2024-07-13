@@ -2,11 +2,10 @@ package com.chooongg.formView.style
 
 class FormAlignedStyle() : AbstractFormStyle() {
 
-    constructor(block: FormAlignedStyle.() -> Unit) : this() {
-        block.invoke(this)
-    }
+    @Deprecated("Disable")
+    override var isIndependentItem: Boolean = false
 
     override fun isDecorateNoneItem(): Boolean = false
-    override fun isFillVerticalMargin() = false
-    override fun isFillVerticalPadding(): Boolean = true
+    override fun isFillVerticalMargin() = true
+    override fun isFillVerticalPadding(): Boolean = false
 }

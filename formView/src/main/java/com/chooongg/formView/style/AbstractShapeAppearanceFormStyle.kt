@@ -3,7 +3,7 @@ package com.chooongg.formView.style
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
-import com.chooongg.formView.config.AbstractFormStyleConfig
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 import com.google.android.material.shape.AbsoluteCornerSize
@@ -23,6 +23,10 @@ abstract class AbstractShapeAppearanceFormStyle : AbstractFormStyle() {
             shapeAppearanceModel = ShapeAppearanceModel.builder(parent.context, resId, 0).build()
         }
         return null
+    }
+
+    override fun onBindStyleBefore(holder: FormViewHolder, item: AbstractFormItem<*>) {
+        holder.itemView.clipToOutline = true
     }
 
     fun getShapeAppearanceModel(view: View, item: AbstractFormItem<*>) =

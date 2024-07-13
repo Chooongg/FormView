@@ -10,7 +10,7 @@ class FormPart(
 
     override fun getOriginalItemList(): List<List<AbstractFormItem<*>>> = if (data.isEnabled) {
         val itemList = ArrayList<AbstractFormItem<*>>()
-        if (!style.config.isIndependentItem) {
+        if (!style.isIndependentItem) {
             val title = data.getGroupTitleItem()
             if (title != null) itemList.add(title)
         }

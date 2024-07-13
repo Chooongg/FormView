@@ -14,7 +14,7 @@ class FormLabel(name: Any?) : AbstractFormItem<Any>(name, null, null) {
     @StyleRes
     var buttonStyle: Int? = null
 
-    override var fixedTypeset: KClass<out AbstractFormTypeset>? = FormNoneTypeset::class
+    override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 
     override fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider> {
         return FormButtonProvider::class

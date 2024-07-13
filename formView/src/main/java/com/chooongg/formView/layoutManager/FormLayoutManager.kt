@@ -47,7 +47,6 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
                     is FormCustomSpanLookup -> part.getSpanSize(position, formColumn)
                     else -> spanCount
                 }
-                logE("Form", "Position: ${position}, Size: ${size}")
                 return size
             }
 
@@ -58,7 +57,6 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
                     is FormCustomSpanLookup -> part.getSpanIndex(position, formColumn)
                     else -> 0
                 }
-                logE("Form", "Position: ${position}, Index: ${index}")
                 return index
             }
 
@@ -80,12 +78,6 @@ class FormLayoutManager internal constructor(context: Context, formColumn: Int) 
 
     override fun getPaddingEnd(): Int =
         if (layoutDirection == View.LAYOUT_DIRECTION_RTL) padding.left else padding.right
-
-    override fun onMeasure(
-        recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int
-    ) {
-        super.onMeasure(recycler, state, widthSpec, heightSpec)
-    }
 
     override fun onAttachedToWindow(recyclerView: RecyclerView) {
         adapter = recyclerView.adapter as? FormAdapter

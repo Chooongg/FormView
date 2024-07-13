@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.helper.FormTextAppearanceHelper
-import com.chooongg.formView.holder.FormViewHolder
+import com.chooongg.formView.holder.BaseFormViewHolder
 import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.ktx.doOnClick
@@ -56,7 +56,7 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
 
     private class Adapter(
         private val style: AbstractFormStyle
-    ) : RecyclerView.Adapter<FormViewHolder>(), FormTextAppearanceHelper {
+    ) : RecyclerView.Adapter<BaseFormViewHolder>(), FormTextAppearanceHelper {
 
         private var menus: List<MenuItemImpl> = emptyList()
 
@@ -77,7 +77,7 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
         override fun getItemCount(): Int = menus.size
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            FormViewHolder(MaterialButton(
+            BaseFormViewHolder(MaterialButton(
                 parent.context, null, com.google.android.material.R.attr.borderlessButtonStyle
             ).apply {
                 setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
@@ -85,22 +85,22 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
                 insetTop = 0
                 insetBottom = 0
                 minimumWidth =
-                    style.paddingInfo.startMedium + style.paddingInfo.endMedium + iconSize
+                    style.padding.startMedium + style.padding.endMedium + iconSize
                 minimumHeight =
-                    style.paddingInfo.topMedium + style.paddingInfo.bottomMedium + iconSize
+                    style.padding.topMedium + style.padding.bottomMedium + iconSize
                 minWidth = minimumWidth
                 minHeight = minimumHeight
                 iconPadding = 0
                 setPaddingRelative(
-                    style.paddingInfo.startMedium,
-                    style.paddingInfo.topMedium,
-                    style.paddingInfo.endMedium,
-                    style.paddingInfo.bottomMedium
+                    style.padding.startMedium,
+                    style.padding.topMedium,
+                    style.padding.endMedium,
+                    style.padding.bottomMedium
                 )
             })
 
         @SuppressLint("RestrictedApi")
-        override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BaseFormViewHolder, position: Int) {
             val menu = menus[position]
             val icon = menu.getIcon()
             (holder.itemView as MaterialButton).let {

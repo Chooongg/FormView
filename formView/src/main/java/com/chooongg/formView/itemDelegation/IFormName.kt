@@ -1,6 +1,6 @@
 package com.chooongg.formView.itemDelegation
 
-import androidx.annotation.GravityInt
+import com.chooongg.formView.enum.FormGravity
 
 interface IFormName {
 
@@ -12,6 +12,5 @@ interface IFormName {
     /**
      * 名字重力
      */
-    @setparam:GravityInt
-    var nameGravity: Int?
+    var nameGravity: FormGravity?
 }

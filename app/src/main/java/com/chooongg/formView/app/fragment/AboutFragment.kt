@@ -23,6 +23,6 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.webView.background = null
         binding.webView.settings.javaScriptEnabled = true
-        binding.webView.loadUrl("https://github.com/Chooongg/FormView2")
+        binding.webView.loadUrl("https://github.com/Chooongg/FormView")
     }
 }

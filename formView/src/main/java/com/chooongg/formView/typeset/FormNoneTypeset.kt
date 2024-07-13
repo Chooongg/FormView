@@ -5,14 +5,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 
-class FormNoneTypeset : AbstractFormTypeset() {
+class FormNoneTypeset() : AbstractFormTypeset() {
 
-    override var emsMode: FormEmsMode = FormEmsMode(FormEmsMode.NONE)
+    override var emsMode: FormEmsMode = FormEmsMode.NONE
+
+    constructor(block: FormNoneTypeset.() -> Unit) : this() {
+        block.invoke(this)
+    }
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup =
         LinearLayoutCompat(parent.context).also {
@@ -21,7 +25,7 @@ class FormNoneTypeset : AbstractFormTypeset() {
             }, LinearLayoutCompat.LayoutParams(-2, -2))
         }
 
-    override fun onBindTypeset(holder: FormItemViewHolder, item: AbstractFormItem<*>) {
+    override fun onBindTypeset(holder: FormViewHolder, item: AbstractFormItem<*>) {
         configMenuView(holder, item, holder.getView(R.id.formMenuView))
     }
 

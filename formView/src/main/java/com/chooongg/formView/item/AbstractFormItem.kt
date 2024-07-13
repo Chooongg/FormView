@@ -1,24 +1,26 @@
 package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
-import com.chooongg.formView.FormColumnProviderBlock
-import com.chooongg.formView.FormTypesetProviderBlock
+import com.chooongg.formView.FormColumnBlock
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
 import com.chooongg.formView.enum.FormEnableMode
+import com.chooongg.formView.enum.FormGravity
+import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.itemDelegation.FormContentGravityImpl
+import com.chooongg.formView.itemDelegation.FormEmsImpl
 import com.chooongg.formView.itemDelegation.FormIconImpl
 import com.chooongg.formView.itemDelegation.FormMenuImpl
 import com.chooongg.formView.itemDelegation.IFormContentGravity
+import com.chooongg.formView.itemDelegation.IFormEms
 import com.chooongg.formView.itemDelegation.IFormField
 import com.chooongg.formView.itemDelegation.IFormIcon
 import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.itemDelegation.IFormName
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
-import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.reflect.KClass
 
 abstract class AbstractFormItem<CONTENT>(
@@ -34,7 +36,7 @@ abstract class AbstractFormItem<CONTENT>(
      * 内容
      */
     var content: CONTENT?
-) : AbstractFormId(), IFormName, IFormField, IFormIcon by FormIconImpl(),
+) : AbstractFormId(), IFormName, IFormField, IFormIcon by FormIconImpl(), IFormEms by FormEmsImpl(),
     IFormMenu by FormMenuImpl(), IFormContentGravity by FormContentGravityImpl() {
 
     //<editor-fold desc="基础 Basic">
@@ -102,10 +104,12 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 排版
      */
-    open var fixedTypeset: KClass<out AbstractFormTypeset>? = null
-    open var typeset: FormTypesetProviderBlock? = null
+    open var typeset: FormTypeset? = null
 
-    override var nameGravity: Int? = null
+    /**
+     * 名称重力
+     */
+    override var nameGravity: FormGravity? = null
 
     /**
      * 独占一行
@@ -120,7 +124,7 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 列宽提供器
      */
-    open var columnProvider: FormColumnProviderBlock? = null
+    open var columnProvider: FormColumnBlock? = null
 
     /**
      * 在边缘显示

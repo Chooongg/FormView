@@ -1,9 +1,10 @@
 package com.chooongg.formView.data
 
-import com.chooongg.formView.FormColumnProviderBlock
+import com.chooongg.formView.FormColumnBlock
+import com.chooongg.formView.itemDelegation.IFormName
 
-interface IFormPart {
+interface IFormPart : IFormName {
     var isEnabled: Boolean
     var fixedColumn: Int?
-    var columnProvider: FormColumnProviderBlock?
+    var columnProvider: FormColumnBlock?
 }

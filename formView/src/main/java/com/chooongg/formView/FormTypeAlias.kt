@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.GravityInt
 import androidx.annotation.IntRange
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.part.AbstractFormPart
@@ -14,9 +15,13 @@ import kotlin.reflect.KClass
 /**
  * 列代理Block
  */
-typealias FormColumnProviderBlock = (columnCount: Int) -> @receiver:IntRange(from = 1, to = 10) Int
+typealias FormColumnBlock = (columnCount: Int) -> @receiver:IntRange(from = 1, to = 10) Int
 
-typealias FormTypesetProviderBlock = (columnCount: Int, columnSize: Int) -> KClass<out AbstractFormTypeset>
+typealias FormTypesetBlock = (columnCount: Int, columnSize: Int) -> KClass<out AbstractFormTypeset>
+
+typealias FormEmsSizeBlock = (columnCount: Int, columnSize: Int) -> @receiver:IntRange(from = 1) Int
+
+typealias FormGravityBlock = (columnCount: Int, columnSize: Int) -> @receiver:GravityInt Int
 
 /**
  * 颜色Block

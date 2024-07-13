@@ -12,7 +12,7 @@ class FormPlaceHolder() : AbstractFormItem<Any>(null, null, null) {
 
     override val id: String = ""
 
-    override var fixedTypeset: KClass<out AbstractFormTypeset>? = FormNoneTypeset::class
+    override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 
     internal constructor(columnCount: Int, columnIndex: Int, columnSize: Int) : this() {
         this.columnCount = columnCount

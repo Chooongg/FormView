@@ -12,11 +12,12 @@ import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.IFormPart
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,7 +27,7 @@ import kotlin.math.min
 
 abstract class AbstractFormPart<DATA : IFormPart>(
     val style: AbstractFormStyle, var data: DATA, isEnabled: Boolean
-) : RecyclerView.Adapter<FormItemViewHolder>() {
+) : RecyclerView.Adapter<FormViewHolder>() {
 
     var isEnabled = isEnabled
         internal set(value) {
@@ -60,7 +61,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         ) = true
 
         override fun areItemsTheSame(oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>) =
-            oldItem.id == newItem.id && oldItem.fixedTypeset == newItem.fixedTypeset
+            oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
 
     fun update() {
@@ -176,7 +177,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             // Start
             val start = if (item.columnIndex == 0) {
                 FormBoundary.GLOBAL
-            } else if (style.config.isIndependentItem) {
+            } else if (style.isIndependentItem) {
                 FormBoundary.MIDDLE
             } else {
                 FormBoundary.NONE
@@ -185,7 +186,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             val isGroupLast = item.positionInGroup == item.countInGroup - 1
             val end = if (item.columnIndex + item.columnSize >= item.columnCount) {
                 FormBoundary.GLOBAL
-            } else if (isGroupLast || style.config.isIndependentItem) {
+            } else if (isGroupLast || style.isIndependentItem) {
                 FormBoundary.MIDDLE
             } else {
                 FormBoundary.NONE
@@ -208,7 +209,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             }
             item.boundary = FormBoundary(
                 start,
-                if (style.config.isIndependentItem && top == FormBoundary.NONE) FormBoundary.MIDDLE else top,
+                if (style.isIndependentItem && top == FormBoundary.NONE) FormBoundary.MIDDLE else top,
                 end,
                 FormBoundary.NONE
             )
@@ -222,7 +223,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                 } else if (item.countInGroup - 1 - item.positionInGroup == 0) {
                     FormBoundary.MIDDLE
                 } else if (item.columnIndex + item.columnSize >= item.columnCount) {
-                    if (style.config.isIndependentItem) FormBoundary.MIDDLE else FormBoundary.NONE
+                    if (style.isIndependentItem) FormBoundary.MIDDLE else FormBoundary.NONE
                 } else {
                     var lastIndex = index
                     var lastItem = get(lastIndex)
@@ -233,7 +234,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                     lastItem.boundary.bottom
                 }
             item.boundary = item.boundary.update(
-                bottom = if (style.config.isIndependentItem && bottom == FormBoundary.NONE) FormBoundary.MIDDLE else bottom
+                bottom = if (style.isIndependentItem && bottom == FormBoundary.NONE) FormBoundary.MIDDLE else bottom
             )
         }
     }
@@ -255,7 +256,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     override fun getItemViewType(position: Int) =
         adapter.getItemViewType4Pool(this, style, differ.currentList[position])
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormViewHolder {
         val style = adapter.getStyle(viewType).apply { createSizeInfo(parent.context) }
         val typeset = adapter.getTypeset(viewType)
         val itemProvider = adapter.getItemProvider(viewType)
@@ -264,22 +265,22 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                 style.onCreateStyle(parent)
             } else null
         val typesetView = typeset.onCreateTypeset(style, styleView ?: parent)
-        val itemView = itemProvider.onCreateViewHolder(style, typesetView)
+        val itemView = itemProvider.onCreateViewHolder(this, style, typesetView)
         if (styleView != null) {
             style.configStyleAddChildView(styleView, typesetView)
         } else typeset.configTypesetAddChildView(typesetView, itemView)
-        return FormItemViewHolder(style, typeset, styleView ?: typesetView).apply {
+        return FormViewHolder(style, typeset, styleView ?: typesetView).apply {
             this.itemView.layoutParams = GridLayoutManager.LayoutParams(-1, -2)
         }
     }
 
-    override fun onViewAttachedToWindow(holder: FormItemViewHolder) {
+    override fun onViewAttachedToWindow(holder: FormViewHolder) {
         holder.style.onStyleAttachedToWindow(holder)
         holder.typeset.onTypesetAttachedToWindow(holder)
         adapter.getItemProvider(holder.itemViewType).onViewAttachedToWindow(holder)
     }
 
-    override fun onBindViewHolder(holder: FormItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
         val item = differ.currentList[position]
         item.globalPosition = holder.absoluteAdapterPosition
         item.localPosition = holder.bindingAdapterPosition
@@ -293,7 +294,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onBindViewHolder(
-        holder: FormItemViewHolder, position: Int, payloads: MutableList<Any>
+        holder: FormViewHolder, position: Int, payloads: MutableList<Any>
     ) {
         val item = differ.currentList[position]
         item.globalPosition = holder.absoluteAdapterPosition
@@ -324,13 +325,13 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: FormItemViewHolder) {
+    override fun onViewDetachedFromWindow(holder: FormViewHolder) {
         holder.style.onStyleDetachedFromWindow(holder)
         holder.typeset.onTypesetDetachedFromWindow(holder)
         adapter.getItemProvider(holder.itemViewType).onViewDetachedFromWindow(holder)
     }
 
-    override fun onViewRecycled(holder: FormItemViewHolder) {
+    override fun onViewRecycled(holder: FormViewHolder) {
         holder.clear()
         holder.style.onStyleRecycled(holder)
         holder.typeset.onTypesetRecycled(holder)

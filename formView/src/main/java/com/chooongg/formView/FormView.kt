@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.IntRange
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
-import com.chooongg.formView.decoration.FormItemDecoration
+import com.chooongg.formView.layoutManager.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 
 class FormView @JvmOverloads constructor(

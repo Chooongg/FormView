@@ -1,10 +1,9 @@
 package com.chooongg.formView.style
 
-class FormNoneStyle() : AbstractFormStyle() {
+class FormNoneStyle : AbstractFormStyle() {
 
-    constructor(block: FormNoneStyle.() -> Unit) : this() {
-        block.invoke(this)
-    }
+    @Deprecated("Disable")
+    override var isIndependentItem: Boolean = false
 
     override fun isDecorateNoneItem(): Boolean = false
     override fun isFillVerticalMargin() = false

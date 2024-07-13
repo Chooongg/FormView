@@ -8,5 +8,5 @@ fun IFormGroupData.divider(block: (FormDivider.() -> Unit)? = null) =
     addItem(FormDivider().apply { block?.invoke(this) })
 
 fun IFormGroupData.text(
-    name: Any?, field: String? = null, content: Any? = null, block: (FormText.() -> Unit)? = null
-) = addItem(FormText(name, field, content).apply { block?.invoke(this) })
+    name: Any?, content: Any? = null, block: (FormText.() -> Unit)? = null
+) = addItem(FormText(name, null, content).apply { block?.invoke(this) })

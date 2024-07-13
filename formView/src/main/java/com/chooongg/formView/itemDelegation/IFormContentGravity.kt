@@ -1,7 +1,7 @@
 package com.chooongg.formView.itemDelegation
 
-import com.chooongg.formView.enum.FormContentGravity
+import com.chooongg.formView.enum.FormGravity
 
 interface IFormContentGravity {
-    var contentGravity: FormContentGravity?
+    var contentGravity: FormGravity?
 }

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.part.AbstractFormPart
@@ -96,7 +96,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        if (holder is FormItemViewHolder) holder.clear()
+        if (holder is FormViewHolder) holder.clear()
         return data.concatAdapter.onViewRecycled(holder)
     }
 
@@ -145,22 +145,11 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
                 stylePool.lastIndex
             } else it
         }
-        val typesetClass: KClass<out AbstractFormTypeset> = if (item.typeset != null) {
-            item.typeset!!.invoke(item.columnCount, item.columnSize)
-        } else if (item.fixedTypeset != null) {
-            item.fixedTypeset!!
-        } else if (style.config.typeset != null) {
-            style.config.typesetProvider!!.invoke(
-                item.columnCount, item.columnSize
-            )
-        } else if (part._adapter?.data?.typesetProvider != null) {
-            part._adapter!!.data.typesetProvider!!.invoke(
-                item.columnCount, item.columnSize
-            )
-        } else if (item.columnSize >= item.columnCount) {
-            style.config.typeset.typeset
-        } else {
-            style.config.typeset.multipleTypeset
+        val typesetClass: KClass<out AbstractFormTypeset> = when {
+            item.typeset != null -> item.typeset!!.obtain(item.columnCount, item.columnSize)
+            style.typeset != null -> style.typeset!!.obtain(item.columnCount, item.columnSize)
+            data.typeset != null -> data.typeset!!.obtain(item.columnCount, item.columnSize)
+            else -> FormManager.globalConfig.typeset.obtain(item.columnCount, item.columnSize)
         }
         val typesetIndex = typesetPool.indexOfFirst { it::class == typesetClass }.let {
             if (it < 0) {

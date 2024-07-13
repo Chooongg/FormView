@@ -1,11 +1,8 @@
 package com.chooongg.formView.itemDelegation
 
-import android.view.Gravity
-import androidx.annotation.GravityInt
+import com.chooongg.formView.enum.FormGravity
 
 class FormNameImpl : IFormName {
     override var name: Any? = null
-
-    @GravityInt
-    override var nameGravity: Int? = null
+    override var nameGravity: FormGravity? = null
 }

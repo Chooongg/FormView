@@ -3,19 +3,22 @@ package com.chooongg.formView.typeset
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.chooongg.formView.FormManager
+import com.chooongg.formView.config.IFormItemObtainAttr
 import com.chooongg.formView.enum.FormEmsMode
+import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.helper.FormTextAppearanceHelper
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.itemDelegation.IFormEms
-import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 
-abstract class AbstractFormTypeset : FormTextAppearanceHelper {
+abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemObtainAttr {
 
-    abstract var emsMode: FormEmsMode
+    abstract val emsMode: FormEmsMode
+
+    open val emsSize: FormEmsSize = FormEmsSize(FormManager.FORM_EMS)
 
     abstract fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup
 
@@ -23,53 +26,50 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
         layoutView.addView(childView)
     }
 
-    open fun onTypesetAttachedToWindow(holder: FormItemViewHolder) = Unit
+    open fun onTypesetAttachedToWindow(holder: FormViewHolder) = Unit
 
-    open fun onBindTypeset(holder: FormItemViewHolder, item: AbstractFormItem<*>) = Unit
+    open fun onBindTypeset(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 
     open fun onBindTypeset(
-        holder: FormItemViewHolder, item: AbstractFormItem<*>, payloads: MutableList<Any>
+        holder: FormViewHolder, item: AbstractFormItem<*>, payloads: MutableList<Any>
     ) = onBindTypeset(holder, item)
 
-    open fun onTypesetDetachedFromWindow(holder: FormItemViewHolder) = Unit
+    open fun onTypesetDetachedFromWindow(holder: FormViewHolder) = Unit
 
-    open fun onTypesetRecycled(holder: FormItemViewHolder) = Unit
+    open fun onTypesetRecycled(holder: FormViewHolder) = Unit
 
     protected fun configNameView(
-        holder: FormItemViewHolder, item: AbstractFormItem<*>, nameView: TextView
+        holder: FormViewHolder, item: AbstractFormItem<*>, nameView: TextView
     ) {
-        val size = (item as? IFormEms)?.emsSize ?: holder.style.config.emsSize
-        val emsMode = (item as? IFormEms)?.emsMode ?: emsMode
-        val isMultiColumn = false
-        when (if (isMultiColumn) emsMode.multiColumnMode else emsMode.mode) {
+        when (emsMode) {
+            FormEmsMode.NONE -> {
+                nameView.minWidth = 0
+                nameView.maxWidth = Int.MAX_VALUE
+            }
+
             FormEmsMode.MIN -> {
-                nameView.minEms = if (isMultiColumn) size.multiColumnSize else size.size
+                nameView.minEms =
+                    obtainEmsSize(holder, item).obtain(item.columnCount, item.columnSize)
                 nameView.maxWidth = Int.MAX_VALUE
             }
 
             FormEmsMode.MAX -> {
                 nameView.minWidth = Int.MAX_VALUE
-                nameView.maxEms = if (isMultiColumn) size.multiColumnSize else size.size
+                nameView.maxEms =
+                    obtainEmsSize(holder, item).obtain(item.columnCount, item.columnSize)
             }
 
             FormEmsMode.FIXED -> {
-                nameView.setEms(if (isMultiColumn) size.multiColumnSize else size.size)
-            }
-
-            else -> {
-                nameView.minWidth = 0
-                nameView.maxWidth = Int.MAX_VALUE
+                nameView.setEms(
+                    obtainEmsSize(holder, item).obtain(item.columnCount, item.columnSize)
+                )
             }
         }
     }
 
     protected fun configMenuView(
-        holder: FormItemViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
+        holder: FormViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
     ) {
-        if (item !is IFormMenu) {
-            menuView.gone()
-            return
-        }
         menuView.setMenu(item, item.isEnabled ?: false) { view, menu ->
             val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
             if (isIntercept != true) {
@@ -78,6 +78,11 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper {
                 )
             }
         }
+    }
+
+    protected fun obtainEmsSize(holder: FormViewHolder, item: AbstractFormItem<*>): FormEmsSize {
+        return item.emsSize ?: holder.style.emsSize ?: getFormAdapter(holder)?.data?.emsSize
+        ?: FormManager.globalConfig.emsSize ?: emsSize
     }
 
     override fun equals(other: Any?): Boolean {

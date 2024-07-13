@@ -1,22 +1,22 @@
 package com.chooongg.formView.config
 
-import com.chooongg.formView.FormTypesetProviderBlock
-import com.chooongg.formView.enum.FormContentGravity
+import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
-import com.chooongg.formView.provider.nested.AbstractNestedProvider
+import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
 
 class FormConfigImpl : IFormConfig {
     override var nameFormatter: FormNameFormatter? = null
     override var groupTitleProvider: AbstractGroupTitleProvider? = null
     override var childTitleProvider: AbstractGroupTitleProvider? = null
-    override var nestedTitleProvider: AbstractNestedProvider? = null
+    override var nestedTitleProvider: AbstractNestedTitleProvider? = null
     override var emsSize: FormEmsSize? = null
     override var nameIconGravity: Int? = null
-    override var contentGravity: FormContentGravity? = null
-    override var typeset: FormTypesetProviderBlock? = null
-    override var isIndependentItem: Boolean = false
+    override var nameGravity: FormGravity? = null
+    override var contentGravity: FormGravity? = null
+    override var typeset: FormTypeset? = null
 
     override fun equalsConfig(other: Any?): Boolean {
         if (other !is IFormConfig) return false
@@ -26,9 +26,9 @@ class FormConfigImpl : IFormConfig {
         if (other.nestedTitleProvider != nestedTitleProvider) return false
         if (other.emsSize != emsSize) return false
         if (other.nameIconGravity != nameIconGravity) return false
+        if (other.nameGravity != nameGravity) return false
         if (other.contentGravity != contentGravity) return false
         if (other.typeset != typeset) return false
-        if (other.isIndependentItem != isIndependentItem) return false
         return true
     }
 }

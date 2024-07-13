@@ -8,70 +8,69 @@ import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.data.FormBoundary
-import com.chooongg.formView.holder.FormItemViewHolder
+import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.itemDelegation.IFormIcon
+import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.button.MaterialButton
 
 class FormNormalGroupTitleProvider : AbstractGroupTitleProvider() {
-    override fun onCreateViewHolder(style: AbstractFormStyle, parent: ViewGroup): View =
-        LinearLayoutCompat(parent.context).also {
-            it.id = R.id.formContentView
-            it.orientation = LinearLayoutCompat.HORIZONTAL
-            it.addView(MaterialButton(it.context).apply {
-                id = R.id.formNameView
-                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceGroupTitle))
-                insetTop = 0
-                insetBottom = 0
-                isClickable = false
-                gravity = Gravity.NO_GRAVITY
-                background = null
-                minWidth = 0
-                minHeight = 0
-                minimumWidth = 0
-                minimumHeight = 0
-                iconSize = FormUtils.getFontRealHeight(this)
-                iconPadding = (style.paddingInfo.startMedium + style.paddingInfo.endMedium) / 2
-                setPaddingRelative(
-                    style.paddingInfo.startMedium,
-                    style.paddingInfo.topMedium,
-                    style.paddingInfo.endMedium,
-                    style.paddingInfo.bottomMedium
-                )
-            }, LinearLayoutCompat.LayoutParams(-1, -2))
-        }
+    override fun onCreateViewHolder(
+        part: AbstractFormPart<*>, style: AbstractFormStyle, parent: ViewGroup
+    ): View = LinearLayoutCompat(parent.context).also {
+        it.id = R.id.formContentView
+        it.orientation = LinearLayoutCompat.HORIZONTAL
+        it.addView(MaterialButton(it.context).apply {
+            id = R.id.formNameView
+            setTextAppearance(formTextAppearance(R.attr.formTextAppearanceGroupTitle))
+            insetTop = 0
+            insetBottom = 0
+            isClickable = false
+            gravity = Gravity.NO_GRAVITY
+            background = null
+            minWidth = 0
+            minHeight = 0
+            minimumWidth = 0
+            minimumHeight = 0
+            iconSize = FormUtils.getFontRealHeight(this)
+            iconPadding = (style.padding.startMedium + style.padding.endMedium) / 2
+            setPaddingRelative(
+                style.padding.startMedium,
+                style.padding.topMedium,
+                style.padding.endMedium,
+                style.padding.bottomMedium
+            )
+        }, LinearLayoutCompat.LayoutParams(-1, -2))
+    }
 
     override fun onBindViewHolder(
-        holder: FormItemViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
     ) {
         with(holder.getView<LinearLayoutCompat>(R.id.formContentView)) {
             setPaddingRelative(
                 when (item.boundary.start) {
                     FormBoundary.NONE -> 0
-                    else -> holder.style.paddingInfo.start - holder.style.paddingInfo.startMedium
+                    else -> holder.style.padding.start - holder.style.padding.startMedium
                 }, when (item.boundary.top) {
                     FormBoundary.NONE -> 0
-                    else -> holder.style.paddingInfo.top - holder.style.paddingInfo.topMedium
+                    else -> holder.style.padding.top - holder.style.padding.topMedium
                 }, when (item.boundary.end) {
                     FormBoundary.NONE -> 0
-                    else -> holder.style.paddingInfo.end - holder.style.paddingInfo.endMedium
+                    else -> holder.style.padding.end - holder.style.padding.endMedium
                 }, when (item.boundary.bottom) {
                     FormBoundary.NONE -> 0
-                    else -> holder.style.paddingInfo.bottom - holder.style.paddingInfo.bottomMedium
+                    else -> holder.style.padding.bottom - holder.style.padding.bottomMedium
                 }
             )
         }
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
-            if (item is IFormIcon) {
-                iconGravity = item.iconGravity ?: holder.style.config.nameIconGravity
-                val nameIcon = FormManager.parseIcon(context, item.icon)
-                if (nameIcon != null) {
-                    icon = nameIcon
-                    iconTint = item.iconTint?.invoke(context) ?: textColors
-                } else icon = null
-            }
-            text = holder.style.config.nameFormatter.format(context, item)
+            iconGravity = obtainIconGravity(holder, item)
+            val nameIcon = FormManager.parseIcon(context, item.icon)
+            if (nameIcon != null) {
+                icon = nameIcon
+                iconTint = item.iconTint?.invoke(context) ?: textColors
+            } else icon = null
+            text = obtainNameFormatter(holder).format(context, item)
         }
     }
 }

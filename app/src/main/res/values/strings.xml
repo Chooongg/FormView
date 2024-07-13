@@ -2,6 +2,7 @@
     <string name="app_name">FormView</string>
 
     <string name="home">Home</string>
+    <string name="components">Components</string>
     <string name="about">About</string>
 
     <string name="editing_status">Editing Status</string>
