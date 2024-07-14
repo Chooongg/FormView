@@ -2,7 +2,7 @@ package com.chooongg.formView.itemProvider
 
 import android.view.View
 import android.view.ViewGroup
-import com.chooongg.formView.config.IFormItemObtainAttr
+import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
@@ -12,7 +12,7 @@ import com.chooongg.formView.style.AbstractFormStyle
 /**
  * Item Provider
  */
-abstract class AbstractFormItemProvider : FormTextAppearanceHelper, IFormItemObtainAttr {
+abstract class AbstractFormItemProvider : FormTextAppearanceHelper, IFormItemAttributeHelper {
 
     abstract fun onCreateViewHolder(
         part: AbstractFormPart<*>, style: AbstractFormStyle, parent: ViewGroup

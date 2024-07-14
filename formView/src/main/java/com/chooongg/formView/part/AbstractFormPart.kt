@@ -17,7 +17,6 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,7 +47,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
 
     val columnCount
         get() = data.fixedColumn ?: data.columnProvider?.invoke(_adapter?.columnCount ?: 1)
-        ?: _adapter?.columnCount ?: 1
+        ?: _adapter?.columnCount ?: -1
 
     protected val differ = AsyncListDiffer(object : ListUpdateCallback {
         override fun onChanged(p: Int, count: Int, payload: Any?) = Unit
@@ -67,6 +66,10 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     fun update() {
         if (_adapter == null) return
         val columnCount = columnCount
+        if (columnCount < 0) {
+            differ.submitList(null)
+            return
+        }
         val groups = getOriginalItemList()
         val ignoreListCount = getIgnoreListCount()
         val tempList = ArrayList<ArrayList<AbstractFormItem<*>>>()

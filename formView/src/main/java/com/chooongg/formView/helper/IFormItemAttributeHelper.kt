@@ -1,4 +1,4 @@
-package com.chooongg.formView.config
+package com.chooongg.formView.helper
 
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
@@ -9,7 +9,7 @@ import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
 import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
 
-interface IFormItemObtainAttr {
+interface IFormItemAttributeHelper {
 
     fun obtainGroupTitleProvider(holder: FormViewHolder): AbstractGroupTitleProvider {
         return holder.style.groupTitleProvider ?: getFormAdapter(holder)?.data?.groupTitleProvider

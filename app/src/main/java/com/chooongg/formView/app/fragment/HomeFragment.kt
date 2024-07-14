@@ -13,11 +13,9 @@ import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentFormBinding
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.divider
-import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
-import com.chooongg.formView.style.FormCardM3Style
-import com.chooongg.formView.style.FormCardStrokeStyle
+import com.chooongg.formView.style.FormCardOutlinedStyle
 import com.chooongg.formView.text
 import com.chooongg.formView.typeset.FormHorizontalTypeset
 import com.chooongg.formView.typeset.FormNoneTypeset
@@ -54,9 +52,9 @@ class HomeFragment : Fragment() {
             typeset = FormTypeset { formColumn, itemColumn ->
                 FormHorizontalTypeset::class
             }
-            part(FormCardStrokeStyle()) {
+            part(FormCardOutlinedStyle()) {
                 name = "NormalPart"
-                isEnabled = false
+                fixedColumn = 1
                 text("文本", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
@@ -76,8 +74,25 @@ class HomeFragment : Fragment() {
                 text("文本", "测试")
                 text("文本", "测试")
             }
-            part(FormCardStrokeStyle { isIndependentItem = true }) {
-                isEnabled = true
+            part(FormCardOutlinedStyle { isIndependentItem = true }) {
+                name = "Independent"
+                columnProvider = { if (it == 1) 2 else it }
+                text("文本", "测试") {
+                    visibilityMode = FormVisibilityMode.DISABLED
+                }
+                text("文本", "测试") {
+                    loneLine = true
+                    menu = R.menu.main
+                }
+                text("文本", "测试") {
+                    menu = R.menu.item
+                    visibilityMode = FormVisibilityMode.DISABLED
+                }
+                for (i in 0..5) {
+                    text("文本", "测试12312312312345")
+                }
+            }
+            part(FormCardOutlinedStyle { isIndependentItem = true }) {
                 name = "Independent"
                 columnProvider = { if (it == 1) 2 else it }
                 text("文本", "测试") {

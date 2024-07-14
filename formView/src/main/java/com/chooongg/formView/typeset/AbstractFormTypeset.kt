@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.chooongg.formView.FormManager
-import com.chooongg.formView.config.IFormItemObtainAttr
+import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.helper.FormTextAppearanceHelper
@@ -14,7 +14,7 @@ import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 
-abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemObtainAttr {
+abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemAttributeHelper {
 
     abstract val emsMode: FormEmsMode
 

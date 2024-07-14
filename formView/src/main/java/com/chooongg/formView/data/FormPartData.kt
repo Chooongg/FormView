@@ -9,7 +9,7 @@ import com.chooongg.formView.itemDelegation.IFormField
 class FormPartData : FormGroupData(), IFormPart, IFormField by FormFieldImpl() {
     override var isEnabled: Boolean = true
 
-    @IntRange(from = 1, to = FormManager.FORM_COLUMN_COUNT.toLong())
+    @IntRange(from = 1, to = FormManager.FORM_MAX_COLUMN_COUNT.toLong())
     override var fixedColumn: Int? = null
 
     override var columnProvider: FormColumnBlock? = null

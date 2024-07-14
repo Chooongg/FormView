@@ -56,14 +56,14 @@ class FormGlobalConfig {
     /**
      * 内容重力
      */
-    var contentGravity: FormGravity = FormGravity { columnCount, columnSize ->
+    var contentGravity: FormGravity = FormGravity { columnCount, _ ->
         if (columnCount > 1) Gravity.NO_GRAVITY else Gravity.END
     }
 
     /**
      * 排版
      */
-    var typeset: FormTypeset = FormTypeset { columnCount, columnSize ->
-        if (columnSize > 1) FormVerticalTypeset::class else FormHorizontalTypeset::class
+    var typeset: FormTypeset = FormTypeset { columnCount, _ ->
+        if (columnCount > 1) FormVerticalTypeset::class else FormHorizontalTypeset::class
     }
 }

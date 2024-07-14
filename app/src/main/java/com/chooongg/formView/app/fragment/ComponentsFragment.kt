@@ -15,8 +15,9 @@ import com.chooongg.formView.app.databinding.FragmentFormBinding
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.label
-import com.chooongg.formView.style.FormCardM3Style
+import com.chooongg.formView.style.FormCardOutlinedStyle
 import com.chooongg.formView.text
+import com.chooongg.formView.tip
 
 class ComponentsFragment : Fragment() {
 
@@ -47,9 +48,9 @@ class ComponentsFragment : Fragment() {
 
     class ComponentsViewModel : ViewModel() {
         val data = FormData {
-            style = FormCardM3Style()
+            style = FormCardOutlinedStyle()
             part {
-                name = "Base Field"
+                name = "Base Attribute"
                 text("Item", "No Required")
                 text("Item", "Required") {
                     required = true
@@ -87,6 +88,10 @@ class ComponentsFragment : Fragment() {
             part {
                 name = "text <FormText>"
                 text("Name", "Content")
+            }
+            part {
+                name = "Tip <FormTip>"
+                tip("This Is Tip")
             }
         }
     }

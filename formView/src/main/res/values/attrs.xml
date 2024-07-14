@@ -2,7 +2,8 @@
 <resources>
 
     <declare-styleable name="FormView">
-        <attr name="formColumn" format="integer" />
+        <attr name="fixedColumn" format="integer" />
+        <attr name="columnWidth" format="dimension" />
     </declare-styleable>
 
     <attr name="formShapeAppearanceCorner" format="reference" />
@@ -27,6 +28,7 @@
     <attr name="formTextAppearanceContent" format="reference" />
     <attr name="formTextAppearanceHint" format="reference" />
     <attr name="formTextAppearanceLabel" format="reference" />
+    <attr name="formTextAppearanceTip" format="reference" />
     <attr name="formTextAppearanceSearch" format="reference" />
     <attr name="formTextAppearancePrefix" format="reference" />
     <attr name="formTextAppearanceSuffix" format="reference" />

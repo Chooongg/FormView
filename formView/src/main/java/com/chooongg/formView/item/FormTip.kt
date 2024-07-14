@@ -16,6 +16,8 @@ class FormTip(name: Any?) : AbstractFormItem<Any>(name,null,null) {
     @StyleRes
     var textAppearance: Int? = null
 
+    override var loneLine: Boolean = true
+
     override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 
     override fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider> {

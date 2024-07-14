@@ -14,7 +14,7 @@ object FormManager {
     /**
      * 最大支持的列数
      */
-    const val FORM_COLUMN_COUNT = 10
+    const val FORM_MAX_COLUMN_COUNT = 10
     const val FORM_SPAN_COUNT = 27720
 
     const val FORM_EMS = 5

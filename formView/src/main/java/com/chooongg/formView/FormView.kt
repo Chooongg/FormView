@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.IntRange
+import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.layoutManager.FormItemDecoration
@@ -15,15 +16,18 @@ class FormView @JvmOverloads constructor(
 
     private val layoutManager: FormLayoutManager =
         context.obtainStyledAttributes(attrs, R.styleable.FormView, 0, 0).use {
-            FormLayoutManager(context, it.getInt(R.styleable.FormView_formColumn, 1))
+            val column = it.getInt(R.styleable.FormView_fixedColumn, -1)
+            val columnWidth = it.getDimensionPixelSize(
+                R.styleable.FormView_columnWidth,
+                context.resources.getDimensionPixelSize(R.dimen.formColumnWidth)
+            )
+            FormLayoutManager(
+                context, if (column == -1 && columnWidth == -1) 1 else column, columnWidth
+            )
         }
 
-    @setparam:IntRange(from = 1, to = FormManager.FORM_COLUMN_COUNT.toLong())
-    var formColumn: Int
-        get() = layoutManager.formColumn
-        set(value) {
-            layoutManager.formColumn = value
-        }
+
+    val formColumn get() = layoutManager.columnCount
 
     var onItemClickListener: FormOnItemClickListener? = null
         private set
@@ -36,6 +40,16 @@ class FormView @JvmOverloads constructor(
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)
         super.addItemDecoration(FormItemDecoration())
+    }
+
+    fun setFixedColumn(
+        @IntRange(from = 1, to = FormManager.FORM_MAX_COLUMN_COUNT.toLong()) column: Int
+    ) {
+        layoutManager.fixedColumn = column
+    }
+
+    fun setColumnWidth(@Px width: Int) {
+        layoutManager.columnWidth = width
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
@@ -53,7 +67,7 @@ class FormView @JvmOverloads constructor(
     }
 
     fun setData(data: FormData) {
-        super.setAdapter(FormAdapter(data).apply { columnCount = layoutManager.formColumn })
+        super.setAdapter(FormAdapter(data).apply { columnCount = layoutManager.columnCount })
         isEnabled = data.isEnabled
     }
 
