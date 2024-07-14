@@ -13,7 +13,7 @@
         <item name="android:textColor">?android:attr/textColorHint</item>
     </style>
 
-    <style name="Form.TextAppearance.Label" parent="TextAppearance.Material3.LabelSmall" />
+    <style name="Form.TextAppearance.Label" parent="TextAppearance.Material3.LabelLarge" />
 
     <style name="Form.TextAppearance.Search" parent="TextAppearance.Material3.TitleMedium" />
 

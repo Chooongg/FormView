@@ -1,8 +1,9 @@
 package com.chooongg.formView.typeset
 
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.LinearLayoutCompat
+import android.widget.FrameLayout
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormViewHolder
@@ -19,10 +20,10 @@ class FormNoneTypeset() : AbstractFormTypeset() {
     }
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup =
-        LinearLayoutCompat(parent.context).also {
+        FrameLayout(parent.context).also {
             it.addView(FormMenuView(it.context, style).apply {
                 id = R.id.formMenuView
-            }, LinearLayoutCompat.LayoutParams(-2, -2))
+            }, FrameLayout.LayoutParams(-2, -2).apply { gravity = Gravity.END })
         }
 
     override fun onBindTypeset(holder: FormViewHolder, item: AbstractFormItem<*>) {
@@ -30,8 +31,6 @@ class FormNoneTypeset() : AbstractFormTypeset() {
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {
-        layoutView.addView(childView, 0, LinearLayoutCompat.LayoutParams(0, -1).apply {
-            weight = 1f
-        })
+        layoutView.addView(childView, 0, FrameLayout.LayoutParams(-1, -1))
     }
 }

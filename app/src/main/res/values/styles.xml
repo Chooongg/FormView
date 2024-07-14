@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Form.TextAppearance.Label.Custom" parent="Form.TextAppearance.Label">
+        <item name="android:textColor">?attr/colorTertiary</item>
+    </style>
+</resources>

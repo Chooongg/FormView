@@ -14,6 +14,7 @@ import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentFormBinding
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.enum.FormGravity
+import com.chooongg.formView.label
 import com.chooongg.formView.style.FormCardM3Style
 import com.chooongg.formView.text
 
@@ -71,6 +72,16 @@ class ComponentsFragment : Fragment() {
                 }
                 text("Item", "Name\nGravity\nEnd\nBottom") {
                     nameGravity = FormGravity(Gravity.END or Gravity.BOTTOM)
+                }
+            }
+            part {
+                name = "label <FormLabel>"
+                label("This Is Label")
+                label("Gravity Center") {
+                    nameGravity = FormGravity(Gravity.CENTER)
+                }
+                label("Custom Text Appearance") {
+                    textAppearance = R.style.Form_TextAppearance_Label_Custom
                 }
             }
             part {
