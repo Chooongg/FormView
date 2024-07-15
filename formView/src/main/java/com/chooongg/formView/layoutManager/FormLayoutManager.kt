@@ -82,14 +82,7 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
         recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int
     ) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
-        if (state.itemCount > 0) updateColumn()
-    }
-
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-        if (columnCount > 0) {
-
-        }
-        super.onLayoutChildren(recycler, state)
+        updateColumn()
     }
 
     private fun updateColumn() {

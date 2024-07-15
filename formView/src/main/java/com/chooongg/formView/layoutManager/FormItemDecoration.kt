@@ -1,16 +1,36 @@
 package com.chooongg.formView.layoutManager
 
+import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormViewHolder
-import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.part.AbstractFormPart
+import com.google.android.material.progressindicator.LinearProgressIndicator
 
-class FormItemDecoration : ItemDecoration() {
+class FormItemDecoration(context: Context) : ItemDecoration() {
+
+    val progress = LinearProgressIndicator(context)
+
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+    }
+
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        if (parent !is FormView) return
+        val adapter = parent.adapter ?: return
+        if (adapter.data.showProgress) {
+            progress.layoutParams = GridLayoutManager.LayoutParams(c.width, -2)
+            progress.progress = 50
+            progress.max = 100
+            progress.draw(c)
+        }
+    }
 
     override fun getItemOffsets(
         outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State

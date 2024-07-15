@@ -32,6 +32,8 @@ class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfig
 
     var style: AbstractFormStyle? = null
 
+    var showProgress: Boolean = true
+
     private val headerAdapters = ArrayList<RecyclerView.Adapter<*>>()
 
     private var footerAdapters = ArrayList<RecyclerView.Adapter<*>>()

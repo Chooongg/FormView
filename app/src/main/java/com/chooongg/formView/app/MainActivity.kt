@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chooongg.formView.app.databinding.ActivityMainBinding
@@ -18,13 +17,11 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val fragments = arrayListOf(
-        HomeFragment(), ComponentsFragment(), AboutFragment()
+        HomeFragment(), AboutFragment()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        val splashScreen = installSplashScreen()
         setContentView(binding.root)
         binding.viewPager.offscreenPageLimit = 999
         binding.viewPager.isUserInputEnabled = false

@@ -351,6 +351,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         _adapter = if (recyclerView.adapter is FormAdapter) {
             recyclerView.adapter as FormAdapter
         } else null
+        update()
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {

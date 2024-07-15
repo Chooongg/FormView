@@ -10,7 +10,7 @@ import com.chooongg.formView.item.FormTip
 fun IFormGroupData.action(
     name: Any?, field: String? = null, content: Any? = null, block: (FormAction.() -> Unit)? = null
 ) {
-    addItem(FormAction(null, null, null).apply { block?.invoke(this) })
+    addItem(FormAction(name, field, content).apply { block?.invoke(this) })
 }
 
 fun IFormGroupData.divider(block: (FormDivider.() -> Unit)? = null) {

@@ -39,7 +39,7 @@ class FormView @JvmOverloads constructor(
         layoutManager.setPadding(paddingLeft, paddingTop, paddingEnd, paddingBottom)
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)
-        super.addItemDecoration(FormItemDecoration())
+        super.addItemDecoration(FormItemDecoration(context))
     }
 
     fun setFixedColumn(
