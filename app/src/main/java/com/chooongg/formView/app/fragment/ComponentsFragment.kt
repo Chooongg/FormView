@@ -10,6 +10,7 @@ import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
+import com.chooongg.formView.action
 import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentFormBinding
 import com.chooongg.formView.data.FormData
@@ -77,6 +78,10 @@ class ComponentsFragment : Fragment() {
                     nameGravity = FormGravity(Gravity.END or Gravity.BOTTOM)
                 }
                 text("Item", "Name\nGravity\nEnd\nBottom\nGravity\nEnd\nBottom")
+            }
+            part {
+                name = "action <FormAction>"
+                action("Version", "version", "1.0.0")
             }
             part {
                 name = "label <FormLabel>"
