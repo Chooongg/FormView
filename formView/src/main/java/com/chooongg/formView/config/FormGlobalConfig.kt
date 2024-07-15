@@ -64,6 +64,6 @@ class FormGlobalConfig {
      * 排版
      */
     var typeset: FormTypeset = FormTypeset { columnCount, _ ->
-        if (columnCount > 1) FormVerticalTypeset::class else FormHorizontalTypeset::class
+        if (columnCount > 2) FormVerticalTypeset::class else FormHorizontalTypeset::class
     }
 }

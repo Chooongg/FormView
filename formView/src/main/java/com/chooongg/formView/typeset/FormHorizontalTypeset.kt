@@ -23,30 +23,32 @@ class FormHorizontalTypeset() : AbstractFormTypeset() {
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup =
         LinearLayoutCompat(parent.context).also {
-            it.id = R.id.formTypesetView
+            it.id = R.id.formTypesetLayout
             it.orientation = LinearLayoutCompat.HORIZONTAL
-            it.isBaselineAligned = false
-            it.addView(MaterialButton(it.context).apply {
-                id = R.id.formNameView
-                setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
-                insetTop = 0
-                insetBottom = 0
-                isClickable = false
-                background = null
-                val fontHeight = FormUtils.getFontRealHeight(this)
-                iconSize = FormUtils.getFontRealHeight(this)
-                minWidth = 0
-                minHeight = fontHeight + style.padding.topMedium + style.padding.bottomMedium
-                minimumWidth = 0
-                minimumHeight = minHeight
-                iconPadding = (style.padding.startMedium + style.padding.endMedium) / 2
-                setPaddingRelative(
-                    style.padding.startMedium,
-                    style.padding.topMedium,
-                    style.padding.endMedium,
-                    style.padding.bottomMedium
-                )
-            }, LinearLayoutCompat.LayoutParams(-2, -1))
+            it.addView(LinearLayoutCompat(it.context).also { layout ->
+                layout.isBaselineAligned = false
+                layout.addView(MaterialButton(layout.context).apply {
+                    id = R.id.formNameView
+                    setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
+                    insetTop = 0
+                    insetBottom = 0
+                    isClickable = false
+                    background = null
+                    val fontHeight = FormUtils.getFontRealHeight(this)
+                    iconSize = FormUtils.getFontRealHeight(this)
+                    minWidth = 0
+                    minHeight = fontHeight + style.padding.topMedium + style.padding.bottomMedium
+                    minimumWidth = 0
+                    minimumHeight = minHeight
+                    iconPadding = (style.padding.startMedium + style.padding.endMedium) / 2
+                    setPaddingRelative(
+                        style.padding.startMedium,
+                        style.padding.topMedium,
+                        style.padding.endMedium,
+                        style.padding.bottomMedium
+                    )
+                }, LinearLayoutCompat.LayoutParams(-2, -1))
+            }, LinearLayoutCompat.LayoutParams(0, -2).apply { weight = 1f })
             it.addView(FormMenuView(it.context, style).apply {
                 id = R.id.formMenuView
             }, LinearLayoutCompat.LayoutParams(-2, -2))
@@ -68,8 +70,9 @@ class FormHorizontalTypeset() : AbstractFormTypeset() {
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {
-        layoutView.addView(childView, 1, LinearLayoutCompat.LayoutParams(0, -2).apply {
-            weight = 1f
-        })
+        (layoutView.getChildAt(0) as ViewGroup).addView(
+            childView,
+            1,
+            LinearLayoutCompat.LayoutParams(0, -2).apply { weight = 1f })
     }
 }

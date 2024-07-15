@@ -9,7 +9,6 @@ import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import com.chooongg.formView.app.R
 import com.chooongg.formView.app.databinding.FragmentFormBinding
 import com.chooongg.formView.data.FormData
@@ -21,10 +20,6 @@ import com.chooongg.formView.style.FormCardOutlinedStyle
 import com.chooongg.formView.text
 import com.chooongg.formView.typeset.FormHorizontalTypeset
 import com.chooongg.formView.typeset.FormNoneTypeset
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -58,30 +53,31 @@ class HomeFragment : Fragment() {
             typeset = FormTypeset { formColumn, itemColumn ->
                 FormHorizontalTypeset::class
             }
-//            part(FormCardOutlinedStyle()) {
-//                name = "NormalPart"
-//                text("文本", "测试") {
-//                    visibilityMode = FormVisibilityMode.DISABLED
-//                }
-//                text("文本", "测试") {
-//                    loneLine = true
-//                    menu = R.menu.main
-//                    typeset = FormTypeset(FormNoneTypeset::class)
-//                }
-//                divider {
-//                    icon = 1
-//                }
-//                text("文本", "测试") {
-//                    menu = R.menu.item
-//                    visibilityMode = FormVisibilityMode.DISABLED
-//                }
-//                text("文本", "测试")
-//                text("文本", "测试")
-//                text("文本", "测试")
-//            }
+            part(FormCardOutlinedStyle()) {
+                name = "NormalPart"
+                text("文本", "测试") {
+                    icon = R.drawable.ic_main_components
+                    visibilityMode = FormVisibilityMode.DISABLED
+                }
+                text("文本", "测试") {
+                    loneLine = true
+                    menu = R.menu.main
+                    typeset = FormTypeset(FormNoneTypeset::class)
+                }
+                divider()
+                text("文本", "测试") {
+                    menu = R.menu.item
+                    visibilityMode = FormVisibilityMode.DISABLED
+                }
+                text("文本", "测试"){
+                    icon = R.drawable.ic_main_components
+                }
+                text("文本", "测试")
+                text("文本", "测试")
+            }
             part(FormCardOutlinedStyle { isIndependentItem = true }) {
                 name = "Independent"
-                column = FormColumn { if (it == 1) 2 else it }
+                column = FormColumn { if (it == 1) 2 else it + 1 }
                 text("文本", "测试") {
                     visibilityMode = FormVisibilityMode.DISABLED
                 }
@@ -99,7 +95,7 @@ class HomeFragment : Fragment() {
             }
 //            part(FormCardOutlinedStyle { isIndependentItem = true }) {
 //                name = "Independent"
-//                column = FormColumn { if (it == 1) 2 else it }
+//                column = FormColumn { if (it == 1) 2 else it + 1 }
 //                text("文本", "测试") {
 //                    visibilityMode = FormVisibilityMode.DISABLED
 //                }

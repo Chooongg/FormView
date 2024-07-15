@@ -23,10 +23,6 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
 
     internal var adapter: FormAdapter? = null
 
-    private var isMeasureFinished: Boolean = false
-
-    private var isNeedToUpdate: Boolean = true
-
     @ColumnNullValue
     @IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong())
     var columnCount: Int = -1
@@ -48,9 +44,7 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
                 field = value
                 columnWidth = -1
             }
-            if (isMeasureFinished) {
-                updateColumn()
-            } else isNeedToUpdate = true
+            updateColumn()
         }
 
     @Px
@@ -59,9 +53,7 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
             if (field == value) return
             field = value
             fixedColumn = if (value <= 0) 1 else -1
-            if (isMeasureFinished) {
-                updateColumn()
-            } else isNeedToUpdate = true
+            updateColumn()
         }
 
 
@@ -91,6 +83,13 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
     ) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
         if (state.itemCount > 0) updateColumn()
+    }
+
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+        if (columnCount > 0) {
+
+        }
+        super.onLayoutChildren(recycler, state)
     }
 
     private fun updateColumn() {

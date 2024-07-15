@@ -56,7 +56,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         ) = true
 
         override fun areItemsTheSame(oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>) =
-            oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
+            newItem !is FormPlaceHolder && oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
 
     fun update() {
@@ -82,7 +82,6 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             group.forEach { item ->
                 item.resetInternalData()
                 item.isEnabled = item.isEnable(isEnabled)
-                item.columnCount = columnCount
 //                item.initialize()
                 if (item.isVisible(isEnabled)) {
                     when (item) {
@@ -103,6 +102,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             val tempGroup = ArrayList<AbstractFormItem<*>>()
             var columnIndex = 0
             group.forEachIndexed { position, item ->
+                item.columnCount = columnCount
                 item.columnSize = when {
                     item.loneLine -> columnCount
                     item.columnProvider != null -> {
@@ -292,6 +292,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         item.globalPosition = holder.absoluteAdapterPosition
         item.localPosition = holder.bindingAdapterPosition
         if (item !is FormPlaceHolder || holder.style.isDecorateNoneItem()) {
+            holder.style.onBindStyleLayoutPadding(holder, item)
             holder.style.onBindStyleBefore(holder, item)
             holder.style.onBindStyle(holder, item)
             holder.style.onBindStyleAfter(holder, item)
@@ -314,6 +315,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             when (it) {
                 FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY -> {
                     if (item !is FormPlaceHolder || holder.style.isDecorateNoneItem()) {
+                        holder.style.onBindStyleLayoutPadding(holder, item)
                         holder.style.onBindStyleBefore(holder, item)
                         holder.style.onBindStyle(holder, item)
                         holder.style.onBindStyleAfter(holder, item)

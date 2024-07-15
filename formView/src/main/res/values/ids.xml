@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="formStyleView" type="id" />
-    <item name="formTypesetView" type="id" />
+    <item name="formStyleLayout" type="id" />
+    <item name="formStyleSecondView" type="id" />
+    <item name="formStyleThirdView" type="id" />
+    <item name="formStyleFourthView" type="id" />
+    <item name="formTypesetLayout" type="id" />
+    <item name="formTypesetSecondView" type="id" />
+    <item name="formTypesetThirdView" type="id" />
+    <item name="formTypesetFourthView" type="id" />
+    <item name="formContentView" type="id" />
+    <item name="formContentSecondView" type="id" />
+    <item name="formContentThirdView" type="id" />
+    <item name="formContentFourthView" type="id" />
+
     <item name="formNameView" type="id" />
     <item name="formMenuView" type="id" />
-    <item name="formContentView" type="id" />
-
-    <item name="formItemDecorationCache" type="id" />
 </resources>

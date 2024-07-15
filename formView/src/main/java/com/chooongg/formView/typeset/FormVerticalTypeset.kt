@@ -12,7 +12,9 @@ import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 import com.google.android.material.button.MaterialButton
 
-class FormVerticalTypeset() : AbstractFormTypeset() {
+class
+
+FormVerticalTypeset() : AbstractFormTypeset() {
 
     override var emsMode: FormEmsMode = FormEmsMode.NONE
 
@@ -22,7 +24,7 @@ class FormVerticalTypeset() : AbstractFormTypeset() {
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup {
         val layout = LinearLayoutCompat(parent.context).also {
-            it.id = R.id.formTypesetView
+            it.id = R.id.formTypesetLayout
             it.orientation = LinearLayoutCompat.VERTICAL
             it.addView(LinearLayoutCompat(it.context).also { child ->
                 child.addView(MaterialButton(child.context).apply {
@@ -43,7 +45,7 @@ class FormVerticalTypeset() : AbstractFormTypeset() {
                         style.padding.startMedium,
                         style.padding.topMedium,
                         style.padding.endMedium,
-                        0
+                        style.padding.bottomMedium
                     )
                 }, LinearLayoutCompat.LayoutParams(0, -1).apply {
                     weight = 1f

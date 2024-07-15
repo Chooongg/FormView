@@ -18,6 +18,8 @@ class FormLabel(name: Any?) : AbstractFormItem<Any>(name, null, null) {
 
     override var newLine: Boolean = true
 
+    override var loneLine: Boolean = true
+
     override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)
 
     override fun getProvider(part: AbstractFormPart<*>): KClass<out AbstractFormItemProvider> {

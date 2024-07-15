@@ -103,7 +103,7 @@ class OutlinedCutoutDrawable(
             // Line
             if (boundary.top <= 0) {
                 val f = RectF(
-                    strokeWidth, 0f, bound.right - strokeWidth, strokeWidth + 6
+                    strokeWidth, -1f, bound.right - strokeWidth, strokeWidth + 1f
                 )
                 if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)
                 else canvas.clipRect(f, Region.Op.DIFFERENCE)
@@ -111,9 +111,9 @@ class OutlinedCutoutDrawable(
             if (boundary.bottom <= 0) {
                 val f = RectF(
                     strokeWidth,
-                    bound.bottom - strokeWidth - 6,
+                    bound.bottom - strokeWidth - 1f,
                     bound.right - strokeWidth,
-                    bound.bottom
+                    bound.bottom + 1f
                 )
                 if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)
                 else canvas.clipRect(f, Region.Op.DIFFERENCE)
@@ -121,9 +121,9 @@ class OutlinedCutoutDrawable(
             if (isRtl) {
                 if (boundary.start <= 0) {
                     val f = RectF(
-                        bound.right - strokeWidth - 6,
+                        bound.right - strokeWidth - 1f,
                         strokeWidth,
-                        bound.right,
+                        bound.right + 1f,
                         bound.bottom - strokeWidth
                     )
                     if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)
@@ -131,7 +131,7 @@ class OutlinedCutoutDrawable(
                 }
                 if (boundary.end <= 0) {
                     val f = RectF(
-                        0f, strokeWidth, strokeWidth + 6, bound.bottom - strokeWidth
+                        -1f, strokeWidth, strokeWidth + 1f, bound.bottom - strokeWidth
                     )
                     if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)
                     else canvas.clipRect(f, Region.Op.DIFFERENCE)
@@ -139,16 +139,16 @@ class OutlinedCutoutDrawable(
             } else {
                 if (boundary.start <= 0) {
                     val f = RectF(
-                        0f, strokeWidth, strokeWidth + 6, bound.bottom - strokeWidth
+                        -1f, strokeWidth, strokeWidth + 1f, bound.bottom - strokeWidth
                     )
                     if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)
                     else canvas.clipRect(f, Region.Op.DIFFERENCE)
                 }
                 if (boundary.end <= 0) {
                     val f = RectF(
-                        bound.right - strokeWidth - 6,
+                        bound.right - strokeWidth - 1f,
                         strokeWidth,
-                        bound.right,
+                        bound.right + 1f,
                         bound.bottom - strokeWidth
                     )
                     if (VERSION.SDK_INT >= VERSION_CODES.O) canvas.clipOutRect(f)

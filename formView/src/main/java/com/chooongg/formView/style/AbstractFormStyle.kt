@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.chooongg.formView.R
 import com.chooongg.formView.config.FormConfigImpl
 import com.chooongg.formView.config.IFormConfig
+import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormSizeInfo
 import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
@@ -60,6 +61,34 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAtt
     }
 
     open fun onStyleAttachedToWindow(holder: FormViewHolder) = Unit
+
+    open fun onBindStyleLayoutPadding(holder: FormViewHolder, item: AbstractFormItem<*>) {
+        val start = when (item.boundary.start) {
+            FormBoundary.NONE -> 0
+            else -> if (item.fillEdgesPadding && isFillHorizontalPadding()) {
+                padding.start - padding.startMedium
+            } else 0
+        }
+        val end = when(item.boundary.end) {
+            FormBoundary.NONE -> 0
+            else -> if (item.fillEdgesPadding && isFillHorizontalPadding()) {
+                padding.end - padding.endMedium
+            } else 0
+        }
+        val top = when(item.boundary.top) {
+            FormBoundary.NONE -> 0
+            else -> if (item.fillEdgesPadding && isFillVerticalPadding()) {
+                padding.top - padding.topMedium
+            } else 0
+        }
+        val bottom = when(item.boundary.bottom) {
+            FormBoundary.NONE -> 0
+            else -> if (item.fillEdgesPadding && isFillVerticalPadding()) {
+                padding.bottom - padding.bottomMedium
+            } else 0
+        }
+        holder.itemView.setPaddingRelative(start, top, end, bottom)
+    }
 
     open fun onBindStyleBefore(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 

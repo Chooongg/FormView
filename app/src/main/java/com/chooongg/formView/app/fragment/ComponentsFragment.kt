@@ -48,6 +48,8 @@ class ComponentsFragment : Fragment() {
 
     class ComponentsViewModel : ViewModel() {
         val data = FormData {
+            com.google.android.material.R.attr.colorSecondary
+            com.google.android.material.R.attr.colorTertiary
             style = FormCardOutlinedStyle()
             part {
                 name = "Base Attribute"
@@ -74,6 +76,7 @@ class ComponentsFragment : Fragment() {
                 text("Item", "Name\nGravity\nEnd\nBottom") {
                     nameGravity = FormGravity(Gravity.END or Gravity.BOTTOM)
                 }
+                text("Item", "Name\nGravity\nEnd\nBottom\nGravity\nEnd\nBottom")
             }
             part {
                 name = "label <FormLabel>"

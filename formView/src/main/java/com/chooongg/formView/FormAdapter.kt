@@ -129,6 +129,16 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     fun visiblePartCount(): Int =
         data.concatAdapter.adapters.count { it is AbstractFormPart<*> && it.data.isEnabled }
 
+    fun enabledParts(): List<AbstractFormPart<*>> {
+        val parts = ArrayList<AbstractFormPart<*>>()
+        data.concatAdapter.adapters.forEach {
+            if (it is AbstractFormPart<*> && it.data.isEnabled) {
+                parts.add(it)
+            }
+        }
+        return parts
+    }
+
     //<editor-fold desc="类型池 TypePool">
 
     private val stylePool = ArrayList<AbstractFormStyle>()

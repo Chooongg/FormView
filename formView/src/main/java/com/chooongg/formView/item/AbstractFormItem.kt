@@ -324,9 +324,6 @@ abstract class AbstractFormItem<CONTENT>(
         groupIndex = -1
         countInGroup = -1
         positionInGroup = -1
-        columnCount = -1
-        columnIndex = -1
-        columnSize = -1
     }
 
     //</editor-fold>
