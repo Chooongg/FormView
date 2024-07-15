@@ -32,6 +32,10 @@ class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfig
 
     var style: AbstractFormStyle? = null
 
+    private val headerAdapters = ArrayList<RecyclerView.Adapter<*>>()
+
+    private var footerAdapters = ArrayList<RecyclerView.Adapter<*>>()
+
     init {
         block?.invoke(this)
     }
@@ -41,7 +45,7 @@ class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfig
 
     fun part(part: AbstractFormPart<*>) {
         part.isEnabled = isEnabled
-        concatAdapter.addAdapter(part)
+        concatAdapter.addAdapter(concatAdapter.adapters.size - footerAdapters.size, part)
     }
 
     fun part(
@@ -49,13 +53,40 @@ class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfig
         block: FormPartData.() -> Unit
     ) = part(FormPart(style, FormPartData().apply(block), isEnabled))
 
-    fun clearTopPlaceHolder() {
-        if (concatAdapter.adapters.isNotEmpty()) {
-            val childAdapter = concatAdapter.adapters[0]
-            if (childAdapter is TopPlaceHolder) {
-                concatAdapter.removeAdapter(childAdapter)
-            }
+    fun removeChildAdapter(adapter: RecyclerView.Adapter<*>) {
+        concatAdapter.removeAdapter(adapter)
+        if (headerAdapters.contains(adapter)) {
+            headerAdapters.remove(adapter)
         }
+        if (footerAdapters.contains(adapter)) {
+            footerAdapters.remove(adapter)
+        }
+    }
+
+    fun isHasHeaderChildAdapter() = headerAdapters.isNotEmpty()
+
+    fun addHeaderChildAdapter(adapter: RecyclerView.Adapter<*>) {
+        concatAdapter.addAdapter(headerAdapters.size, adapter)
+        headerAdapters.add(adapter)
+    }
+
+    fun clearHeaderChildAdapter() {
+        if (concatAdapter.adapters.isEmpty()) return
+        footerAdapters.forEach { concatAdapter.removeAdapter(it) }
+        footerAdapters.clear()
+    }
+
+    fun isHasFooterChildAdapter() = footerAdapters.isNotEmpty()
+
+    fun addFooterChildAdapter(adapter: RecyclerView.Adapter<*>) {
+        concatAdapter.addAdapter(footerAdapters.size, adapter)
+        footerAdapters.add(adapter)
+    }
+
+    fun clearFooterChildAdapter() {
+        if (concatAdapter.adapters.isEmpty()) return
+        footerAdapters.forEach { concatAdapter.removeAdapter(it) }
+        footerAdapters.clear()
     }
 
     internal fun hasTopPlaceHolder(): Boolean {

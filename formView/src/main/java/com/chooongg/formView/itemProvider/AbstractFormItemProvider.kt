@@ -2,15 +2,16 @@ package com.chooongg.formView.itemProvider
 
 import android.view.View
 import android.view.ViewGroup
-import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.helper.FormTextAppearanceHelper
+import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 
 /**
- * Item Provider
+ * Item提供器
+ * @constructor 因为使用反射进行初始化，所以子类必须保留空参构造方法
  */
 abstract class AbstractFormItemProvider : FormTextAppearanceHelper, IFormItemAttributeHelper {
 

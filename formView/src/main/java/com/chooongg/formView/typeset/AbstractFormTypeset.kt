@@ -4,16 +4,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.chooongg.formView.FormManager
-import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.enum.FormEmsSize
 import com.chooongg.formView.helper.FormTextAppearanceHelper
+import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
 
+/**
+ * 排版
+ * @constructor 因为使用反射进行初始化，所以子类必须保留空参构造方法
+ */
 abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemAttributeHelper {
 
     abstract val emsMode: FormEmsMode

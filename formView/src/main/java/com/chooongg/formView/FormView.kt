@@ -43,7 +43,7 @@ class FormView @JvmOverloads constructor(
     }
 
     fun setFixedColumn(
-        @IntRange(from = 1, to = FormManager.FORM_MAX_COLUMN_COUNT.toLong()) column: Int
+        @IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong()) column: Int
     ) {
         layoutManager.fixedColumn = column
     }
@@ -67,7 +67,10 @@ class FormView @JvmOverloads constructor(
     }
 
     fun setData(data: FormData) {
-        super.setAdapter(FormAdapter(data).apply { columnCount = layoutManager.columnCount })
+        super.setAdapter(FormAdapter(data).apply {
+            layoutManager.adapter = this
+            columnCount = layoutManager.columnCount
+        })
         isEnabled = data.isEnabled
     }
 

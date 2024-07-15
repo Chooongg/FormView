@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.FormView" parent="Base.Theme.FormView">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:windowSplashScreenAnimatedIcon">?windowSplashScreenAnimatedIcon</item>
+        <item name="android:windowSplashScreenBackground">?windowSplashScreenBackground</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_branding</item>
+        <item name="android:windowSplashScreenAnimationDuration">
+            ?windowSplashScreenAnimationDuration
+        </item>
+    </style>
+</resources>

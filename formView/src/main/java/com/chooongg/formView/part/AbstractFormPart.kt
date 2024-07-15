@@ -45,10 +45,6 @@ abstract class AbstractFormPart<DATA : IFormPart>(
 
     val adapter: FormAdapter get() = _adapter!!
 
-    val columnCount
-        get() = data.fixedColumn ?: data.columnProvider?.invoke(_adapter?.columnCount ?: 1)
-        ?: _adapter?.columnCount ?: -1
-
     protected val differ = AsyncListDiffer(object : ListUpdateCallback {
         override fun onChanged(p: Int, count: Int, payload: Any?) = Unit
         override fun onRemoved(p: Int, count: Int) = notifyItemRangeRemoved(p, count)
@@ -64,8 +60,16 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }).build())
 
     fun update() {
-        if (_adapter == null) return
-        val columnCount = columnCount
+        if (_adapter == null) {
+            differ.submitList(null)
+            return
+        }
+        val adapterColumnCount = _adapter?.columnCount ?: -1
+        if (adapterColumnCount <= 0) {
+            differ.submitList(null)
+            return
+        }
+        val columnCount = data.column?.obtain(adapterColumnCount) ?: adapterColumnCount
         if (columnCount < 0) {
             differ.submitList(null)
             return
@@ -342,15 +346,15 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        if (recyclerView.adapter is FormAdapter) {
-            _adapter = recyclerView.adapter as FormAdapter
-            update()
-        } else _adapter = null
+        _adapter = if (recyclerView.adapter is FormAdapter) {
+            recyclerView.adapter as FormAdapter
+        } else null
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         partScope.cancel()
         partScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         _adapter = null
+        update()
     }
 }

@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.LinearLayoutCompat
 import com.chooongg.formView.R
 import com.chooongg.formView.enum.FormEmsMode
 import com.chooongg.formView.holder.FormViewHolder
@@ -20,7 +21,7 @@ class FormNoneTypeset() : AbstractFormTypeset() {
     }
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup =
-        FrameLayout(parent.context).also {
+        LinearLayoutCompat(parent.context).also {
             it.addView(FormMenuView(it.context, style).apply {
                 id = R.id.formMenuView
             }, FrameLayout.LayoutParams(-2, -2).apply { gravity = Gravity.END })
@@ -31,6 +32,8 @@ class FormNoneTypeset() : AbstractFormTypeset() {
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {
-        layoutView.addView(childView, 0, FrameLayout.LayoutParams(-1, -1))
+        layoutView.addView(childView, 0, LinearLayoutCompat.LayoutParams(0, -1).apply {
+            weight = 1f
+        })
     }
 }

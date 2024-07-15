@@ -21,23 +21,24 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
     @IntDef(-1)
     annotation class ColumnNullValue
 
-    private var adapter: FormAdapter? = null
-
-    @ColumnNullValue
-    @IntRange(from = 1, to = FormManager.FORM_MAX_COLUMN_COUNT.toLong())
-    var columnCount: Int = -1
-        private set(value) {
-            if (field == value) return
-            field = value
-            adapter?.columnCount = value
-        }
+    internal var adapter: FormAdapter? = null
 
     private var isMeasureFinished: Boolean = false
 
     private var isNeedToUpdate: Boolean = true
 
     @ColumnNullValue
-    @IntRange(from = 1, to = FormManager.FORM_MAX_COLUMN_COUNT.toLong())
+    @IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong())
+    var columnCount: Int = -1
+        private set(value) {
+            if (field == value) return
+            field = value
+            adapter?.columnCount = value
+            adapter?.update()
+        }
+
+    @ColumnNullValue
+    @IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong())
     var fixedColumn: Int = fixedColumn
         internal set(value) {
             if (field == value) return
@@ -49,7 +50,6 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
             }
             if (isMeasureFinished) {
                 updateColumn()
-                adapter?.update()
             } else isNeedToUpdate = true
         }
 
@@ -61,7 +61,6 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
             fixedColumn = if (value <= 0) 1 else -1
             if (isMeasureFinished) {
                 updateColumn()
-                adapter?.update()
             } else isNeedToUpdate = true
         }
 
@@ -91,20 +90,14 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
         recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int
     ) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
-        if (state.didStructureChange()) {
-            updateColumn()
-            isMeasureFinished = true
-            if (isNeedToUpdate) {
-                adapter?.update()
-            }
-        }
+        if (state.itemCount > 0) updateColumn()
     }
 
     private fun updateColumn() {
         columnCount = if (fixedColumn > 0) {
             fixedColumn
         } else {
-            max(1, min(10, width / columnWidth))
+            max(1, min(10, (width - paddingLeft - paddingRight) / columnWidth))
         }
     }
 
@@ -166,9 +159,5 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
             }
             return index
         }
-    }
-
-    private interface onMeasureListener {
-        fun onMeasureFinished()
     }
 }

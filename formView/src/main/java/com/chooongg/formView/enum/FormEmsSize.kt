@@ -8,7 +8,7 @@ import com.chooongg.formView.FormManager
  * Ems值
  */
 data class FormEmsSize internal constructor(
-    @IntRange(from = 1) private val size: Int?, private val provider: FormEmsSizeBlock?
+    @IntRange(1) private val size: Int?, private val provider: FormEmsSizeBlock?
 ) {
     constructor(size: Int) : this(size, null)
     constructor(provider: FormEmsSizeBlock) : this(null, provider)

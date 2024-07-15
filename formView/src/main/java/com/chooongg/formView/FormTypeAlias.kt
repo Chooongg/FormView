@@ -15,11 +15,11 @@ import kotlin.reflect.KClass
 /**
  * 列代理Block
  */
-typealias FormColumnBlock = (columnCount: Int) -> @receiver:IntRange(from = 1, to = 10) Int
+typealias FormColumnBlock = (columnCount: Int) -> @receiver:IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong()) Int
 
 typealias FormTypesetBlock = (columnCount: Int, columnSize: Int) -> KClass<out AbstractFormTypeset>
 
-typealias FormEmsSizeBlock = (columnCount: Int, columnSize: Int) -> @receiver:IntRange(from = 1) Int
+typealias FormEmsSizeBlock = (columnCount: Int, columnSize: Int) -> @receiver:IntRange(1) Int
 
 typealias FormGravityBlock = (columnCount: Int, columnSize: Int) -> @receiver:GravityInt Int
 

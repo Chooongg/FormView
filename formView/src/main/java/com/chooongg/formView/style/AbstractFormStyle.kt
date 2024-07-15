@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import com.chooongg.formView.R
 import com.chooongg.formView.config.FormConfigImpl
 import com.chooongg.formView.config.IFormConfig
-import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.data.FormSizeInfo
+import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrResourcesId
 
+/**
+ * 样式
+ */
 abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAttributeHelper {
 
     private var isInstanceSizeInfo: Boolean = false

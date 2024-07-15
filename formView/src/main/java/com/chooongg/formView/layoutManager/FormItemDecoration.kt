@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.chooongg.formView.FormView
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormViewHolder
+import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.part.AbstractFormPart
 
 class FormItemDecoration : ItemDecoration() {
@@ -99,6 +100,7 @@ class FormItemDecoration : ItemDecoration() {
             }
         }
         holder.itemView.setPaddingRelative(_paddingStart, _paddingTop, _paddingEnd, _paddingBottom)
+        if (holder.style.isIndependentItem && item is FormPlaceHolder) return
         holder.itemView.updateLayoutParams<MarginLayoutParams> {
             updateMarginsRelative(_marginStart, _marginTop, _marginEnd, _marginBottom)
         }

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.Theme.FormView" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Base.Theme.FormView" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="postSplashScreenTheme">@style/Theme.FormView</item>
+        <item name="windowSplashScreenBackground">?colorSurfaceContainerLow</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
 
     <style name="Theme.FormView" parent="Base.Theme.FormView" />
+
+    <style name="Theme.FormView.Splash" parent="Theme.SplashScreen" />
+
 </resources>

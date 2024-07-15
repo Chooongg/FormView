@@ -43,7 +43,7 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
 
     val isEnabled get() = data.isEnabled
 
-    internal var columnCount: Int = 1
+    internal var columnCount: Int = -1
 
     @SuppressLint("NotifyDataSetChanged")
     fun update() {
