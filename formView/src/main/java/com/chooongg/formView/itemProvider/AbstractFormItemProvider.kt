@@ -1,5 +1,6 @@
 package com.chooongg.formView.itemProvider
 
+import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.helper.FormTextAppearanceHelper
@@ -22,12 +23,34 @@ abstract class AbstractFormItemProvider : FormTextAppearanceHelper, IFormItemAtt
     open fun onViewAttachedToWindow(holder: FormViewHolder) = Unit
 
     abstract fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     )
 
     open fun onBindViewHolderOther(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean, payload: Any
+        holder: FormViewHolder, item: AbstractFormItem<*>, payload: Any
     ) = Unit
+
+    open fun onBindViewHolderClick(
+        holder: FormViewHolder, part: AbstractFormPart<*>, item: AbstractFormItem<*>
+    ) {
+        if (item.isEnabledItemClick && item.isEnabled) {
+            if (item.fillEdgesPadding){
+                holder.itemView.foreground = holder.style.getForeground(holder.itemView, item)
+            }else{
+                val drawable = holder.style.getForeground(holder.itemView, item)
+                drawable.bounds = Rect()
+                holder.itemView.foreground = drawable
+            }
+            holder.itemView.setOnClickListener {
+                val listener = item.onClickListener ?: part._recyclerView?.onItemClickListener
+                ?: return@setOnClickListener
+                listener.invoke(holder.itemView, part, item)
+            }
+        } else {
+            holder.itemView.foreground = null
+            holder.itemView.setOnClickListener(null)
+        }
+    }
 
     open fun onViewDetachedFromWindow(holder: FormViewHolder) = Unit
 

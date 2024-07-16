@@ -24,7 +24,7 @@ class FormTextProvider : AbstractFormItemProvider() {
     }
 
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<MaterialTextView>(R.id.formContentView)) {
             gravity = obtainContentGravity(holder, item)

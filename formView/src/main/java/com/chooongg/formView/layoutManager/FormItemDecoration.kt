@@ -3,7 +3,6 @@ package com.chooongg.formView.layoutManager
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.os.Build
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +45,12 @@ class FormItemDecoration(context: Context) : ItemDecoration() {
         val startSize = holder.style.padding.start - holder.style.padding.startMedium
         val endSize = holder.style.padding.end - holder.style.padding.endMedium
         val start = when (item.boundary.start) {
-            FormBoundary.GLOBAL -> if (holder.style.isFillHorizontalMargin()) 0 else -startSize
+            FormBoundary.GLOBAL -> if (holder.style.isFillHorizontalMargin()) {
+                0
+            } else if (!item.fillEdgesPadding) {
+                -holder.style.padding.start
+            } else -startSize
+
             FormBoundary.MIDDLE -> if (holder.style.isIndependentItem) {
                 (startSize + endSize) / item.columnCount * item.columnIndex
             } else holder.style.margin.startMedium - if (holder.style.isFillHorizontalMargin()) 0 else startSize
@@ -54,7 +58,12 @@ class FormItemDecoration(context: Context) : ItemDecoration() {
             else -> 0
         }
         val end = when (item.boundary.end) {
-            FormBoundary.GLOBAL -> if (holder.style.isFillHorizontalMargin()) 0 else -endSize
+            FormBoundary.GLOBAL -> if (holder.style.isFillHorizontalMargin()) {
+                0
+            } else if (!item.fillEdgesPadding) {
+                -holder.style.padding.end
+            } else -endSize
+
             FormBoundary.MIDDLE -> if (holder.style.isIndependentItem) {
                 (start + endSize) / item.columnCount * (item.columnCount - 1 - item.columnIndex)
             } else holder.style.margin.endMedium - if (holder.style.isFillHorizontalMargin()) 0 else endSize
@@ -75,7 +84,7 @@ class FormItemDecoration(context: Context) : ItemDecoration() {
         }
         outRect.top = top
         outRect.bottom = bottom
-        if (view.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+        if (parent.layoutManager.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
             outRect.left = end
             outRect.right = start
         } else {

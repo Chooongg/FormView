@@ -1,14 +1,16 @@
 package com.chooongg.formView.style
 
 import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.util.TypedValue
 import androidx.annotation.ColorRes
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.ktx.attrColor
+import com.chooongg.ktx.attrColorStateList
 import com.google.android.material.shape.MaterialShapeDrawable
 
-class FormCardStyle() : AbstractShapeAppearanceFormStyle() {
+class FormCardStyle() : AbstractFormStyle() {
 
     @ColorRes
     var backgroundTintResId: Int? = null

@@ -44,7 +44,7 @@ class FormNormalGroupTitleProvider : AbstractGroupTitleProvider() {
     }
 
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<LinearLayoutCompat>(R.id.formContentView)) {
             setPaddingRelative(

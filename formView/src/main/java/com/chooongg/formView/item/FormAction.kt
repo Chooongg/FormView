@@ -19,6 +19,8 @@ class FormAction(
      */
     var badge: Any? = null
 
+    var badgeEnabled: Boolean = true
+
     var badgeColor: FormColorStateListBlock? = null
 
     var badgeTextColor: FormColorStateListBlock? = null
@@ -36,6 +38,8 @@ class FormAction(
      * 下一级图标
      */
     var nextLevelIcon: Any? = null
+
+    override var isEnabledItemClick: Boolean = true
 
     override val disableTypesetConfigMenu: Boolean = true
 

@@ -1,6 +1,7 @@
 package com.chooongg.formView.style
 
 import android.content.Context
+import android.graphics.drawable.RippleDrawable
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,11 @@ import com.chooongg.formView.data.FormSizeInfo
 import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.ktx.attrColorStateList
 import com.chooongg.ktx.attrResourcesId
+import com.google.android.material.shape.AbsoluteCornerSize
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 
 /**
  * 样式
@@ -27,7 +32,15 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAtt
     var padding: FormSizeInfo = FormSizeInfo()
         private set
 
+    /**
+     * 是否是独立的Item
+     */
     open var isIndependentItem: Boolean = false
+
+    /**
+     * 形状外观模型
+     */
+    protected lateinit var shapeAppearanceModel: ShapeAppearanceModel
 
     /**
      * 是否装饰空项目
@@ -69,19 +82,19 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAtt
                 padding.start - padding.startMedium
             } else 0
         }
-        val end = when(item.boundary.end) {
+        val end = when (item.boundary.end) {
             FormBoundary.NONE -> 0
             else -> if (item.fillEdgesPadding && isFillHorizontalPadding()) {
                 padding.end - padding.endMedium
             } else 0
         }
-        val top = when(item.boundary.top) {
+        val top = when (item.boundary.top) {
             FormBoundary.NONE -> 0
             else -> if (item.fillEdgesPadding && isFillVerticalPadding()) {
                 padding.top - padding.topMedium
             } else 0
         }
-        val bottom = when(item.boundary.bottom) {
+        val bottom = when (item.boundary.bottom) {
             FormBoundary.NONE -> 0
             else -> if (item.fillEdgesPadding && isFillVerticalPadding()) {
                 padding.bottom - padding.bottomMedium
@@ -90,7 +103,17 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAtt
         holder.itemView.setPaddingRelative(start, top, end, bottom)
     }
 
-    open fun onBindStyleBefore(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
+    open fun onBindStyleBefore(holder: FormViewHolder, item: AbstractFormItem<*>) {
+        if (!this::shapeAppearanceModel.isInitialized) {
+            val resId = holder.itemView.attrResourcesId(
+                R.attr.formShapeAppearanceCorner, holder.itemView.attrResourcesId(
+                    com.google.android.material.R.attr.shapeAppearanceCornerMedium, 0
+                )
+            )
+            shapeAppearanceModel =
+                ShapeAppearanceModel.builder(holder.itemView.context, resId, 0).build()
+        }
+    }
 
     open fun onBindStyle(holder: FormViewHolder, item: AbstractFormItem<*>) = Unit
 
@@ -140,6 +163,122 @@ abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAtt
             )
         }
     }
+
+    fun getShapeAppearanceModel(view: View, item: AbstractFormItem<*>) =
+        ShapeAppearanceModel.builder().apply {
+            if (view.layoutDirection != View.LAYOUT_DIRECTION_RTL) {
+                setTopLeftCornerSize(
+                    if (item.boundary.top != 0 && item.boundary.start != 0) {
+                        shapeAppearanceModel.topLeftCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setTopRightCornerSize(
+                    if (item.boundary.top != 0 && item.boundary.end != 0) {
+                        shapeAppearanceModel.topRightCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setBottomLeftCornerSize(
+                    if (item.boundary.bottom != 0 && item.boundary.start != 0) {
+                        shapeAppearanceModel.bottomLeftCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setBottomRightCornerSize(
+                    if (item.boundary.bottom != 0 && item.boundary.end != 0) {
+                        shapeAppearanceModel.bottomRightCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+            } else {
+                setTopLeftCornerSize(
+                    if (item.boundary.top != 0 && item.boundary.start != 0) {
+                        shapeAppearanceModel.topRightCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setTopRightCornerSize(
+                    if (item.boundary.top != 0 && item.boundary.end != 0) {
+                        shapeAppearanceModel.topLeftCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setBottomLeftCornerSize(
+                    if (item.boundary.bottom != 0 && item.boundary.start != 0) {
+                        shapeAppearanceModel.bottomRightCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+                setBottomRightCornerSize(
+                    if (item.boundary.bottom != 0 && item.boundary.end != 0) {
+                        shapeAppearanceModel.bottomLeftCornerSize
+                    } else AbsoluteCornerSize(0f)
+                )
+            }
+        }.build()
+
+    open fun getForeground(view: View, item: AbstractFormItem<*>) = RippleDrawable(
+        view.attrColorStateList(com.google.android.material.R.attr.colorControlHighlight)!!,
+        null,
+        MaterialShapeDrawable(getClickShapeAppearanceModel(view, item))
+    )
+
+    fun getClickShapeAppearanceModel(view: View, item: AbstractFormItem<*>) =
+        ShapeAppearanceModel.builder().apply {
+            if (view.layoutDirection != View.LAYOUT_DIRECTION_RTL) {
+                setTopLeftCornerSize(
+                    when {
+                        item.boundary.top != 0 && item.boundary.start != 0 -> shapeAppearanceModel.topLeftCornerSize
+                        item.boundary.top == 0 && item.boundary.start == 0 -> shapeAppearanceModel.topLeftCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setTopRightCornerSize(
+                    when {
+                        item.boundary.top != 0 && item.boundary.end != 0 -> shapeAppearanceModel.topRightCornerSize
+                        item.boundary.top == 0 && item.boundary.end == 0 -> shapeAppearanceModel.topRightCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setBottomLeftCornerSize(
+                    when {
+                        item.boundary.bottom != 0 && item.boundary.start != 0 -> shapeAppearanceModel.bottomLeftCornerSize
+                        item.boundary.bottom == 0 && item.boundary.start == 0 -> shapeAppearanceModel.bottomLeftCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setBottomRightCornerSize(
+                    when {
+                        item.boundary.bottom != 0 && item.boundary.end != 0 -> shapeAppearanceModel.bottomRightCornerSize
+                        item.boundary.bottom == 0 && item.boundary.end == 0 -> shapeAppearanceModel.bottomRightCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+            } else {
+                setTopLeftCornerSize(
+                    when {
+                        item.boundary.top != 0 && item.boundary.start != 0 -> shapeAppearanceModel.topRightCornerSize
+                        item.boundary.top == 0 && item.boundary.start == 0 -> shapeAppearanceModel.topRightCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setTopRightCornerSize(
+                    when {
+                        item.boundary.top != 0 && item.boundary.end != 0 -> shapeAppearanceModel.topLeftCornerSize
+                        item.boundary.top == 0 && item.boundary.end == 0 -> shapeAppearanceModel.topLeftCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setBottomLeftCornerSize(
+                    when {
+                        item.boundary.bottom != 0 && item.boundary.start != 0 -> shapeAppearanceModel.bottomRightCornerSize
+                        item.boundary.bottom == 0 && item.boundary.start == 0 -> shapeAppearanceModel.bottomRightCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+                setBottomRightCornerSize(
+                    when {
+                        item.boundary.bottom != 0 && item.boundary.end != 0 -> shapeAppearanceModel.bottomLeftCornerSize
+                        item.boundary.bottom == 0 && item.boundary.end == 0 -> shapeAppearanceModel.bottomLeftCornerSize
+                        else -> AbsoluteCornerSize(0f)
+                    }
+                )
+            }
+        }.build()
 
     override fun equals(other: Any?): Boolean {
         if (other !is AbstractFormStyle) return false

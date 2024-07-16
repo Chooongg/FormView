@@ -14,6 +14,6 @@ class FormPlaceHolderProvider : AbstractFormItemProvider() {
     ) = Space(parent.context)
 
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) = Unit
 }

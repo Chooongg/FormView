@@ -14,7 +14,7 @@ import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.part.FormPart
 import com.chooongg.formView.style.AbstractFormStyle
 
-class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfigImpl() {
+class FormData() : IFormConfig by FormConfigImpl() {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
@@ -38,8 +38,8 @@ class FormData(block: (FormData.() -> Unit)? = null) : IFormConfig by FormConfig
 
     private var footerAdapters = ArrayList<RecyclerView.Adapter<*>>()
 
-    init {
-        block?.invoke(this)
+    constructor(block: FormData.() -> Unit) : this() {
+        block.invoke(this)
     }
 
     fun getWrappedAdapterAndPosition(globalPosition: Int) =

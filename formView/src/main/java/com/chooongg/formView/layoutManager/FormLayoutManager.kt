@@ -104,7 +104,6 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
                 -1
             }
         }
-        logE("Form", "columnCount: $columnCount")
     }
 
     override fun onAttachedToWindow(recyclerView: RecyclerView) {

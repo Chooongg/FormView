@@ -1,15 +1,14 @@
 package com.chooongg.formView.style
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.ktx.attrColor
+import com.chooongg.ktx.attrColorStateList
 import com.google.android.material.shape.MaterialShapeDrawable
 
-class FormCardElevatedStyle() : AbstractShapeAppearanceFormStyle() {
+class FormCardElevatedStyle() : AbstractFormStyle() {
 
     @DimenRes
     var elevationResId: Int? = null
@@ -29,9 +28,9 @@ class FormCardElevatedStyle() : AbstractShapeAppearanceFormStyle() {
             holder.itemView.context.resources.getColorStateList(
                 backgroundTintResId!!, holder.itemView.context.theme
             )
-        } else ColorStateList.valueOf(
-            holder.itemView.attrColor(com.google.android.material.R.attr.colorSurfaceContainerLowest)
-        )
+        } else {
+            holder.itemView.attrColorStateList(com.google.android.material.R.attr.colorSurfaceContainerLowest)
+        }
         holder.itemView.background = shapeDrawable
         holder.itemView.elevation = if (elevationResId != null) {
             holder.itemView.context.resources.getDimension(elevationResId!!)

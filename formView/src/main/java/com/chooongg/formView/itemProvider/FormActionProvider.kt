@@ -15,9 +15,9 @@ import com.chooongg.formView.item.FormAction
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.widget.FormMenuView
-import com.chooongg.ktx.attrColorStateList
 import com.chooongg.ktx.dp2px
 import com.chooongg.ktx.gone
+import com.chooongg.ktx.resColorStateList
 import com.chooongg.ktx.resDimensionPixelSize
 import com.chooongg.ktx.visible
 import com.google.android.material.button.MaterialButton
@@ -90,16 +90,18 @@ class FormActionProvider : AbstractFormItemProvider() {
             it.addView(AppCompatImageView(it.context).apply {
                 id = R.id.formContentFifthView
                 setImageResource(R.drawable.ic_form_arrow_end)
+                imageTintList = resColorStateList(R.color.form_icon_tint)
             }, LinearLayoutCompat.LayoutParams(fontHeight, fontHeight))
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         val itemAction = item as? FormAction
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
+            isEnabled = item.isEnabled
             iconGravity = obtainIconGravity(holder, item)
             val nameIcon = FormManager.parseIcon(context, item.icon)
             if (nameIcon != null) {
@@ -113,19 +115,21 @@ class FormActionProvider : AbstractFormItemProvider() {
             } else setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
         }
         with(holder.getView<MaterialTextView>(R.id.formContentSecondView)) {
+            isEnabled = item.isEnabled
             gravity = obtainContentGravity(holder, item)
             text = FormManager.parseText(context, item.getContentText())
         }
         with(holder.getView<MaterialTextView>(R.id.formContentThirdView)) {
+            isEnabled = itemAction?.badgeEnabled == true && item.isEnabled
             val shapeBackground = background as MaterialShapeDrawable
             if (itemAction?.badge != null) {
                 shapeBackground.fillColor = if (itemAction.badgeColor != null) {
                     itemAction.badgeColor!!.invoke(context)
-                } else attrColorStateList(com.google.android.material.R.attr.colorError)
+                } else resColorStateList(R.color.form_badge_container)
                 setTextColor(
                     if (itemAction.badgeTextColor != null) {
                         itemAction.badgeTextColor!!.invoke(context)
-                    } else attrColorStateList(com.google.android.material.R.attr.colorOnError)
+                    } else resColorStateList(R.color.form_badge_on_container)
                 )
                 val number = itemAction.badge?.toString()?.toIntOrNull()
                 if (number != null) {
@@ -155,6 +159,7 @@ class FormActionProvider : AbstractFormItemProvider() {
         }
         configMenuView(holder, item, holder.getView(R.id.formContentFourthView))
         with(holder.getView<AppCompatImageView>(R.id.formContentFifthView)) {
+            isEnabled = item.isEnabled
             visibility = if (itemAction?.showNextLevelIcon != false) View.VISIBLE else View.GONE
             val icon = FormManager.parseIcon(context, itemAction?.nextLevelIcon)
             if (icon != null) setImageDrawable(icon) else setImageResource(R.drawable.ic_form_arrow_end)

@@ -1,6 +1,7 @@
 package com.chooongg.formView.part
 
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -17,10 +18,13 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
 
@@ -59,70 +63,89 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             newItem !is FormPlaceHolder && oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
 
-    fun update() {
-        if (_adapter == null) {
-            differ.submitList(null)
-            return
-        }
-        val adapterColumnCount = _adapter?.columnCount ?: -1
-        if (adapterColumnCount <= 0) {
-            differ.submitList(null)
-            return
-        }
-        val columnCount = data.column?.obtain(adapterColumnCount) ?: adapterColumnCount
-        if (columnCount < 0) {
-            differ.submitList(null)
-            return
-        }
-        val groups = getOriginalItemList()
-        val ignoreListCount = getIgnoreListCount()
-        val tempList = ArrayList<ArrayList<AbstractFormItem<*>>>()
-        groups.forEach { group ->
-            val tempGroup = ArrayList<AbstractFormItem<*>>()
-            group.forEach { item ->
-                item.resetInternalData()
-                item.isEnabled = item.isEnable(isEnabled)
-//                item.initialize()
-                if (item.isVisible(isEnabled)) {
-                    when (item) {
-                        else -> tempGroup.add(item)
-                    }
-                }
-            }
-            while (tempGroup.firstOrNull()?.showAtEdge == false) {
-                tempGroup.removeFirst()
-            }
-            while (tempGroup.lastOrNull()?.showAtEdge == false) {
-                tempGroup.removeLast()
-            }
-            tempList.add(tempGroup)
-        }
-        val tempList2 = ArrayList<List<AbstractFormItem<*>>>()
-        tempList.forEach { group ->
-            val tempGroup = ArrayList<AbstractFormItem<*>>()
-            var columnIndex = 0
-            group.forEachIndexed { position, item ->
-                item.columnCount = columnCount
-                item.columnSize = when {
-                    item.loneLine -> columnCount
-                    item.columnProvider != null -> {
-                        max(1, min(columnCount, item.columnProvider!!.invoke(columnCount)))
-                    }
+    private var updateJob: Job? = null
 
-                    else -> 1
+    fun update() {
+        updateJob?.cancel()
+        updateJob = partScope.launch {
+            if (_adapter == null) {
+                differ.submitList(null)
+                return@launch
+            }
+            val adapterColumnCount = _adapter?.columnCount ?: -1
+            if (adapterColumnCount <= 0) {
+                differ.submitList(null)
+                return@launch
+            }
+            val columnCount = data.column?.obtain(adapterColumnCount) ?: adapterColumnCount
+            if (columnCount < 0) {
+                differ.submitList(null)
+                return@launch
+            }
+            val groups = getOriginalItemList()
+            val ignoreListCount = getIgnoreListCount()
+            val tempList = ArrayList<ArrayList<AbstractFormItem<*>>>()
+            groups.forEach { group ->
+                val tempGroup = ArrayList<AbstractFormItem<*>>()
+                group.forEach { item ->
+                    item.resetInternalData()
+                    item.isEnabled = item.isEnable(isEnabled)
+//                item.initialize()
+                    if (item.isVisible(isEnabled)) {
+                        when (item) {
+                            else -> tempGroup.add(item)
+                        }
+                    }
                 }
-                item.columnIndex = when {
-                    item.positionInGroup == 0 -> 0
-                    item.loneLine -> 0
-                    item.newLine -> 0
-                    columnIndex + item.columnSize <= columnCount -> columnIndex
-                    else -> 0
+                while (tempGroup.firstOrNull()?.showAtEdge == false) {
+                    tempGroup.removeFirst()
                 }
-                columnIndex = if (item.columnIndex + item.columnSize < columnCount) {
-                    item.columnIndex + item.columnSize
-                } else 0
-                if (position > 0 && item.columnIndex == 0) {
-                    val lastItem = group[position - 1]
+                while (tempGroup.lastOrNull()?.showAtEdge == false) {
+                    tempGroup.removeLast()
+                }
+                tempList.add(tempGroup)
+            }
+            val tempList2 = ArrayList<List<AbstractFormItem<*>>>()
+            tempList.forEach { group ->
+                val tempGroup = ArrayList<AbstractFormItem<*>>()
+                var columnIndex = 0
+                group.forEachIndexed { position, item ->
+                    item.columnCount = columnCount
+                    item.columnSize = when {
+                        item.loneLine -> columnCount
+                        item.columnProvider != null -> {
+                            max(1, min(columnCount, item.columnProvider!!.invoke(columnCount)))
+                        }
+
+                        else -> 1
+                    }
+                    item.columnIndex = when {
+                        item.positionInGroup == 0 -> 0
+                        item.loneLine -> 0
+                        item.newLine -> 0
+                        columnIndex + item.columnSize <= columnCount -> columnIndex
+                        else -> 0
+                    }
+                    columnIndex = if (item.columnIndex + item.columnSize < columnCount) {
+                        item.columnIndex + item.columnSize
+                    } else 0
+                    if (position > 0 && item.columnIndex == 0) {
+                        val lastItem = group[position - 1]
+                        if (lastItem.columnIndex + lastItem.columnSize < columnCount) {
+                            if (lastItem.autoFill) {
+                                lastItem.columnSize = columnCount - lastItem.columnIndex
+                            } else {
+                                val noneIndex = lastItem.columnIndex + lastItem.columnSize
+                                tempGroup.add(
+                                    FormPlaceHolder(columnCount, noneIndex, columnCount - noneIndex)
+                                )
+                            }
+                        }
+                    }
+                    tempGroup.add(item)
+                }
+                if (tempGroup.isNotEmpty()) {
+                    val lastItem = tempGroup.last()
                     if (lastItem.columnIndex + lastItem.columnSize < columnCount) {
                         if (lastItem.autoFill) {
                             lastItem.columnSize = columnCount - lastItem.columnIndex
@@ -133,44 +156,30 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                             )
                         }
                     }
+                    tempList2.add(tempGroup)
                 }
-                tempGroup.add(item)
             }
-            if (tempGroup.isNotEmpty()) {
-                val lastItem = tempGroup.last()
-                if (lastItem.columnIndex + lastItem.columnSize < columnCount) {
-                    if (lastItem.autoFill) {
-                        lastItem.columnSize = columnCount - lastItem.columnIndex
+            var localPosition = 0
+            tempList2.forEachIndexed { index, group ->
+                group.forEachIndexed { position, item ->
+                    item.groupCount = tempList2.size - ignoreListCount
+                    item.groupIndex = index
+                    item.countInGroup = group.size
+                    item.positionInGroup = position
+                    item.localPosition = localPosition
+                    localPosition++
+                }
+            }
+            differ.submitList(ArrayList<AbstractFormItem<*>>().apply { tempList2.forEach { addAll(it) } }) {
+                calculateBoundary()
+                differ.currentList.forEachIndexed { index, item ->
+                    if (item.lastEnabled != item.isEnabled) {
+                        notifyItemChanged(index)
                     } else {
-                        val noneIndex = lastItem.columnIndex + lastItem.columnSize
-                        tempGroup.add(
-                            FormPlaceHolder(columnCount, noneIndex, columnCount - noneIndex)
-                        )
-                    }
-                }
-                tempList2.add(tempGroup)
-            }
-        }
-        var localPosition = 0
-        tempList2.forEachIndexed { index, group ->
-            group.forEachIndexed { position, item ->
-                item.groupCount = tempList2.size - ignoreListCount
-                item.groupIndex = index
-                item.countInGroup = group.size
-                item.positionInGroup = position
-                item.localPosition = localPosition
-                localPosition++
-            }
-        }
-        differ.submitList(ArrayList<AbstractFormItem<*>>().apply { tempList2.forEach { addAll(it) } }) {
-            calculateBoundary()
-            differ.currentList.forEachIndexed { index, item ->
-                if (item.lastEnabled != item.isEnabled) {
-                    notifyItemChanged(index)
-                } else {
-                    notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
-                    if (item.lastBoundary != item.boundary) {
-                        notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY)
+                        notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
+                        if (item.lastBoundary != item.boundary) {
+                            notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_BOUNDARY)
+                        }
                     }
                 }
             }
@@ -277,6 +286,8 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             style.configStyleAddChildView(styleView, typesetView)
         } else typeset.configTypesetAddChildView(typesetView, itemView)
         return FormViewHolder(style, typeset, styleView ?: typesetView).apply {
+            this.itemView.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_START
+            this.itemView.textDirection = TextView.TEXT_DIRECTION_LOCALE
             this.itemView.layoutParams = GridLayoutManager.LayoutParams(-1, -2)
         }
     }
@@ -288,6 +299,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
+        logE("Form", "onBindViewHolder: ${holder.absoluteAdapterPosition}")
         val item = differ.currentList[position]
         item.globalPosition = holder.absoluteAdapterPosition
         item.localPosition = holder.bindingAdapterPosition
@@ -298,7 +310,10 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             holder.style.onBindStyleAfter(holder, item)
         }
         holder.typeset.onBindTypeset(holder, item)
-        adapter.getItemProvider(holder.itemViewType).onBindViewHolder(holder, item, isEnabled)
+        adapter.getItemProvider(holder.itemViewType).apply {
+            onBindViewHolder(holder, item)
+            onBindViewHolderClick(holder, this@AbstractFormPart, item)
+        }
     }
 
     override fun onBindViewHolder(
@@ -324,12 +339,14 @@ abstract class AbstractFormPart<DATA : IFormPart>(
 
                 FormManager.FLAG_PAYLOAD_UPDATE_CONTENT -> {
                     holder.typeset.onBindTypeset(holder, item, payloads)
-                    adapter.getItemProvider(holder.itemViewType)
-                        .onBindViewHolder(holder, item, isEnabled)
+                    adapter.getItemProvider(holder.itemViewType).apply {
+                        onBindViewHolder(holder, item)
+                        onBindViewHolderClick(holder, this@AbstractFormPart, item)
+                    }
                 }
 
                 else -> adapter.getItemProvider(holder.itemViewType)
-                    .onBindViewHolderOther(holder, item, isEnabled, it)
+                    .onBindViewHolderOther(holder, item, it)
             }
         }
     }

@@ -24,9 +24,9 @@ class InternalFormGroupTitleProvider : AbstractFormItemProvider() {
     }
 
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
-        obtainGroupTitleProvider(holder).onBindViewHolder(holder, item, enabled)
+        obtainGroupTitleProvider(holder).onBindViewHolder(holder, item)
     }
 
     override fun onViewDetachedFromWindow(holder: FormViewHolder) {

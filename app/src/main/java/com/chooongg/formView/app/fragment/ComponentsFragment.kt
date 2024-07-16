@@ -17,6 +17,7 @@ import com.chooongg.formView.data.FormData
 import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.label
 import com.chooongg.formView.style.FormCardOutlinedStyle
+import com.chooongg.formView.style.FormNoneStyle
 import com.chooongg.formView.text
 import com.chooongg.formView.tip
 
@@ -77,16 +78,16 @@ class ComponentsFragment : Fragment() {
                 text("Item", "Name\nGravity\nEnd\nBottom") {
                     nameGravity = FormGravity(Gravity.END or Gravity.BOTTOM)
                 }
-                text("Item", "Name\nGravity\nEnd\nBottom\nGravity\nEnd\nBottom")
             }
             part {
-                name = "action <FormAction>"
+                name = "action @FormAction"
                 action("Version", "version", "1.0.0\n123\n4243") {
                     badge = "10"
                 }
+                text("Item", "Name\nGravity\nCenter\nBottom")
             }
             part {
-                name = "label <FormLabel>"
+                name = "label @FormLabel"
                 label("This Is Label")
                 label("Gravity Center") {
                     nameGravity = FormGravity(Gravity.CENTER)
@@ -96,11 +97,11 @@ class ComponentsFragment : Fragment() {
                 }
             }
             part {
-                name = "text <FormText>"
+                name = "text @FormText"
                 text("Name", "Content")
             }
             part {
-                name = "Tip <FormTip>"
+                name = "Tip @FormTip"
                 tip("This Is Tip")
             }
         }

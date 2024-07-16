@@ -39,7 +39,7 @@ class FormTipProvider : AbstractFormItemProvider() {
     }
 
     override fun onBindViewHolder(
-        holder: FormViewHolder, item: AbstractFormItem<*>, enabled: Boolean
+        holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
             iconGravity = obtainIconGravity(holder, item)

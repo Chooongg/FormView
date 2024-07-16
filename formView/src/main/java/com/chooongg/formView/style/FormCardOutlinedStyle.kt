@@ -1,14 +1,17 @@
 package com.chooongg.formView.style
 
+import android.graphics.drawable.RippleDrawable
 import android.util.TypedValue
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.widget.OutlinedCutoutDrawable
+import com.chooongg.ktx.attrColorStateList
 import com.chooongg.ktx.isLayoutRtl
+import com.google.android.material.shape.MaterialShapeDrawable
 
-class FormCardOutlinedStyle() : AbstractShapeAppearanceFormStyle() {
+class FormCardOutlinedStyle() : AbstractFormStyle() {
 
     constructor(block: FormCardOutlinedStyle.() -> Unit) : this() {
         block.invoke(this)
@@ -21,6 +24,7 @@ class FormCardOutlinedStyle() : AbstractShapeAppearanceFormStyle() {
     var strokeWidthResId: Int? = null
 
     override fun onBindStyle(holder: FormViewHolder, item: AbstractFormItem<*>) {
+        holder.itemView.clipToOutline = true
         val shape = getShapeAppearanceModel(holder.itemView, item)
         val shapeDrawable =
             OutlinedCutoutDrawable(shape, item.boundary, holder.itemView.isLayoutRtl)

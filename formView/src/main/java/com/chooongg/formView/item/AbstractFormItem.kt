@@ -2,11 +2,11 @@ package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
 import com.chooongg.formView.FormColumnBlock
+import com.chooongg.formView.FormOnItemClickListener
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
 import com.chooongg.formView.enum.FormEnableMode
-import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.enum.FormVisibilityMode
 import com.chooongg.formView.itemDelegation.FormContentGravityImpl
@@ -145,6 +145,24 @@ abstract class AbstractFormItem<CONTENT>(
 
     //</editor-fold>
 
+    //<editor-fold desc="交互 Interactive">
+
+    /**
+     * 是否启用点击事件
+     */
+    open var isEnabledItemClick: Boolean = false
+
+    /**
+     * 点击事件
+     */
+    internal open var onClickListener: FormOnItemClickListener? = null
+
+    fun onClickListener(block: FormOnItemClickListener?) {
+        onClickListener = block
+    }
+
+    //</editor-fold>
+
 //    //<editor-fold desc="联动 Linkage">
 //
 //    /**
@@ -169,14 +187,6 @@ abstract class AbstractFormItem<CONTENT>(
 //
 //    //</editor-fold>
 //
-//    //<editor-fold desc="交互 Interactive">
-//
-//    /**
-//     * 是否响应点击事件
-//     */
-//    open var isRespondToClickEvents: Boolean = false
-//
-//    //</editor-fold>
 //
 //    //<editor-fold desc="验证 Validate">
 //
@@ -274,7 +284,7 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 真实的启用状态
      */
-    var isEnabled: Boolean? = null
+    var isEnabled: Boolean = true
         internal set
 
     /**
