@@ -13,6 +13,8 @@ class FormDivider : AbstractFormItem<Any>(null, null, null) {
     @StyleRes
     var dividerStyle: Int? = null
 
+    override val disableTypesetConfigMenu: Boolean = true
+
     override var loneLine: Boolean = true
 
     override var showAtEdge: Boolean = false

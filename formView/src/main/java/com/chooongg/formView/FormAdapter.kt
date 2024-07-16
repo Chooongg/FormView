@@ -7,6 +7,7 @@ import com.chooongg.formView.data.FormData
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
+import com.chooongg.formView.layoutManager.FormCustomSpanLookup
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.chooongg.formView.typeset.AbstractFormTypeset
@@ -48,8 +49,11 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
     @SuppressLint("NotifyDataSetChanged")
     fun update() {
         data.concatAdapter.adapters.forEach {
-            if (it is AbstractFormPart<*>) it.update()
-            else it.notifyDataSetChanged()
+            if (it is AbstractFormPart<*>) {
+                it.update()
+            } else if (it is FormCustomSpanLookup) {
+                it.notifyDataSetChanged()
+            }
         }
     }
 

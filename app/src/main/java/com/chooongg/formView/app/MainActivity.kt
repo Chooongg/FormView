@@ -2,7 +2,6 @@ package com.chooongg.formView.app
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val fragments = arrayListOf(
-        HomeFragment(), AboutFragment()
+        HomeFragment(), ComponentsFragment(), AboutFragment()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

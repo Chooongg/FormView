@@ -81,7 +81,9 @@ class ComponentsFragment : Fragment() {
             }
             part {
                 name = "action <FormAction>"
-                action("Version", "version", "1.0.0")
+                action("Version", "version", "1.0.0\n123\n4243") {
+                    badge = "10"
+                }
             }
             part {
                 name = "label <FormLabel>"
@@ -90,7 +92,7 @@ class ComponentsFragment : Fragment() {
                     nameGravity = FormGravity(Gravity.CENTER)
                 }
                 label("Custom Text Appearance") {
-                    textAppearance = R.style.Form_TextAppearance_Label_Custom
+                    nameTextAppearance = R.style.Form_TextAppearance_Label_Custom
                 }
             }
             part {

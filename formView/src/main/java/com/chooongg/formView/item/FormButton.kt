@@ -16,6 +16,8 @@ class FormButton(
     @StyleRes
     var buttonStyle: Int? = null
 
+    override val disableTypesetConfigMenu: Boolean = true
+
     override var menuVisibilityMode: FormVisibilityMode = FormVisibilityMode.NEVER
 
     @Deprecated("Disabled")

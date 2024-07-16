@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.part.AbstractFormPart
+import com.chooongg.ktx.logE
 import kotlin.math.max
 import kotlin.math.min
 
@@ -22,6 +23,13 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
     annotation class ColumnNullValue
 
     internal var adapter: FormAdapter? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                value.columnCount = columnCount
+                value.update()
+            }
+        }
 
     @ColumnNullValue
     @IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong())
@@ -82,15 +90,21 @@ class FormLayoutManager internal constructor(context: Context, fixedColumn: Int,
         recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int
     ) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
-        updateColumn()
+        updateColumn(widthSpec)
     }
 
-    private fun updateColumn() {
+    private fun updateColumn(widthSpec: Int? = null) {
         columnCount = if (fixedColumn > 0) {
             fixedColumn
         } else {
-            max(1, min(10, (width - paddingLeft - paddingRight) / columnWidth))
+            val widthInt = if (widthSpec != null) View.MeasureSpec.getSize(widthSpec) else width
+            if (widthInt > 0) {
+                max(1, min(10, (widthInt - paddingLeft - paddingRight) / columnWidth))
+            } else {
+                -1
+            }
         }
+        logE("Form", "columnCount: $columnCount")
     }
 
     override fun onAttachedToWindow(recyclerView: RecyclerView) {

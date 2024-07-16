@@ -17,6 +17,8 @@
 
     <style name="Form.TextAppearance.Tip" parent="TextAppearance.Material3.LabelSmall"/>
 
+    <style name="Form.TextAppearance.Badge" parent="TextAppearance.Material3.LabelSmall"/>
+
     <style name="Form.TextAppearance.Search" parent="TextAppearance.Material3.TitleMedium" />
 
     <style name="Form.TextAppearance.Prefix" parent="TextAppearance.Material3.BodyMedium" />

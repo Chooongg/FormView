@@ -71,19 +71,6 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemAttribut
         }
     }
 
-    protected fun configMenuView(
-        holder: FormViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
-    ) {
-        menuView.setMenu(item, item.isEnabled ?: false) { view, menu ->
-            val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
-            if (isIntercept != true) {
-                (holder.bindingAdapter as? AbstractFormPart<*>)?._recyclerView?.onMenuClickListener?.invoke(
-                    holder.itemView, view, menu, item
-                )
-            }
-        }
-    }
-
     protected fun obtainEmsSize(holder: FormViewHolder, item: AbstractFormItem<*>): FormEmsSize {
         return item.emsSize ?: holder.style.emsSize ?: getFormAdapter(holder)?.data?.emsSize
         ?: FormManager.globalConfig.emsSize ?: emsSize

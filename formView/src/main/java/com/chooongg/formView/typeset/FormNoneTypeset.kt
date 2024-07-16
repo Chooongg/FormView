@@ -22,17 +22,20 @@ class FormNoneTypeset() : AbstractFormTypeset() {
 
     override fun onCreateTypeset(style: AbstractFormStyle, parent: ViewGroup): ViewGroup =
         LinearLayoutCompat(parent.context).also {
+            it.id = R.id.formTypesetLayout
             it.addView(FormMenuView(it.context, style).apply {
                 id = R.id.formMenuView
             }, FrameLayout.LayoutParams(-2, -2).apply { gravity = Gravity.END })
         }
 
     override fun onBindTypeset(holder: FormViewHolder, item: AbstractFormItem<*>) {
-        configMenuView(holder, item, holder.getView(R.id.formMenuView))
+        if (!item.disableTypesetConfigMenu) {
+            configMenuView(holder, item, holder.getView(R.id.formMenuView))
+        }
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {
-        layoutView.addView(childView, 0, LinearLayoutCompat.LayoutParams(0, -1).apply {
+        layoutView.addView(childView, 0, LinearLayoutCompat.LayoutParams(0, -2).apply {
             weight = 1f
         })
     }

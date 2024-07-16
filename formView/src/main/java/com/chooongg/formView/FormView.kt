@@ -27,7 +27,7 @@ class FormView @JvmOverloads constructor(
         }
 
 
-    val formColumn get() = layoutManager.columnCount
+    val columnCount get() = layoutManager.columnCount
 
     var onItemClickListener: FormOnItemClickListener? = null
         private set
@@ -69,9 +69,7 @@ class FormView @JvmOverloads constructor(
     fun setData(data: FormData) {
         super.setAdapter(FormAdapter(data).apply {
             layoutManager.adapter = this
-            columnCount = layoutManager.columnCount
         })
-        isEnabled = data.isEnabled
     }
 
     fun setData(block: FormData.() -> Unit) {
@@ -86,6 +84,7 @@ class FormView @JvmOverloads constructor(
         return adapter?.data?.isEnabled ?: false
     }
 
+    @Suppress("DeprecatedCallableAddReplaceWith")
     @Deprecated("this method external calls not supported")
     override fun setAdapter(adapter: Adapter<*>?) {
         throw IllegalArgumentException("this method external calls not supported")
@@ -95,6 +94,7 @@ class FormView @JvmOverloads constructor(
         return super.getAdapter() as? FormAdapter
     }
 
+    @Suppress("DeprecatedCallableAddReplaceWith")
     @Deprecated("this method external calls not supported")
     override fun setLayoutManager(layout: LayoutManager?) {
         throw IllegalArgumentException("this method external calls not supported")

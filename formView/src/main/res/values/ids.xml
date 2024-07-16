@@ -12,6 +12,7 @@
     <item name="formContentSecondView" type="id" />
     <item name="formContentThirdView" type="id" />
     <item name="formContentFourthView" type="id" />
+    <item name="formContentFifthView" type="id" />
 
     <item name="formNameView" type="id" />
     <item name="formMenuView" type="id" />

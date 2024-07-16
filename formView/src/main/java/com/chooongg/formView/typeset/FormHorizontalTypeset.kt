@@ -65,8 +65,13 @@ class FormHorizontalTypeset() : AbstractFormTypeset() {
             gravity = obtainNameGravity(holder, item)
             text = obtainNameFormatter(holder).format(context, item)
             configNameView(holder, item, this)
+            if (item.nameTextAppearance != null) {
+                setTextAppearance(item.nameTextAppearance!!)
+            } else setTextAppearance(formTextAppearance(R.attr.formTextAppearanceName))
         }
-        configMenuView(holder, item, holder.getView(R.id.formMenuView))
+        if (!item.disableTypesetConfigMenu) {
+            configMenuView(holder, item, holder.getView(R.id.formMenuView))
+        }
     }
 
     override fun configTypesetAddChildView(layoutView: ViewGroup, childView: View) {

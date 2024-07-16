@@ -29,6 +29,7 @@
     <attr name="formTextAppearanceHint" format="reference" />
     <attr name="formTextAppearanceLabel" format="reference" />
     <attr name="formTextAppearanceTip" format="reference" />
+    <attr name="formTextAppearanceBadge" format="reference" />
     <attr name="formTextAppearanceSearch" format="reference" />
     <attr name="formTextAppearancePrefix" format="reference" />
     <attr name="formTextAppearanceSuffix" format="reference" />

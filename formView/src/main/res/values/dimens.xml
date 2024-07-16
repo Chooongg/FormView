@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="formColumnWidth">300dp</dimen>
+
+    <dimen name="formBadgeNoneSize">6dp</dimen>
 </resources>

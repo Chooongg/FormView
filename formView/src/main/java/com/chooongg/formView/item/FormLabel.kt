@@ -10,12 +10,6 @@ import kotlin.reflect.KClass
 
 class FormLabel(name: Any?) : AbstractFormItem<Any>(name, null, null) {
 
-    /**
-     * 文本外观
-     */
-    @StyleRes
-    var textAppearance: Int? = null
-
     override var newLine: Boolean = true
 
     override var loneLine: Boolean = true

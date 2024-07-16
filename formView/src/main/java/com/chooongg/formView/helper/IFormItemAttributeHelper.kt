@@ -8,6 +8,7 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
 import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
+import com.chooongg.formView.widget.FormMenuView
 
 interface IFormItemAttributeHelper {
 
@@ -47,6 +48,19 @@ interface IFormItemAttributeHelper {
             holder
         )?.data?.contentGravity ?: FormManager.globalConfig.contentGravity
         return contentGravity.obtain(item.columnCount, item.columnSize)
+    }
+
+    fun configMenuView(
+        holder: FormViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
+    ) {
+        menuView.setMenu(item, item.isEnabled ?: false) { view, menu ->
+            val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
+            if (isIntercept != true) {
+                (holder.bindingAdapter as? AbstractFormPart<*>)?._recyclerView?.onMenuClickListener?.invoke(
+                    holder.itemView, view, menu, item
+                )
+            }
+        }
     }
 
     fun getBindingPart(holder: FormViewHolder): AbstractFormPart<*>? {

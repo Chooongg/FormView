@@ -50,8 +50,8 @@ class FormTipProvider : AbstractFormItemProvider() {
             } else icon = null
             gravity = obtainNameGravity(holder, item)
             text = obtainNameFormatter(holder).format(context, item)
-            if (item is FormTip && item.textAppearance != null) {
-                setTextAppearance(item.textAppearance!!)
+            if (item.nameTextAppearance != null) {
+                setTextAppearance(item.nameTextAppearance!!)
             } else setTextAppearance(formTextAppearance(R.attr.formTextAppearanceTip))
         }
     }

@@ -12,6 +12,8 @@ class FormPlaceHolder() : AbstractFormItem<Any>(null, null, null) {
 
     override val id: String = ""
 
+    override val disableTypesetConfigMenu: Boolean = true
+
     override var fillEdgesPadding: Boolean = false
 
     override var typeset: FormTypeset? = FormTypeset(FormNoneTypeset::class)

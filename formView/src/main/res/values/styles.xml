@@ -24,4 +24,6 @@
         <item name="formEndMedium">8dp</item>
         <item name="formBottomMedium">8dp</item>
     </style>
+
+    <style name="Form.ShapeAppearance.Badge" parent="ShapeAppearance.Material3.Corner.Full" />
 </resources>

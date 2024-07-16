@@ -13,6 +13,7 @@ import com.chooongg.formView.itemDelegation.FormContentGravityImpl
 import com.chooongg.formView.itemDelegation.FormEmsImpl
 import com.chooongg.formView.itemDelegation.FormIconImpl
 import com.chooongg.formView.itemDelegation.FormMenuImpl
+import com.chooongg.formView.itemDelegation.FormNameImpl
 import com.chooongg.formView.itemDelegation.IFormContentGravity
 import com.chooongg.formView.itemDelegation.IFormEms
 import com.chooongg.formView.itemDelegation.IFormField
@@ -36,8 +37,9 @@ abstract class AbstractFormItem<CONTENT>(
      * 内容
      */
     var content: CONTENT?
-) : AbstractFormId(), IFormName, IFormField, IFormIcon by FormIconImpl(), IFormEms by FormEmsImpl(),
-    IFormMenu by FormMenuImpl(), IFormContentGravity by FormContentGravityImpl() {
+) : AbstractFormId(), IFormName by FormNameImpl(), IFormField, IFormIcon by FormIconImpl(),
+    IFormEms by FormEmsImpl(), IFormMenu by FormMenuImpl(),
+    IFormContentGravity by FormContentGravityImpl() {
 
     //<editor-fold desc="基础 Basic">
 
@@ -65,6 +67,11 @@ abstract class AbstractFormItem<CONTENT>(
      * 是否为必填项
      */
     var required: Boolean = false
+
+    /**
+     * 是否禁用排版配置菜单
+     */
+    open val disableTypesetConfigMenu: Boolean = false
 
     /**
      * 是否可见
@@ -105,11 +112,6 @@ abstract class AbstractFormItem<CONTENT>(
      * 排版
      */
     open var typeset: FormTypeset? = null
-
-    /**
-     * 名称重力
-     */
-    override var nameGravity: FormGravity? = null
 
     /**
      * 独占一行
