@@ -17,7 +17,6 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
