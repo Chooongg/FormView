@@ -7,6 +7,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
+import com.chooongg.formView.layoutManager.FormItemAnimator
 import com.chooongg.formView.layoutManager.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 import com.chooongg.formView.listener.FormOnItemClickListener
@@ -42,6 +43,7 @@ class FormView @JvmOverloads constructor(
         super.setLayoutManager(layoutManager)
         super.setPadding(0, 0, 0, 0)
         super.addItemDecoration(FormItemDecoration(context))
+        itemAnimator = FormItemAnimator()
     }
 
     fun setFixedColumn(

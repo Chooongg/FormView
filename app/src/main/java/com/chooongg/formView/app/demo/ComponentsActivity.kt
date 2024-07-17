@@ -6,11 +6,15 @@ import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import com.chooongg.formView.action
 import com.chooongg.formView.app.R
+import com.chooongg.formView.button
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.label
+import com.chooongg.formView.style.FormCardElevatedStyle
+import com.chooongg.formView.style.FormCardStyle
 import com.chooongg.formView.text
 import com.chooongg.formView.tip
+import com.chooongg.ktx.showToast
 
 class ComponentsActivity : AbstractDemoActivity(R.string.demo_components) {
 
@@ -23,12 +27,22 @@ class ComponentsActivity : AbstractDemoActivity(R.string.demo_components) {
 
     class ComponentsViewModel : ViewModel() {
         val data = FormData {
+            style = FormCardElevatedStyle()
             part {
                 name = "action { ... }"
                 action("Version", "version", "1.0.0\n123\n4243") {
                     badge = "10"
                 }
                 text("Item", "Name\nGravity\nCenter\nBottom")
+            }
+            part {
+                name = "button { ... }"
+                button("Normal", "normal") {
+                    loneLine = true
+                    onClickListener { view, part, item ->
+                        showToast("onClick")
+                    }
+                }
             }
             part {
                 name = "label { ... }"

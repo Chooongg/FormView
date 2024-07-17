@@ -282,6 +282,18 @@ abstract class AbstractFormItem<CONTENT>(
         internal set
 
     /**
+     * 真实的菜单显示状态
+     */
+    var isMenuVisible: Boolean = true
+        internal set
+
+    /**
+     * 真实的菜单启用状态
+     */
+    var isMenuEnabled: Boolean = true
+        internal set
+
+    /**
      * 边界信息
      */
     var boundary: FormBoundary = FormBoundary()
@@ -316,8 +328,9 @@ abstract class AbstractFormItem<CONTENT>(
     var columnSize: Int = -1
         internal set
 
-    var lastEnabled: Boolean? = null
-        internal set
+    internal var lastEnabled: Boolean? = null
+
+    internal var lastMenuVisible: Boolean? = null
 
     var lastBoundary: FormBoundary? = null
         internal set
@@ -325,6 +338,7 @@ abstract class AbstractFormItem<CONTENT>(
     @CallSuper
     open fun resetInternalData() {
         lastEnabled = isEnabled
+        lastMenuVisible = isMenuVisible
         lastBoundary = boundary
         groupCount = -1
         groupIndex = -1

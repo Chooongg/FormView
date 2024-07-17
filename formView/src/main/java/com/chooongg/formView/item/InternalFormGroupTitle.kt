@@ -1,5 +1,6 @@
 package com.chooongg.formView.item
 
+import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.itemProvider.InternalFormGroupTitleProvider
@@ -8,6 +9,8 @@ import com.chooongg.formView.typeset.FormNoneTypeset
 import kotlin.reflect.KClass
 
 open class InternalFormGroupTitle<CONTENT> : AbstractFormItem<CONTENT>(null, null, null) {
+
+    override var enableMode: FormEnableMode = FormEnableMode.ALWAYS
 
     override var loneLine: Boolean = true
 

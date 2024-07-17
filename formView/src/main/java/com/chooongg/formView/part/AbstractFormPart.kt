@@ -17,6 +17,7 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -88,6 +89,8 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                 group.forEach { item ->
                     item.resetInternalData()
                     item.isEnabled = item.isEnable(isEnabled)
+                    item.isMenuVisible = item.isMenuVisible(isEnabled)
+                    item.isMenuEnabled = item.isMenuEnable(isEnabled)
 //                item.initialize()
                     if (item.isVisible(isEnabled)) {
                         when (item) {
@@ -171,7 +174,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
             differ.submitList(ArrayList<AbstractFormItem<*>>().apply { tempList2.forEach { addAll(it) } }) {
                 calculateBoundary()
                 differ.currentList.forEachIndexed { index, item ->
-                    if (item.lastEnabled != item.isEnabled) {
+                    if (item.lastEnabled != item.isEnabled || item.lastMenuVisible != item.isMenuVisible) {
                         notifyItemChanged(index)
                     } else {
                         notifyItemChanged(index, FormManager.FLAG_PAYLOAD_UPDATE_CONTENT)
@@ -297,6 +300,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
 
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
         val item = differ.currentList[position]
+        holder.itemView.tag = holder.itemView.z
         item.globalPosition = holder.absoluteAdapterPosition
         item.localPosition = holder.bindingAdapterPosition
         if (item !is FormPlaceHolder || holder.style.isDecorateNoneItem()) {
