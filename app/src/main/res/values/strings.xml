@@ -6,4 +6,9 @@
     <string name="about">About</string>
 
     <string name="editing_status">Editing Status</string>
+
+    <string name="demo_basic">Basic Attribute</string>
+    <string name="demo_style">Style</string>
+    <string name="demo_typeset">Typeset</string>
+    <string name="demo_components">Components</string>
 </resources>

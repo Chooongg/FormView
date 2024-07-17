@@ -34,13 +34,6 @@ typealias FormColorBlock = Context.() -> Int?
 typealias FormColorStateListBlock = Context.() -> ColorStateList?
 
 /**
- * 项目点击时的监听
- */
-typealias FormOnItemClickListener = (view: View, part: AbstractFormPart<*>, item: AbstractFormItem<*>) -> Unit
-
-typealias FormOnItemLongClickListener = (view: View, item: AbstractFormItem<*>) -> Unit
-
-/**
  * 菜单创建后监听
  */
 typealias FormOnMenuCreatedListener = (menu: Menu) -> Unit
@@ -49,11 +42,6 @@ typealias FormOnMenuCreatedListener = (menu: Menu) -> Unit
  * 菜单点击时的监听
  */
 typealias FormOnMenuItemClickListener = (view: View, menuView: View, menuItem: MenuItem) -> Boolean
-
-/**
- * 菜单点击时的监听
- */
-typealias FormOnMenuClickListener = (view: View, menuView: View, menuItem: MenuItem, item: AbstractFormItem<*>) -> Unit
 
 /**
  * 联动Block

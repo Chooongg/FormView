@@ -124,19 +124,19 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
         var index = 0
         data.concatAdapter.adapters.forEach {
             if (it is AbstractFormPart<*>) {
-                if (it == part) return index else if (it.data.isEnabled) index++
+                if (it == part) return index else if (it.data.isVisible(isEnabled)) index++
             }
         }
         return -1
     }
 
     fun visiblePartCount(): Int =
-        data.concatAdapter.adapters.count { it is AbstractFormPart<*> && it.data.isEnabled }
+        data.concatAdapter.adapters.count { it is AbstractFormPart<*> && it.data.isVisible(isEnabled) }
 
     fun enabledParts(): List<AbstractFormPart<*>> {
         val parts = ArrayList<AbstractFormPart<*>>()
         data.concatAdapter.adapters.forEach {
-            if (it is AbstractFormPart<*> && it.data.isEnabled) {
+            if (it is AbstractFormPart<*> && it.data.isVisible(isEnabled)) {
                 parts.add(it)
             }
         }

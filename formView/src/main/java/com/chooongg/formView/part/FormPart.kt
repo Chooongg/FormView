@@ -8,15 +8,16 @@ class FormPart(
     style: AbstractFormStyle, data: FormPartData, isEnabled: Boolean
 ) : AbstractFormPart<FormPartData>(style, data, isEnabled) {
 
-    override fun getOriginalItemList(): List<List<AbstractFormItem<*>>> = if (data.isEnabled) {
-        val itemList = ArrayList<AbstractFormItem<*>>()
-        if (!style.isIndependentItem) {
-            val title = data.getGroupTitleItem()
-            if (title != null) itemList.add(title)
-        }
-        itemList.addAll(data.getItems())
-        listOf(itemList)
-    } else emptyList()
+    override fun getOriginalItemList(): List<List<AbstractFormItem<*>>> =
+        if (data.isVisible(isEnabled)) {
+            val itemList = ArrayList<AbstractFormItem<*>>()
+            if (!style.isIndependentItem) {
+                val title = data.getGroupTitleItem()
+                if (title != null) itemList.add(title)
+            }
+            itemList.addAll(data.getItems())
+            listOf(itemList)
+        } else emptyList()
 
     override fun get(field: String): AbstractFormItem<*>? =
         data.getItems().find { it.field == field }

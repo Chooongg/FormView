@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormAdapter
@@ -18,7 +17,6 @@ import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormPlaceHolder
 import com.chooongg.formView.itemProvider.FormPlaceHolderProvider
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.ktx.logE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -273,7 +271,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         adapter.getItemViewType4Pool(this, style, differ.currentList[position])
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormViewHolder {
-        val style = adapter.getStyle(viewType).apply { createSizeInfo(parent.context) }
+        val style = adapter.getStyle(viewType).apply { createInfo(parent.context) }
         val typeset = adapter.getTypeset(viewType)
         val itemProvider = adapter.getItemProvider(viewType)
         val styleView =
@@ -288,7 +286,6 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         return FormViewHolder(style, typeset, styleView ?: typesetView).apply {
             this.itemView.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_START
             this.itemView.textDirection = TextView.TEXT_DIRECTION_LOCALE
-            this.itemView.layoutParams = GridLayoutManager.LayoutParams(-1, -2)
         }
     }
 
@@ -299,7 +296,6 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
-        logE("Form", "onBindViewHolder: ${holder.absoluteAdapterPosition}")
         val item = differ.currentList[position]
         item.globalPosition = holder.absoluteAdapterPosition
         item.localPosition = holder.bindingAdapterPosition
@@ -312,6 +308,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         holder.typeset.onBindTypeset(holder, item)
         adapter.getItemProvider(holder.itemViewType).apply {
             onBindViewHolder(holder, item)
+            onBindViewHolderForeground(holder, item)
             onBindViewHolderClick(holder, this@AbstractFormPart, item)
         }
     }
@@ -341,6 +338,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                     holder.typeset.onBindTypeset(holder, item, payloads)
                     adapter.getItemProvider(holder.itemViewType).apply {
                         onBindViewHolder(holder, item)
+                        onBindViewHolderForeground(holder, item)
                         onBindViewHolderClick(holder, this@AbstractFormPart, item)
                     }
                 }
@@ -365,6 +363,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        _recyclerView = recyclerView as? FormView
         _adapter = if (recyclerView.adapter is FormAdapter) {
             recyclerView.adapter as FormAdapter
         } else null
@@ -372,6 +371,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        _recyclerView = null
         partScope.cancel()
         partScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         _adapter = null

@@ -22,5 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.chooongg.formView.app.demo.BasicParametersActivity" />
+        <activity android:name="com.chooongg.formView.app.demo.ComponentsActivity" />
     </application>
 </manifest>

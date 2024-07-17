@@ -23,7 +23,7 @@ class FormCardElevatedStyle() : AbstractFormStyle() {
     @SuppressLint("PrivateResource")
     override fun onBindStyle(holder: FormViewHolder, item: AbstractFormItem<*>) {
         holder.itemView.clipToOutline = true
-        val shapeDrawable = MaterialShapeDrawable(getShapeAppearanceModel(holder.itemView, item))
+        val shapeDrawable = MaterialShapeDrawable(getShapeAppearanceModel(holder, item))
         shapeDrawable.fillColor = if (backgroundTintResId != null) {
             holder.itemView.context.resources.getColorStateList(
                 backgroundTintResId!!, holder.itemView.context.theme

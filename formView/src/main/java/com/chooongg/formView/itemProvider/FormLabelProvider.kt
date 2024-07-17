@@ -43,6 +43,7 @@ class FormLabelProvider : AbstractFormItemProvider() {
         holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
+            isEnabled = item.isEnabled
             iconGravity = obtainIconGravity(holder, item)
             val nameIcon = FormManager.parseIcon(context, item.icon)
             if (nameIcon != null) {

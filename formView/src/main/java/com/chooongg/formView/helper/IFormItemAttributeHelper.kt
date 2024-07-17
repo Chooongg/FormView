@@ -53,10 +53,10 @@ interface IFormItemAttributeHelper {
     fun configMenuView(
         holder: FormViewHolder, item: AbstractFormItem<*>, menuView: FormMenuView
     ) {
-        menuView.setMenu(item, item.isEnabled ?: false) { view, menu ->
+        menuView.setMenu(item, getBindingPart(holder)?.isEnabled ?: false) { view, menu ->
             val isIntercept = item.onMenuItemClickListener?.invoke(holder.itemView, view, menu)
             if (isIntercept != true) {
-                (holder.bindingAdapter as? AbstractFormPart<*>)?._recyclerView?.onMenuClickListener?.invoke(
+                (holder.bindingAdapter as? AbstractFormPart<*>)?._recyclerView?.onMenuClickListener?.onFormMenuClick(
                     holder.itemView, view, menu, item
                 )
             }

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
 import com.chooongg.formView.layoutManager.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
+import com.chooongg.formView.listener.FormOnItemClickListener
+import com.chooongg.formView.listener.FormOnMenuClickListener
 
 class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -52,6 +54,14 @@ class FormView @JvmOverloads constructor(
         layoutManager.columnWidth = width
     }
 
+    fun setOnItemClickListener(listener: FormOnItemClickListener?) {
+        onItemClickListener = listener
+    }
+
+    fun setOnMenuClickListener(listener: FormOnMenuClickListener?) {
+        onMenuClickListener = listener
+    }
+
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         layoutManager.setPadding(left, top, right, bottom)
         requestLayout()
@@ -82,6 +92,10 @@ class FormView @JvmOverloads constructor(
 
     override fun isEnabled(): Boolean {
         return adapter?.data?.isEnabled ?: false
+    }
+
+    fun update() {
+        adapter?.update()
     }
 
     @Suppress("DeprecatedCallableAddReplaceWith")

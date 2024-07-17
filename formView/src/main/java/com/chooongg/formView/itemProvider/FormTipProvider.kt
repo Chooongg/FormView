@@ -7,7 +7,6 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.item.FormTip
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.button.MaterialButton
@@ -42,6 +41,7 @@ class FormTipProvider : AbstractFormItemProvider() {
         holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<MaterialButton>(R.id.formNameView)) {
+            isEnabled = item.isEnabled
             iconGravity = obtainIconGravity(holder, item)
             val nameIcon = FormManager.parseIcon(context, item.icon)
             if (nameIcon != null) {

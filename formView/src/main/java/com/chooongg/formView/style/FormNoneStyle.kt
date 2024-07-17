@@ -16,10 +16,4 @@ class FormNoneStyle : AbstractFormStyle() {
     override fun isFillHorizontalMargin() = false
     override fun isFillVerticalPadding(): Boolean = false
     override fun isFillHorizontalPadding(): Boolean = false
-
-    override fun getForeground(view: View, item: AbstractFormItem<*>) = RippleDrawable(
-        view.attrColorStateList(com.google.android.material.R.attr.colorControlHighlight)!!,
-        null,
-        MaterialShapeDrawable(shapeAppearanceModel)
-    )
 }

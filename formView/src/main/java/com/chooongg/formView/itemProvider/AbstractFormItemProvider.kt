@@ -1,6 +1,7 @@
 package com.chooongg.formView.itemProvider
 
-import android.graphics.Rect
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.RippleDrawable
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.helper.FormTextAppearanceHelper
@@ -9,6 +10,8 @@ import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
+import com.chooongg.ktx.attrColorStateList
+import com.google.android.material.shape.MaterialShapeDrawable
 
 /**
  * Item提供器
@@ -30,26 +33,52 @@ abstract class AbstractFormItemProvider : FormTextAppearanceHelper, IFormItemAtt
         holder: FormViewHolder, item: AbstractFormItem<*>, payload: Any
     ) = Unit
 
+    open fun onBindViewHolderForeground(
+        holder: FormViewHolder, item: AbstractFormItem<*>
+    ) {
+        holder.itemView.foreground = if (item.isEnabledItemClick && item.isEnabled) {
+            if (!item.fillEdgesPadding) {
+                RippleDrawable(
+                    holder.itemView.attrColorStateList(com.google.android.material.R.attr.colorControlHighlight)!!,
+                    null,
+                    MaterialShapeDrawable(holder.style.shapeAppearanceModel)
+                )
+            } else {
+                RippleDrawable(
+                    holder.itemView.attrColorStateList(com.google.android.material.R.attr.colorControlHighlight)!!,
+                    null,
+                    if (holder.itemView.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                        InsetDrawable(
+                            MaterialShapeDrawable(holder.style.shapeAppearanceModel),
+                            holder.itemView.paddingRight,
+                            holder.itemView.paddingTop,
+                            holder.itemView.paddingLeft,
+                            holder.itemView.paddingBottom
+                        )
+                    } else {
+                        InsetDrawable(
+                            MaterialShapeDrawable(holder.style.shapeAppearanceModel),
+                            holder.itemView.paddingLeft,
+                            holder.itemView.paddingTop,
+                            holder.itemView.paddingRight,
+                            holder.itemView.paddingBottom
+                        )
+                    }
+                )
+            }
+        } else null
+    }
+
     open fun onBindViewHolderClick(
         holder: FormViewHolder, part: AbstractFormPart<*>, item: AbstractFormItem<*>
     ) {
         if (item.isEnabledItemClick && item.isEnabled) {
-            if (item.fillEdgesPadding){
-                holder.itemView.foreground = holder.style.getForeground(holder.itemView, item)
-            }else{
-                val drawable = holder.style.getForeground(holder.itemView, item)
-                drawable.bounds = Rect()
-                holder.itemView.foreground = drawable
-            }
             holder.itemView.setOnClickListener {
                 val listener = item.onClickListener ?: part._recyclerView?.onItemClickListener
                 ?: return@setOnClickListener
-                listener.invoke(holder.itemView, part, item)
+                listener.onFormItemClick(holder.itemView, part, item)
             }
-        } else {
-            holder.itemView.foreground = null
-            holder.itemView.setOnClickListener(null)
-        }
+        } else holder.itemView.setOnClickListener(null)
     }
 
     open fun onViewDetachedFromWindow(holder: FormViewHolder) = Unit

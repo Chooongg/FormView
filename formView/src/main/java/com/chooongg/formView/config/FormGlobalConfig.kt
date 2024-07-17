@@ -56,9 +56,7 @@ class FormGlobalConfig {
     /**
      * 内容重力
      */
-    var contentGravity: FormGravity = FormGravity { columnCount, _ ->
-        if (columnCount > 1) Gravity.NO_GRAVITY else Gravity.END
-    }
+    var contentGravity: FormGravity = FormGravity(Gravity.NO_GRAVITY)
 
     /**
      * 排版

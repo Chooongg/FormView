@@ -2,7 +2,6 @@ package com.chooongg.formView.item
 
 import androidx.annotation.CallSuper
 import com.chooongg.formView.FormColumnBlock
-import com.chooongg.formView.FormOnItemClickListener
 import com.chooongg.formView.data.AbstractFormId
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormExtensionMap
@@ -21,6 +20,7 @@ import com.chooongg.formView.itemDelegation.IFormIcon
 import com.chooongg.formView.itemDelegation.IFormMenu
 import com.chooongg.formView.itemDelegation.IFormName
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
+import com.chooongg.formView.listener.FormOnItemClickListener
 import com.chooongg.formView.part.AbstractFormPart
 import kotlin.reflect.KClass
 
@@ -56,26 +56,23 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 可见模式
      */
-    var visibilityMode: FormVisibilityMode = FormVisibilityMode.ALWAYS
+    open var visibilityMode: FormVisibilityMode = FormVisibilityMode.ALWAYS
 
     /**
      * 启用模式
      */
-    var enableMode: FormEnableMode = FormEnableMode.ENABLED
+    open var enableMode: FormEnableMode = FormEnableMode.ENABLED
 
     /**
      * 是否为必填项
      */
-    var required: Boolean = false
+    open var required: Boolean = false
 
     /**
      * 是否禁用排版配置菜单
      */
     open val disableTypesetConfigMenu: Boolean = false
 
-    /**
-     * 是否可见
-     */
     internal fun isVisible(adapterEnabled: Boolean): Boolean {
         return when (visibilityMode) {
             FormVisibilityMode.ALWAYS -> true
@@ -85,9 +82,6 @@ abstract class AbstractFormItem<CONTENT>(
         }
     }
 
-    /**
-     * 是否可用
-     */
     internal fun isEnable(adapterEnabled: Boolean): Boolean {
         return when (enableMode) {
             FormEnableMode.ALWAYS -> true
@@ -155,7 +149,7 @@ abstract class AbstractFormItem<CONTENT>(
     /**
      * 点击事件
      */
-    internal open var onClickListener: FormOnItemClickListener? = null
+    open var onClickListener: FormOnItemClickListener? = null
 
     fun onClickListener(block: FormOnItemClickListener?) {
         onClickListener = block

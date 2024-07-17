@@ -49,11 +49,6 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
         }
     }
 
-    fun gone() {
-        adapter = null
-        visibility = View.GONE
-    }
-
     private class Adapter(
         private val style: AbstractFormStyle
     ) : RecyclerView.Adapter<BaseFormViewHolder>(), FormTextAppearanceHelper {
@@ -84,10 +79,8 @@ class FormMenuView(context: Context, private val style: AbstractFormStyle) : Rec
                 iconSize = FormUtils.getFontRealHeight(this)
                 insetTop = 0
                 insetBottom = 0
-                minimumWidth =
-                    style.padding.startMedium + style.padding.endMedium + iconSize
-                minimumHeight =
-                    style.padding.topMedium + style.padding.bottomMedium + iconSize
+                minimumWidth = style.padding.startMedium + style.padding.endMedium + iconSize
+                minimumHeight = style.padding.topMedium + style.padding.bottomMedium + iconSize
                 minWidth = minimumWidth
                 minHeight = minimumHeight
                 iconPadding = 0

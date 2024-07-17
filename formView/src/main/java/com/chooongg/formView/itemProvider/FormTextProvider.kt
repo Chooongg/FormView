@@ -5,6 +5,7 @@ import com.chooongg.formView.FormManager
 import com.chooongg.formView.R
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.formView.item.FormText
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.textview.MaterialTextView
@@ -27,6 +28,7 @@ class FormTextProvider : AbstractFormItemProvider() {
         holder: FormViewHolder, item: AbstractFormItem<*>
     ) {
         with(holder.getView<MaterialTextView>(R.id.formContentView)) {
+            isEnabled = (item as? FormText)?.isEnabled ?: true
             gravity = obtainContentGravity(holder, item)
             text = FormManager.parseText(context, item.getContentText())
         }

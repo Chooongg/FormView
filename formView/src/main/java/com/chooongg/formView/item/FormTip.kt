@@ -1,5 +1,6 @@
 package com.chooongg.formView.item
 
+import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.itemProvider.FormTipProvider
@@ -10,6 +11,8 @@ import kotlin.reflect.KClass
 class FormTip(name: Any?) : AbstractFormItem<Any>(name, null, null) {
 
     override val disableTypesetConfigMenu: Boolean = true
+
+    override var enableMode: FormEnableMode = FormEnableMode.ALWAYS
 
     override var loneLine: Boolean = true
 

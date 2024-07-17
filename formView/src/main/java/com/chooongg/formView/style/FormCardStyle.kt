@@ -2,6 +2,7 @@ package com.chooongg.formView.style
 
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
+import android.util.LayoutDirection
 import android.util.TypedValue
 import androidx.annotation.ColorRes
 import com.chooongg.formView.holder.FormViewHolder
@@ -21,7 +22,7 @@ class FormCardStyle() : AbstractFormStyle() {
 
     override fun onBindStyle(holder: FormViewHolder, item: AbstractFormItem<*>) {
         holder.itemView.clipToOutline = true
-        val shapeDrawable = MaterialShapeDrawable(getShapeAppearanceModel(holder.itemView, item))
+        val shapeDrawable = MaterialShapeDrawable(getShapeAppearanceModel(holder, item))
         shapeDrawable.fillColor = if (backgroundTintResId != null) {
             holder.itemView.context.resources.getColorStateList(
                 backgroundTintResId!!, holder.itemView.context.theme

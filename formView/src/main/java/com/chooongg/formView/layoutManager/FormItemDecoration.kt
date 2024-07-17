@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMarginsRelative
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
@@ -82,14 +85,19 @@ class FormItemDecoration(context: Context) : ItemDecoration() {
             FormBoundary.MIDDLE -> if (holder.style.isFillVerticalMargin()) holder.style.margin.bottomMedium else 0
             else -> 0
         }
-        outRect.top = top
-        outRect.bottom = bottom
-        if (parent.layoutManager.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
-            outRect.left = end
-            outRect.right = start
-        } else {
-            outRect.left = start
-            outRect.right = end
+        holder.itemView.updateLayoutParams<MarginLayoutParams> {
+            updateMarginsRelative(start, top, end, bottom)
+            outRect.top = if (top < 0) top else 0
+            outRect.bottom = if (bottom < 0) bottom else 0
         }
+//        outRect.top = top
+//        outRect.bottom = bottom
+//        if (parent.layoutManager.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+//            outRect.left = end
+//            outRect.right = start
+//        } else {
+//            outRect.left = start
+//            outRect.right = end
+//        }
     }
 }

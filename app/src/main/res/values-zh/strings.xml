@@ -6,4 +6,9 @@
     <string name="about">关于</string>
 
     <string name="editing_status">编辑状态</string>
+
+    <string name="demo_basic">基础属性</string>
+    <string name="demo_style">样式</string>
+    <string name="demo_typeset">排版</string>
+    <string name="demo_components">组件</string>
 </resources>

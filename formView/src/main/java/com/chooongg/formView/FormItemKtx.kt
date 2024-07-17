@@ -2,6 +2,7 @@ package com.chooongg.formView
 
 import com.chooongg.formView.data.IFormGroupData
 import com.chooongg.formView.item.FormAction
+import com.chooongg.formView.item.FormButton
 import com.chooongg.formView.item.FormDivider
 import com.chooongg.formView.item.FormLabel
 import com.chooongg.formView.item.FormText
@@ -11,6 +12,10 @@ fun IFormGroupData.action(
     name: Any?, field: String? = null, content: Any? = null, block: (FormAction.() -> Unit)? = null
 ) {
     addItem(FormAction(name, field, content).apply { block?.invoke(this) })
+}
+
+fun IFormGroupData.button(name: Any?, field: String?, block: (FormButton.() -> Unit)? = null) {
+    addItem(FormButton(name, field).apply { block?.invoke(this) })
 }
 
 fun IFormGroupData.divider(block: (FormDivider.() -> Unit)? = null) {

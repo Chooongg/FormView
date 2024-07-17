@@ -1,18 +1,17 @@
 package com.chooongg.formView.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.TooltipCompat
 import androidx.lifecycle.ViewModel
 import com.chooongg.formView.action
 import com.chooongg.formView.app.databinding.ActivityMainBinding
+import com.chooongg.formView.app.demo.BasicParametersActivity
+import com.chooongg.formView.app.demo.ComponentsActivity
 import com.chooongg.formView.data.FormData
-import com.chooongg.formView.style.FormCardOutlinedStyle
-import com.chooongg.formView.text
-import com.google.android.material.shape.MaterialShapeUtils
-import com.google.android.material.slider.Slider
-import com.google.android.material.tooltip.TooltipDrawable
+import com.chooongg.formView.style.FormCardStyle
+import com.chooongg.ktx.showToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,26 +23,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        binding.appBarLayout.addLiftOnScrollListener { _, backgroundColor ->
+            window.statusBarColor = backgroundColor
+        }
         binding.formView.setData(model.data)
+        binding.formView.setOnItemClickListener { view, part, item ->
+            when (item.name) {
+                R.string.demo_basic -> startActivity(
+                    Intent(this, BasicParametersActivity::class.java)
+                )
 
+                R.string.demo_components -> startActivity(
+                    Intent(this, ComponentsActivity::class.java)
+                )
+
+                else -> showToast("Un supported")
+            }
+        }
     }
 
     class MainViewModel : ViewModel() {
         val data: FormData = FormData {
-            part(FormCardOutlinedStyle()) {
-                action("Basic Parameters")
-                action("Style")
-                action("Typeset")
-                action("Components")
-                text("asdfasdf") {
-                    isEnabledItemClick = true
-                }
-                text("asdfasdf") {
-                    isEnabledItemClick = true
-                }
-                text("asdfasdf") {
-                    isEnabledItemClick = true
-                }
+            style = FormCardStyle()
+            part {
+                action(R.string.demo_basic)
+                action(R.string.demo_style)
+                action(R.string.demo_typeset)
+                action(R.string.demo_components)
             }
         }
     }
