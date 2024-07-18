@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMarginsRelative
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.R
+import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
 import com.chooongg.formView.item.FormButton
@@ -29,12 +31,6 @@ class FormButtonProvider : AbstractFormItemProvider() {
                 id = R.id.formContentView
                 layoutParams = ConstraintLayout.LayoutParams(0, -2).apply {
                     matchConstraintMaxWidth = maxWidth
-                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    topMargin = style.padding.topMedium - insetTop
-                    bottomMargin = style.padding.bottomMedium - insetBottom
-                    marginStart = style.padding.startMedium
-                    marginEnd = style.padding.endMedium
                 }
             })
         }
@@ -47,7 +43,7 @@ class FormButtonProvider : AbstractFormItemProvider() {
             isEnabled = item.isEnabled
             text = FormManager.parseText(context, item.name)
             configButtonStyle(this, item)
-            configGravity(this, item)
+            configGravity(holder, this, item)
         }
     }
 
@@ -105,7 +101,9 @@ class FormButtonProvider : AbstractFormItemProvider() {
         } else null
     }
 
-    private fun configGravity(view: MaterialButton, item: AbstractFormItem<*>) {
+    private fun configGravity(
+        holder: FormViewHolder, view: MaterialButton, item: AbstractFormItem<*>
+    ) {
         val gravity =
             item.contentGravity?.obtain(item.columnCount, item.columnSize) ?: Gravity.NO_GRAVITY
         view.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -222,6 +220,21 @@ class FormButtonProvider : AbstractFormItemProvider() {
                     bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 }
             }
+            updateMarginsRelative(
+                when (item.boundary.start) {
+                    FormBoundary.NONE -> holder.style.padding.startMedium
+                    else -> holder.style.padding.start
+                }, when (item.boundary.top) {
+                    FormBoundary.NONE -> holder.style.padding.topMedium - view.insetTop
+                    else -> holder.style.padding.top - view.insetTop
+                }, when (item.boundary.end) {
+                    FormBoundary.NONE -> holder.style.padding.endMedium
+                    else -> holder.style.padding.end
+                }, when (item.boundary.bottom) {
+                    FormBoundary.NONE -> holder.style.padding.bottomMedium - view.insetBottom
+                    else -> holder.style.padding.bottom - view.insetBottom
+                }
+            )
         }
     }
 }

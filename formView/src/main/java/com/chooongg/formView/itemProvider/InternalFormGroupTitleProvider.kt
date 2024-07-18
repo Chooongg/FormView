@@ -13,8 +13,9 @@ class InternalFormGroupTitleProvider : AbstractFormItemProvider() {
     override fun onCreateViewHolder(
         part: AbstractFormPart<*>, style: AbstractFormStyle, parent: ViewGroup
     ): View {
-        val provider = (style.groupTitleProvider ?: part._adapter?.data?.groupTitleProvider
-        ?: FormManager.globalConfig.groupTitleProvider)
+        val provider =
+            (style.groupTitleProvider ?: part._adapter?.data?.dataConfig?.groupTitleProvider
+            ?: FormManager.globalConfig.groupTitleProvider)
         return provider.onCreateViewHolder(part, style, parent)
     }
 

@@ -7,11 +7,18 @@ import androidx.annotation.IntRange
 import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.data.FormData
+import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormGravity
+import com.chooongg.formView.enum.FormTypeset
+import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.layoutManager.FormItemAnimator
 import com.chooongg.formView.layoutManager.FormItemDecoration
 import com.chooongg.formView.layoutManager.FormLayoutManager
 import com.chooongg.formView.listener.FormOnItemClickListener
 import com.chooongg.formView.listener.FormOnMenuClickListener
+import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
+import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
+import com.chooongg.formView.style.AbstractFormStyle
 
 class FormView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -84,8 +91,36 @@ class FormView @JvmOverloads constructor(
         })
     }
 
-    fun setData(block: FormData.() -> Unit) {
-        setData(FormData(block))
+    fun setData(
+        style: AbstractFormStyle? = null,
+        nameFormatter: FormNameFormatter? = null,
+        groupTitleProvider: AbstractGroupTitleProvider? = null,
+        childTitleProvider: AbstractGroupTitleProvider? = null,
+        nestedTitleProvider: AbstractNestedTitleProvider? = null,
+        emsSize: FormEmsSize? = null,
+        nameIconGravity: Int? = null,
+        nameGravity: FormGravity? = null,
+        contentGravity: FormGravity? = null,
+        typeset: FormTypeset? = null,
+        showProgress: Boolean = true,
+        block: FormData.() -> Unit
+    ) {
+        setData(
+            FormData(
+                style,
+                nameFormatter,
+                groupTitleProvider,
+                childTitleProvider,
+                nestedTitleProvider,
+                emsSize,
+                nameIconGravity,
+                nameGravity,
+                contentGravity,
+                typeset,
+                showProgress,
+                block
+            )
+        )
     }
 
     override fun setEnabled(enabled: Boolean) {

@@ -1,5 +1,6 @@
 package com.chooongg.formView.itemProvider
 
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.FormManager
@@ -48,7 +49,8 @@ class FormTipProvider : AbstractFormItemProvider() {
                 icon = nameIcon
                 iconTint = item.iconTint?.invoke(context) ?: textColors
             } else icon = null
-            gravity = obtainNameGravity(holder, item)
+            gravity =
+                item.nameGravity?.obtain(item.columnCount, item.columnSize) ?: Gravity.NO_GRAVITY
             text = obtainNameFormatter(holder).format(context, item)
             if (item.nameTextAppearance != null) {
                 setTextAppearance(item.nameTextAppearance!!)

@@ -162,7 +162,14 @@ class FormAdapter(val data: FormData) : RecyclerView.Adapter<RecyclerView.ViewHo
         val typesetClass: KClass<out AbstractFormTypeset> = when {
             item.typeset != null -> item.typeset!!.obtain(item.columnCount, item.columnSize)
             style.typeset != null -> style.typeset!!.obtain(item.columnCount, item.columnSize)
-            data.typeset != null -> data.typeset!!.obtain(item.columnCount, item.columnSize)
+            part.data.partConfig.typeset != null -> part.data.partConfig.typeset!!.obtain(
+                item.columnCount, item.columnSize
+            )
+
+            data.dataConfig.typeset != null -> data.dataConfig.typeset!!.obtain(
+                item.columnCount, item.columnSize
+            )
+
             else -> FormManager.globalConfig.typeset.obtain(item.columnCount, item.columnSize)
         }
         val typesetIndex = typesetPool.indexOfFirst { it::class == typesetClass }.let {

@@ -1,6 +1,6 @@
 package com.chooongg.formView.item
 
-import androidx.annotation.StyleRes
+import com.chooongg.formView.enum.FormEnableMode
 import com.chooongg.formView.enum.FormTypeset
 import com.chooongg.formView.itemProvider.AbstractFormItemProvider
 import com.chooongg.formView.itemProvider.FormLabelProvider
@@ -9,6 +9,8 @@ import com.chooongg.formView.typeset.FormNoneTypeset
 import kotlin.reflect.KClass
 
 class FormLabel(name: Any?) : AbstractFormItem<Any>(name, null, null) {
+
+    override var enableMode: FormEnableMode = FormEnableMode.ALWAYS
 
     override var newLine: Boolean = true
 

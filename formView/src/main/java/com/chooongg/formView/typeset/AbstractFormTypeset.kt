@@ -10,9 +10,7 @@ import com.chooongg.formView.helper.FormTextAppearanceHelper
 import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
-import com.chooongg.formView.widget.FormMenuView
 
 /**
  * 排版
@@ -72,8 +70,10 @@ abstract class AbstractFormTypeset : FormTextAppearanceHelper, IFormItemAttribut
     }
 
     protected fun obtainEmsSize(holder: FormViewHolder, item: AbstractFormItem<*>): FormEmsSize {
-        return item.emsSize ?: holder.style.emsSize ?: getFormAdapter(holder)?.data?.emsSize
-        ?: FormManager.globalConfig.emsSize ?: emsSize
+        return item.emsSize ?: holder.style.emsSize
+        ?: getFormAdapter(holder)?.data?.dataConfig?.emsSize
+        ?: getBindingPart(holder)?.data?.partConfig?.emsSize ?: FormManager.globalConfig.emsSize
+        ?: emsSize
     }
 
     override fun equals(other: Any?): Boolean {

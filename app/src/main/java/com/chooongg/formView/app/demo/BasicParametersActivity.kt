@@ -90,9 +90,8 @@ class BasicParametersActivity : AbstractDemoActivity(R.string.demo_basic) {
                 text("Name", "required = false") { required = false }
                 text("Name", "required = true") { required = true }
             }
-            part {
+            part(typeset = FormTypeset(FormNoneTypeset::class)) {
                 name = "Menu"
-                typeset = FormTypeset(FormNoneTypeset::class)
                 tip("menuVisibility -> visibilityMode")
                 tip("menuEnableMode -> enableMode")
                 text("Name", "FormVisibilityMode.ALWAYS") {

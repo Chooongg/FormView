@@ -12,41 +12,54 @@ import com.chooongg.formView.widget.FormMenuView
 
 interface IFormItemAttributeHelper {
 
+    fun obtainNameFormatter(holder: FormViewHolder): FormNameFormatter {
+        return holder.style.nameFormatter ?: getFormAdapter(holder)?.data?.dataConfig?.nameFormatter
+        ?: getBindingPart(holder)?.data?.partConfig?.nameFormatter
+        ?: FormManager.globalConfig.nameFormatter
+    }
+
     fun obtainGroupTitleProvider(holder: FormViewHolder): AbstractGroupTitleProvider {
-        return holder.style.groupTitleProvider ?: getFormAdapter(holder)?.data?.groupTitleProvider
-        ?: FormManager.globalConfig.groupTitleProvider
+        return holder.style.groupTitleProvider
+            ?: getFormAdapter(holder)?.data?.dataConfig?.groupTitleProvider
+            ?: getBindingPart(holder)?.data?.partConfig?.groupTitleProvider
+            ?: FormManager.globalConfig.groupTitleProvider
     }
 
     fun obtainChildTitleProvider(holder: FormViewHolder): AbstractGroupTitleProvider {
-        return holder.style.childTitleProvider ?: getFormAdapter(holder)?.data?.childTitleProvider
-        ?: FormManager.globalConfig.childTitleProvider
+        return holder.style.childTitleProvider
+            ?: getFormAdapter(holder)?.data?.dataConfig?.childTitleProvider
+            ?: getBindingPart(holder)?.data?.partConfig?.childTitleProvider
+            ?: FormManager.globalConfig.childTitleProvider
     }
 
     fun obtainNestedTitleProvider(holder: FormViewHolder): AbstractNestedTitleProvider {
-        return holder.style.nestedTitleProvider ?: getFormAdapter(holder)?.data?.nestedTitleProvider
-        ?: FormManager.globalConfig.nestedTitleProvider
+        return holder.style.nestedTitleProvider
+            ?: getFormAdapter(holder)?.data?.dataConfig?.nestedTitleProvider ?: getBindingPart(
+                holder
+            )?.data?.partConfig?.nestedTitleProvider ?: FormManager.globalConfig.nestedTitleProvider
     }
 
     fun obtainIconGravity(holder: FormViewHolder, item: AbstractFormItem<*>): Int {
         return item.iconGravity ?: holder.style.nameIconGravity
-        ?: getFormAdapter(holder)?.data?.nameIconGravity ?: FormManager.globalConfig.nameIconGravity
+        ?: getFormAdapter(holder)?.data?.dataConfig?.nameIconGravity
+        ?: getBindingPart(holder)?.data?.partConfig?.nameIconGravity
+        ?: FormManager.globalConfig.nameIconGravity
     }
 
     fun obtainNameGravity(holder: FormViewHolder, item: AbstractFormItem<*>): Int {
         val nameGravity = item.nameGravity ?: holder.style.nameGravity
-        ?: getFormAdapter(holder)?.data?.nameGravity ?: FormManager.globalConfig.nameGravity
+        ?: getFormAdapter(holder)?.data?.dataConfig?.nameGravity
+        ?: getBindingPart(holder)?.data?.partConfig?.nameGravity
+        ?: FormManager.globalConfig.nameGravity
         return nameGravity.obtain(item.columnCount, item.columnSize)
-    }
-
-    fun obtainNameFormatter(holder: FormViewHolder): FormNameFormatter {
-        return holder.style.nameFormatter ?: getFormAdapter(holder)?.data?.nameFormatter
-        ?: FormManager.globalConfig.nameFormatter
     }
 
     fun obtainContentGravity(holder: FormViewHolder, item: AbstractFormItem<*>): Int {
         val contentGravity = item.contentGravity ?: holder.style.contentGravity ?: getFormAdapter(
             holder
-        )?.data?.contentGravity ?: FormManager.globalConfig.contentGravity
+        )?.data?.dataConfig?.contentGravity
+        ?: getBindingPart(holder)?.data?.partConfig?.contentGravity
+        ?: FormManager.globalConfig.contentGravity
         return contentGravity.obtain(item.columnCount, item.columnSize)
     }
 

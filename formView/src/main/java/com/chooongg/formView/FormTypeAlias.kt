@@ -7,15 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.GravityInt
 import androidx.annotation.IntRange
-import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.part.AbstractFormPart
+import com.chooongg.formView.item.AbstractFormOptionItem
 import com.chooongg.formView.typeset.AbstractFormTypeset
 import kotlin.reflect.KClass
 
 /**
  * 列代理Block
  */
-typealias FormColumnBlock = (columnCount: Int) -> @receiver:IntRange(1, FormManager.FORM_MAX_COLUMN_COUNT.toLong()) Int
+typealias FormColumnBlock = (columnCount: Int) -> @receiver:IntRange(
+    1, FormManager.FORM_MAX_COLUMN_COUNT.toLong()
+) Int
 
 typealias FormTypesetBlock = (columnCount: Int, columnSize: Int) -> KClass<out AbstractFormTypeset>
 
@@ -56,4 +57,4 @@ typealias FormOnMenuItemClickListener = (view: View, menuView: View, menuItem: M
 /**
  * 选项加载 Block
  */
-//typealias FormOptionLoader<T> = suspend (BaseOptionForm<T>) -> List<T>?
+typealias FormOptionLoader<CONTENT, OPTION> = suspend (AbstractFormOptionItem<CONTENT, OPTION>) -> List<OPTION>?

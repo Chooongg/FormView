@@ -8,7 +8,7 @@ import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
 import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
 import com.google.android.material.button.MaterialButton.IconGravity
 
-interface IFormConfig : IFormEms {
+interface IFormStyleConfig : IFormEms {
 
     var nameFormatter: FormNameFormatter?
 

@@ -5,13 +5,19 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.R
-import com.chooongg.formView.config.FormConfigImpl
-import com.chooongg.formView.config.IFormConfig
+import com.chooongg.formView.config.FormStyleConfig
+import com.chooongg.formView.config.IFormStyleConfig
 import com.chooongg.formView.data.FormBoundary
 import com.chooongg.formView.data.FormSizeInfo
+import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormGravity
+import com.chooongg.formView.enum.FormTypeset
+import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.helper.IFormItemAttributeHelper
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
+import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
+import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
 import com.chooongg.ktx.attrResourcesId
 import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -19,7 +25,27 @@ import com.google.android.material.shape.ShapeAppearanceModel
 /**
  * 样式
  */
-abstract class AbstractFormStyle : IFormConfig by FormConfigImpl(), IFormItemAttributeHelper {
+abstract class AbstractFormStyle(
+    nameFormatter: FormNameFormatter? = null,
+    groupTitleProvider: AbstractGroupTitleProvider? = null,
+    childTitleProvider: AbstractGroupTitleProvider? = null,
+    nestedTitleProvider: AbstractNestedTitleProvider? = null,
+    emsSize: FormEmsSize? = null,
+    nameIconGravity: Int? = null,
+    nameGravity: FormGravity? = null,
+    contentGravity: FormGravity? = null,
+    typeset: FormTypeset? = null
+) : IFormStyleConfig by FormStyleConfig(
+    nameFormatter,
+    groupTitleProvider,
+    childTitleProvider,
+    nestedTitleProvider,
+    emsSize,
+    nameIconGravity,
+    nameGravity,
+    contentGravity,
+    typeset
+), IFormItemAttributeHelper {
 
     private var isInstanceSizeInfo: Boolean = false
 

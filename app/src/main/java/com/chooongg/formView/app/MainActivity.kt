@@ -43,8 +43,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     class MainViewModel : ViewModel() {
-        val data: FormData = FormData {
+        val data: FormData = FormData(
             style = FormCardStyle()
+        ) {
             part {
                 action(R.string.demo_basic)
                 action(R.string.demo_style)

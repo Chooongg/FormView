@@ -1,5 +1,6 @@
 package com.chooongg.formView.itemProvider
 
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.chooongg.formView.FormManager
@@ -7,7 +8,6 @@ import com.chooongg.formView.FormUtils
 import com.chooongg.formView.R
 import com.chooongg.formView.holder.FormViewHolder
 import com.chooongg.formView.item.AbstractFormItem
-import com.chooongg.formView.item.FormLabel
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.style.AbstractFormStyle
 import com.google.android.material.button.MaterialButton
@@ -50,7 +50,8 @@ class FormLabelProvider : AbstractFormItemProvider() {
                 icon = nameIcon
                 iconTint = item.iconTint?.invoke(context) ?: textColors
             } else icon = null
-            gravity = obtainNameGravity(holder, item)
+            gravity =
+                item.nameGravity?.obtain(item.columnCount, item.columnSize) ?: Gravity.NO_GRAVITY
             text = obtainNameFormatter(holder).format(context, item)
             if (item.nameTextAppearance != null) {
                 setTextAppearance(item.nameTextAppearance!!)

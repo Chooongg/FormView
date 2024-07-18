@@ -7,18 +7,41 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chooongg.formView.FormManager
 import com.chooongg.formView.FormView
-import com.chooongg.formView.config.FormConfigImpl
-import com.chooongg.formView.config.IFormConfig
+import com.chooongg.formView.config.FormDataConfig
+import com.chooongg.formView.config.IFormDataConfig
+import com.chooongg.formView.enum.FormColumn
+import com.chooongg.formView.enum.FormEmsSize
+import com.chooongg.formView.enum.FormGravity
+import com.chooongg.formView.enum.FormTypeset
+import com.chooongg.formView.formatter.name.FormNameFormatter
 import com.chooongg.formView.holder.BaseFormViewHolder
 import com.chooongg.formView.part.AbstractFormPart
 import com.chooongg.formView.part.FormPart
+import com.chooongg.formView.provider.groupTitle.AbstractGroupTitleProvider
+import com.chooongg.formView.provider.nestedTitle.AbstractNestedTitleProvider
 import com.chooongg.formView.style.AbstractFormStyle
 
-class FormData() : IFormConfig by FormConfigImpl() {
+class FormData(
+    style: AbstractFormStyle? = null,
+    nameFormatter: FormNameFormatter? = null,
+    groupTitleProvider: AbstractGroupTitleProvider? = null,
+    childTitleProvider: AbstractGroupTitleProvider? = null,
+    nestedTitleProvider: AbstractNestedTitleProvider? = null,
+    emsSize: FormEmsSize? = null,
+    nameIconGravity: Int? = null,
+    nameGravity: FormGravity? = null,
+    contentGravity: FormGravity? = null,
+    typeset: FormTypeset? = null,
+    showProgress: Boolean = true,
+    block: FormData.() -> Unit
+) {
 
     internal val concatAdapter = ConcatAdapter(
         ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
-    ).apply { addAdapter(TopPlaceHolder()) }
+    ).apply {
+        addAdapter(TopBottomPlaceHolder())
+        addAdapter(TopBottomPlaceHolder())
+    }
 
     val parts get() = concatAdapter.adapters.filterIsInstance<AbstractFormPart<*>>()
 
@@ -30,15 +53,24 @@ class FormData() : IFormConfig by FormConfigImpl() {
             }
         }
 
-    var style: AbstractFormStyle? = null
-
-    var showProgress: Boolean = true
+    val dataConfig: IFormDataConfig = FormDataConfig(
+        style,
+        nameFormatter,
+        groupTitleProvider,
+        childTitleProvider,
+        nestedTitleProvider,
+        emsSize,
+        nameIconGravity,
+        nameGravity,
+        contentGravity,
+        typeset
+    )
 
     private val headerAdapters = ArrayList<RecyclerView.Adapter<*>>()
 
     private var footerAdapters = ArrayList<RecyclerView.Adapter<*>>()
 
-    constructor(block: FormData.() -> Unit) : this() {
+    init {
         block.invoke(this)
     }
 
@@ -47,13 +79,39 @@ class FormData() : IFormConfig by FormConfigImpl() {
 
     fun part(part: AbstractFormPart<*>) {
         part.isEnabled = isEnabled
-        concatAdapter.addAdapter(concatAdapter.adapters.size - footerAdapters.size, part)
+        concatAdapter.addAdapter(concatAdapter.adapters.size - footerAdapters.size - 1, part)
     }
 
     fun part(
-        style: AbstractFormStyle = this.style ?: FormManager.defaultStyle,
+        style: AbstractFormStyle = this.dataConfig.style ?: FormManager.defaultStyle,
+        nameFormatter: FormNameFormatter? = null,
+        groupTitleProvider: AbstractGroupTitleProvider? = null,
+        childTitleProvider: AbstractGroupTitleProvider? = null,
+        nestedTitleProvider: AbstractNestedTitleProvider? = null,
+        emsSize: FormEmsSize? = null,
+        nameIconGravity: Int? = null,
+        nameGravity: FormGravity? = null,
+        contentGravity: FormGravity? = null,
+        typeset: FormTypeset? = null,
+        column: FormColumn? = null,
         block: FormPartData.() -> Unit
-    ) = part(FormPart(style, FormPartData().apply(block), isEnabled))
+    ) = part(
+        FormPart(
+            style, FormPartData(
+                nameFormatter,
+                groupTitleProvider,
+                childTitleProvider,
+                nestedTitleProvider,
+                emsSize,
+                nameIconGravity,
+                nameGravity,
+                contentGravity,
+                typeset,
+                column,
+                block
+            ), isEnabled
+        )
+    )
 
     fun removeChildAdapter(adapter: RecyclerView.Adapter<*>) {
         concatAdapter.removeAdapter(adapter)
@@ -92,10 +150,10 @@ class FormData() : IFormConfig by FormConfigImpl() {
     }
 
     internal fun hasTopPlaceHolder(): Boolean {
-        return concatAdapter.adapters.isNotEmpty() && concatAdapter.adapters[0] is TopPlaceHolder
+        return concatAdapter.adapters.isNotEmpty() && concatAdapter.adapters[0] is TopBottomPlaceHolder
     }
 
-    internal class TopPlaceHolder : RecyclerView.Adapter<BaseFormViewHolder>() {
+    internal class TopBottomPlaceHolder : RecyclerView.Adapter<BaseFormViewHolder>() {
 
         private var _formView: FormView? = null
 

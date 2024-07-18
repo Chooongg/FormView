@@ -12,28 +12,28 @@ import com.chooongg.formView.divider
 import com.chooongg.formView.enum.FormColumn
 import com.chooongg.formView.enum.FormGravity
 import com.chooongg.formView.label
-import com.chooongg.formView.style.FormCardOutlinedStyle
+import com.chooongg.formView.style.FormCardElevatedStyle
 import com.chooongg.formView.text
 import com.chooongg.formView.tip
 
-class ComponentsActivity : AbstractDemoActivity(R.string.demo_components) {
+class TypesetActivity : AbstractDemoActivity(R.string.demo_typeset) {
 
-    private val model by viewModels<ComponentsViewModel>()
+    private val model by viewModels<TypesetViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.formView.setData(model.data)
     }
 
-    class ComponentsViewModel : ViewModel() {
-        val data = FormData(style = FormCardOutlinedStyle()) {
+    class TypesetViewModel : ViewModel() {
+        val data = FormData(style = FormCardElevatedStyle()) {
             part {
                 name = "action { ... }"
                 action("Version", "version", "1.0.0\n123\n4243") {
                     badge = "10"
                 }
             }
-            part {
+            part(column = FormColumn { it + 1 }) {
                 name = "button { ... }"
                 button("Normal", null)
                 button("Custom Style", null) {
@@ -53,23 +53,17 @@ class ComponentsActivity : AbstractDemoActivity(R.string.demo_components) {
             part {
                 name = "divider { ... }"
                 divider()
-                tip("↑ Normal Divider") {
-                    nameGravity = FormGravity(Gravity.CENTER)
-                }
+                tip("↑ Normal Divider")
                 divider {
                     insetStartFromPadding = true
                     insetEndFromPadding = true
                 }
-                tip("↑ Inset From Padding") {
-                    nameGravity = FormGravity(Gravity.CENTER)
-                }
+                tip("↑ Inset From Padding")
                 divider {
                     insetStartResId = R.dimen.custom_divider_inset
                     insetEndResId = R.dimen.custom_divider_inset
                 }
-                tip("↑ Inset From ResId") {
-                    nameGravity = FormGravity(Gravity.CENTER)
-                }
+                tip("↑ Inset From ResId")
             }
             part {
                 name = "label { ... }"

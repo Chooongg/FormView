@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.chooongg.formView.app.demo.BasicParametersActivity" />
+        <activity android:name="com.chooongg.formView.app.demo.StyleActivity" />
+        <activity android:name="com.chooongg.formView.app.demo.TypesetActivity" />
         <activity android:name="com.chooongg.formView.app.demo.ComponentsActivity" />
     </application>
 </manifest>

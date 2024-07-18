@@ -58,7 +58,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         ) = true
 
         override fun areItemsTheSame(oldItem: AbstractFormItem<*>, newItem: AbstractFormItem<*>) =
-            newItem !is FormPlaceHolder && oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
+            oldItem.id == newItem.id && oldItem.typeset == newItem.typeset
     }).build())
 
     private var updateJob: Job? = null
@@ -75,7 +75,8 @@ abstract class AbstractFormPart<DATA : IFormPart>(
                 differ.submitList(null)
                 return@launch
             }
-            val columnCount = data.column?.obtain(adapterColumnCount) ?: adapterColumnCount
+            val columnCount = data.partConfig.column?.obtain(adapterColumnCount)
+                ?: adapter.data.dataConfig.column?.obtain(adapterColumnCount) ?: adapterColumnCount
             if (columnCount < 0) {
                 differ.submitList(null)
                 return@launch
@@ -285,10 +286,7 @@ abstract class AbstractFormPart<DATA : IFormPart>(
         if (styleView != null) {
             style.configStyleAddChildView(styleView, typesetView)
         } else typeset.configTypesetAddChildView(typesetView, itemView)
-        return FormViewHolder(style, typeset, styleView ?: typesetView).apply {
-            this.itemView.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_START
-            this.itemView.textDirection = TextView.TEXT_DIRECTION_LOCALE
-        }
+        return FormViewHolder(style, typeset, styleView ?: typesetView)
     }
 
     override fun onViewAttachedToWindow(holder: FormViewHolder) {
